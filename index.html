@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Your App</title>
+	<!-- 拡大縮小禁止 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="css/style.css">
@@ -22,7 +23,9 @@ if ('serviceWorker' in navigator) {
 </head>
 <body>
 	<header>
-		<h1>hello world header</h1>
+		<div class="menu-icon" id="menu-icon">
+		 ☰
+		</div>
 	</header>
 	<main>
 		<h1>hello world main</h1>
@@ -34,5 +37,21 @@ if ('serviceWorker' in navigator) {
 		<button>④</button>
 		<button>⑤</button>
 	</footer>
+
+	<!-- サイドメニュー -->
+	<div class="side-menu" id="side-menu">
+	<div class="side-menu-header">
+		<span id="close-menu">×</span>
+		メニュー
+	</div>
+	<ul>
+		<li><a href="#">メニュー1</a></li>
+		<li><a href="#">メニュー2</a></li>
+		<li><a href="#">メニュー3</a></li>
+		<li><a href="#">メニュー4</a></li>
+	</ul>
+	</div>
+
+	<script src="script.js"></script>
 </body>
 </html>
