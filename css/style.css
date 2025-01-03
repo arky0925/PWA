@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+body {
+	font-family: "HIiragino Kaku Gothic Pro", "Meiryo", sans-serif;
+	font-size: 15px;
+	border-top: 10px solid #79a1b1;
+}
+a {
+	text-decoration: none;
+	color: #333;
+}
+.logo {
+	text-align: center;
+	margin-top: 40px;
+	margin-bottom: 30px;
+}
+.logo img {
+	display: inline-block;
+	margin-bottom: 5px;
+	width: 30px;
+}
+.w_inner {
+	width: 1200px;
+	margin: 0 auto;
+}
+.header ul {
+	display: flex;
+}
+.header ul li {
+	width: 200px;
+	text-align: center;
+	border-right: 1px solid #ddd;
+}
+.header ul li:first-child {
+	border-left: 1px solid #ddd;
+}
+.header ul li a {
+	display: block;
+}
+.header_img {
+	display: center;
+	margin-top: 40px;
+	margin-bottom: 50px;
+}
+.header_img img {
+	display: inline-block;
+	width: 1200px;
+}
+.container_service .service_block {
+	display: flex;
+	justify-content: space-between;
+}
+.container_service .service {
+	width: 380px;
+	text-align: center;
+}
+.container_service h2 {
+	text-align: center;
+	font-weight: bold;
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+.container_service .service img {
+	margin-bottom: 20px;
+	width: 100px;
+}
+.container_service .service .ttl {
+	font-weight: bold;
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+.container_service .service .explain {
+	margin-bottom: 25px;
+}
+.container_service .service a {
+	background: #79a1b1;
+	color: #fff;
+	padding: 15px 20px 12px;
+}
+.footer {
+		margin-top: 40px;
+}
+.pp_link {
+	text-align: right;
+}
+.copy {
+	text-align: center;
+	background: #79a1b1;
+	color: #fff;
+	font-size: 12px;
+	padding: 7px 0 3px;
+}
