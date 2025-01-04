@@ -13,3 +13,43 @@ document.addEventListener("DOMContentLoaded", () => {
 		sideMenu.classList.remove("open");
 	});
 });
+
+// ページが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    // ボタンのクリックイベントを設定
+    document.getElementById('homeButton').addEventListener('click', function() {
+        window.location.href = 'index.html'; // 遷移先のページ
+    });
+});
+
+// ページが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    // ボタンのクリックイベントを設定
+    document.getElementById('couponButton').addEventListener('click', function() {
+        window.location.href = 'coupon.html'; // 遷移先のページ
+    });
+});
+
+// ページが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    // ボタンのクリックイベントを設定
+    document.getElementById('memoryButton').addEventListener('click', function() {
+        window.location.href = 'memory.html'; // 遷移先のページ
+    });
+});
+
+// ページが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    // ボタンのクリックイベントを設定
+    document.getElementById('stampButton').addEventListener('click', function() {
+        window.location.href = 'stamp.html'; // 遷移先のページ
+    });
+});
+
+// ページが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    // ボタンのクリックイベントを設定
+    document.getElementById('knowledgeButton').addEventListener('click', function() {
+        window.location.href = 'knowledge.html'; // 遷移先のページ
+    });
+});
