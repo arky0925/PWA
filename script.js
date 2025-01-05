@@ -53,3 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'knowledge.html'; // 遷移先のページ
     });
 });
+
+// ページ全体の選択を無効にする
+document.addEventListener('selectstart', function(e) {
+	e.preventDefault(); // デフォルトの選択動作を無効にする
+});
