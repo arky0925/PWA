@@ -40,6 +40,7 @@ footer {
   align-items: center;
   padding: 10px 0;
   z-index: 10000;
+  box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.5); /* 影の設定 */
 }
 
 footer button {
@@ -55,22 +56,22 @@ footer button {
   align-items: center;
 }
 
-.material-icons{
-  position: relative;
-  top: 2px;
+footer .material-icons{
+  color: #666666;
 }
 
 main {
   /*padding: 60px 20px 60px;*/
   min-height: 100vh;
   background-color: #fff2f2;
+  overflow: hidden;
 }
 
 .styled-image {
   padding: 0px 0px 40px;
   width: 100%;
   max-width: 500px;
-  margin-top: 46px;
+  margin-top: 45px;
 }
 
 .icon-grid {
