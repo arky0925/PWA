@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-	<title>Your App</title>
+	<title>SELECT</title>
 	<!-- 拡大縮小禁止 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link rel="manifest" href="manifest.json">
@@ -23,9 +23,22 @@ if ('serviceWorker' in navigator) {
 </head>
 <body>
 	<header>
-		PWA
+	PWA
 	</header>
 	<main>
+		<h2>スプレッドシートのデータ</h2>
+		<button id="fetchDataButton">データを取得</button>
+		<table id="dataTable">
+			<thead>
+				<tr>
+					<th>料理</th>
+					<th>URL</th>
+					<th>ジャンル</th>
+					<th>備考</th>
+				</tr>
+			</thead>
+			<tbody id="dataDisplay"></tbody>
+		</table>
 	</main>
 	<footer>
 		<button id="homeButton">
@@ -49,7 +62,8 @@ if ('serviceWorker' in navigator) {
 			<span>ノウハウ</span>
 		</button>
 	</footer>
-	
+
+	<script src="SELECT.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>

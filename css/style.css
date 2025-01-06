@@ -62,7 +62,7 @@ footer .material-icons{
 }
 
 main {
-  /*padding: 60px 20px 60px;*/
+  padding: 60px 20px 60px;
   min-height: 100vh;
   background-color: #fff2f2;
 }
@@ -71,7 +71,6 @@ main {
   padding: 0px 0px 40px;
   width: 100%;
   max-width: 500px;
-  margin-top: 45px;
 }
 
 .icon-grid {
@@ -142,4 +141,17 @@ main {
 /* サイドメニューが表示される状態 */
 .side-menu.open {
   right: 0;
+}
+
+table {
+border-collapse: collapse;
+width: 100%;
+}
+th, td {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+th {
+background-color: #f2f2f2;
 }

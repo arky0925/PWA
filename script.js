@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // ボタンのクリックイベントを設定
     document.getElementById('memoryButton').addEventListener('click', function() {
-        window.location.href = 'Google Sheet.html'; // 遷移先のページ
+        window.location.href = 'SELECT.html'; // 遷移先のページ
     });
 });
 
@@ -53,3 +53,4 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'knowledge.html'; // 遷移先のページ
     });
 });
+
