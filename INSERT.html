@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your App</title>
+	<!-- 拡大縮小禁止 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="INSERT.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script>
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', () => {
+	navigator.serviceWorker.register('sw.js').then(registration => {
+	console.log('ServiceWorker registration successful with scope: ', registration.scope);
+	}, err => {
+	console.log('ServiceWorker registration failed: ', err);
+	}).catch(err => {
+	console.log(err)
+	});
+	});
+}
+</script>
+</head>
+<body>
+	<header>
+		PWA
+	</header>
+	<main>
+		<div class="container">
+		<form method="post" action="" name="contact-form">
+			<h4>自炊リスト</h4>
+			<input type="text" name="料理" placeholder="料理">
+			<input type="text" name="URL" placeholder="URL">
+			<input type="text" name="ジャンル" placeholder="ジャンル">
+			<textarea name="備考欄" rows="7" placeholder=""></textarea>
+			<input type="submit" value="追加" id="submit">
+		</form>
+	</div>
+	</main>
+	<footer>
+		<button id="homeButton">
+			<span class="material-icons">home</span>
+			<span>ホーム</span>
+		</button>
+		<button id="couponButton">
+			<span class="material-icons">payment</span>
+			<span>クーポン</span>
+		</button>
+		<button id="memoryButton">
+			<span class="material-icons">menu_book</span>
+			<span>思い出</span>
+		</button>
+		<button id="stampButton">
+			<span class="material-icons">local_activity</span>
+			<span>スタンプ</span>
+		</button>
+		<button id="knowledgeButton">
+			<span class="material-icons">auto_awesome</span>
+			<span>ノウハウ</span>
+		</button>
+	</footer>
+	
+	<script src="script.js"></script>
+	<script src="INSERT.js"></script>
+</body>
+</html>

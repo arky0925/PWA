@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // ボタンのクリックイベントを設定
     document.getElementById('couponButton').addEventListener('click', function() {
-        window.location.href = 'coupon.html'; // 遷移先のページ
+        window.location.href = 'INSERT.html'; // 遷移先のページ
     });
 });
 
