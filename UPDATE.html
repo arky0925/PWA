@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="INSERT.css">
+	<link rel="stylesheet" href="UPDATE.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script>
 if ('serviceWorker' in navigator) {
@@ -28,10 +28,12 @@ if ('serviceWorker' in navigator) {
 	</header>
 	<main>
 		<div class="container">
-		<form method="post" action="" name="contact-form">
-			<h4>INSERT</h4>
-			<input type="text" name="料理" placeholder="料理" required>
-			<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
+		<form method="post" action="" name="contact-form" id="editForm">
+			<h4>UPDATE</h4>
+			<label for="dataInput1">データ1:</label>
+			<input type="text" id="dataInput1" name="料理" placeholder="料理">
+			<label for="dataInput2">データ2:</label>
+			<textarea name="備考欄" id="dataInput2" rows="7" placeholder="メモ"></textarea>
 			<input type="submit" value="追加" id="submit">
 		</form>
 	</div>
@@ -60,6 +62,6 @@ if ('serviceWorker' in navigator) {
 	</footer>
 	
 	<script src="script.js"></script>
-	<script src="INSERT.js"></script>
+	<script src="UPDATE.js"></script>
 </body>
 </html>

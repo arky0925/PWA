@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyuyq7jC2YTAbIOzZUIQPcw-QMTxJ5jpNcWOkm0f1lCTzH3Q2t1XgC4X_KQHKjJL-yT/exec'
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyPfHepmIjir1EKxbqzKsZ3s0Mghhe2E_0UhCnbHUz3wU106JzDy2KpbAyBc6cQo1r2/exec'
 
 document.getElementById('fetchDataButton').addEventListener('click', () => {
 	fetchData();
@@ -28,35 +28,48 @@ function fetchData() {
     }
 }
 
-// データをテーブルに表示する関数
-function displayData(data) {
-    const display = document.getElementById('dataDisplay');
-    const CHECKBOX_COLUMN_INDEX = 0; // 例: チェックボックスが1列目にある場合
-    display.innerHTML = ''; // 既存の内容をクリア
+        // データをリストに表示する関数
+        function displayData(data) {
+            const display = document.getElementById('dataDisplay');
+            display.innerHTML = ''; // 既存の内容をクリア
 
-    data.forEach((row, rowIndex) => {
-        const newRow = document.createElement('tr');
-        row.forEach((cell, index) => {
-            const newCell = document.createElement('td');
-
-            // チェックボックスの列のインデックス（例: 3列目の場合は2）
-            if (index === CHECKBOX_COLUMN_INDEX) {
-                const checkbox = document.createElement('input');
+            data.forEach((row, rowIndex) => {
+                const listItem = document.createElement('li'); // リストアイテムを作成
+                const checkbox = document.createElement('input'); // チェックボックスを作成
                 checkbox.type = 'checkbox';
-                checkbox.checked = cell === true; // TRUEの場合はチェックを入れる
-                checkbox.addEventListener('change', () => {
+                checkbox.checked = row[0] === true; // チェックボックスの状態を設定
+                // チェックボックスの変更イベント
+                checkbox.addEventListener('change', (event) => {
+                    // チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
+                    event.stopPropagation();
                     updateCheckbox(rowIndex + 2, checkbox.checked); // 行番号は1ベースなので+2
                 });
-                newCell.appendChild(checkbox);
-            } else {
-                newCell.innerText = cell; // セルの内容を追加
-            }
 
-            newRow.appendChild(newCell); // 新しいセルを行に追加
+
+                // 2列目の要素をリストアイテムに追加
+                const secondColumnText = row[1] || ''; // 2列目の値を取得（存在しない場合は空文字）
+                
+                listItem.appendChild(checkbox); // チェックボックスをリストアイテムに追加
+                listItem.appendChild(document.createTextNode(` ${secondColumnText}`)); // 2列目のテキストを追加
+
+                // リストアイテムにデータ属性を追加
+                listItem.dataset.rowIndex = rowIndex + 2; // 行番号をデータ属性に追加
+
+                // リストアイテムにクリックイベントを追加
+        listItem.addEventListener('click', (event) => {
+            if (event.target !== checkbox) { // クリックがチェックボックスでない場合のみ遷移
+                const rowIndex = listItem.dataset.rowIndex; // 行番号を取得
+                const secondColumnText = row[1] || ''; // 2列目の値を取得
+        const thirdColumnText = row[2] || ''; // 3列目の値を取得
+        const encodedSecondColumn = encodeURIComponent(secondColumnText); // 2列目のテキストをエンコード
+        const encodedThirdColumn = encodeURIComponent(thirdColumnText); // 3列目のテキストをエンコード
+                window.location.href = `UPDATE.html?row=${rowIndex}&data1=${encodedSecondColumn}&data2=${encodedThirdColumn}`; // 編集ページに遷移
+            }
         });
-        display.appendChild(newRow); // 新しい行をテーブルに追加
-    });
-}
+                
+                display.appendChild(listItem); // リストに追加
+            });
+        }
 
 function updateCheckbox(row, isChecked) {
     const action = isChecked ? 'update' : 'uncheck'; // 更新アクションの決定
@@ -81,7 +94,7 @@ function updateCheckbox(row, isChecked) {
     });
 }
 
-//document.getElementById('clearCacheButton').addEventListener('click', () => {
-//    localStorage.removeItem('spreadsheetData');
-//    alert('キャッシュがクリアされました。');
-//});
+document.getElementById('clearCacheButton').addEventListener('click', () => {
+    localStorage.removeItem('spreadsheetData');
+    alert('キャッシュがクリアされました。');
+});

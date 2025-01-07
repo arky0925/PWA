@@ -28,17 +28,8 @@ if ('serviceWorker' in navigator) {
 	<main>
 		<h2>スプレッドシートのデータ</h2>
 		<button id="fetchDataButton">データを取得</button>
-<!--		<button id="clearCacheButton">キャッシュをクリア</button> -->
-		<table id="dataTable">
-			<thead>
-				<tr>
-					<th>チェックボックス</th>
-					<th>料理</th>
-					<th>備考欄</th>
-				</tr>
-			</thead>
-			<tbody id="dataDisplay"></tbody>
-		</table>
+		<button id="clearCacheButton">キャッシュをクリア</button>
+		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 	</main>
 	<footer>
 		<button id="homeButton">
