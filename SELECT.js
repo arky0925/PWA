@@ -1,4 +1,6 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyPfHepmIjir1EKxbqzKsZ3s0Mghhe2E_0UhCnbHUz3wU106JzDy2KpbAyBc6cQo1r2/exec'
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwgUnTSNjkoCI8ekHeD5REW8ZFa9SEVKhmKC_cyMzkE_R6VEz5IEswkJJFO_rZ3sQ7_/exec'
+
+//import scriptURL from './config.js'; // デフォルトインポート
 
 document.getElementById('fetchDataButton').addEventListener('click', () => {
 	fetchData();
@@ -60,9 +62,9 @@ function fetchData() {
             if (event.target !== checkbox) { // クリックがチェックボックスでない場合のみ遷移
                 const rowIndex = listItem.dataset.rowIndex; // 行番号を取得
                 const secondColumnText = row[1] || ''; // 2列目の値を取得
-        const thirdColumnText = row[2] || ''; // 3列目の値を取得
-        const encodedSecondColumn = encodeURIComponent(secondColumnText); // 2列目のテキストをエンコード
-        const encodedThirdColumn = encodeURIComponent(thirdColumnText); // 3列目のテキストをエンコード
+                const thirdColumnText = row[2] || ''; // 3列目の値を取得
+                const encodedSecondColumn = encodeURIComponent(secondColumnText); // 2列目のテキストをエンコード
+                const encodedThirdColumn = encodeURIComponent(thirdColumnText); // 3列目のテキストをエンコード
                 window.location.href = `UPDATE.html?row=${rowIndex}&data1=${encodedSecondColumn}&data2=${encodedThirdColumn}`; // 編集ページに遷移
             }
         });

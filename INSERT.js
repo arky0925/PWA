@@ -1,4 +1,6 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyPfHepmIjir1EKxbqzKsZ3s0Mghhe2E_0UhCnbHUz3wU106JzDy2KpbAyBc6cQo1r2/exec'
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwgUnTSNjkoCI8ekHeD5REW8ZFa9SEVKhmKC_cyMzkE_R6VEz5IEswkJJFO_rZ3sQ7_/exec'
+
+//import scriptURL from './config.js'; // デフォルトインポート
 
 const form = document.forms['contact-form']
 
