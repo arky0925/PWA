@@ -26,6 +26,8 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
             alert("データが更新されました。");
             document.getElementById('dataInput1').value = data.data[0]; // 更新されたデータ1
             document.getElementById('dataInput2').value = data.data[1]; // 更新されたデータ2
+            localStorage.removeItem('spreadsheetData');
+            window.location.href = 'SELECT.html';
         } else {
             alert("更新に失敗しました。");
         }

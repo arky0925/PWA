@@ -2,9 +2,13 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbz1PLhTKOiSCH6rTVkuJ-
 
 // import { scriptURL } from './config.js'; // デフォルトインポート
 
-document.getElementById('fetchDataButton').addEventListener('click', () => {
+//document.getElementById('fetchDataButton').addEventListener('click', () => {
+//	fetchData();
+//});
+
+window.onload = function() {
 	fetchData();
-});
+};
 
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
@@ -93,11 +97,11 @@ function updateCheckbox(row, isChecked) {
 	})
 	.then(data => {
 		console.log('Update successful:', data);
-		alert('成功');
+//		alert('成功');
 	})
 	.catch(error => {
 		console.error('Error updating spreadsheet:', error);
-		alert('失敗');
+//		alert('失敗');
 	});
 }
 
