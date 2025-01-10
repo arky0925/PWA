@@ -2,9 +2,9 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbz1PLhTKOiSCH6rTVkuJ-
 
 // import { scriptURL } from './config.js'; // デフォルトインポート
 
-//document.getElementById('fetchDataButton').addEventListener('click', () => {
-//	fetchData();
-//});
+document.getElementById('fetchDataButton').addEventListener('click', () => {
+	fetchData();
+});
 
 window.onload = function() {
 	fetchData();
@@ -50,6 +50,7 @@ function displayData(data) {
 			// チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
 			event.stopPropagation();
 			updateCheckbox(rowIndex + 2, checkbox.checked); // 行番号は1ベースなので+2
+//			localStorage.removeItem('spreadsheetData');
 		});
 
 		// 2列目の要素をリストアイテムに追加
@@ -97,6 +98,15 @@ function updateCheckbox(row, isChecked) {
 	})
 	.then(data => {
 		console.log('Update successful:', data);
+		// キャッシュの更新
+        const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+        const rowIndex = row - 2; // 1ベースから0ベースに変換
+        if (cachedData && cachedData[rowIndex]) {
+            cachedData[rowIndex][0] = isChecked; // チェックボックスの値を更新
+            localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+        }
+
+        fetchData(); // 更新後にデータを再取得
 //		alert('成功');
 	})
 	.catch(error => {
