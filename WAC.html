@@ -17,26 +17,22 @@
 <body>
 	<header>
 		PWA
-		<button id="openModalButton" class="modal-button">子画面を開く</button>
+		<span id="add-icon" class="material-icons add-icon">add</span>
 	</header>
 	<main>
-					<!-- モーダルウィンドウ -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" id="closeModal">&times;</span>
-        <h2>子画面のタイトル</h2>
-        <p>ここに子画面の内容が表示されます。</p>
-        <button id="modalActionButton">アクション</button>
-    </div>
-    <div class="container">
-		<form method="post" action="" name="contact-form">
-			<h4>INSERT</h4>
-			<input type="text" name="料理" placeholder="料理" required>
-			<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
-			<input type="submit" value="追加" id="submit">
-		</form>
-	</div>
-</div>
+		<!-- モーダルウィンドウ -->
+		<div class="overlay"></div> <!-- オーバーレイ -->
+		<div id="myModal" class="modal">
+			<form method="post" action="" name="contact-form">
+				<div class="title">
+					<h4>新規追加</h4>
+					<span class="close-button" id="closeModal">&times;</span>
+				</div>
+				<input type="text" name="料理" placeholder="料理" required>
+				<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
+				<input type="submit" value="追加" id="submit">
+			</form>
+		</div>
 	</main>
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </body>

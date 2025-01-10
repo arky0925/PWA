@@ -38,7 +38,7 @@ footer {
   justify-content: space-around;
   align-items: center;
   padding: 10px 0;
-  z-index: 10000;
+  z-index: 1000;
   box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.5); /* 影の設定 */
 }
 
