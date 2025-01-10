@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #C9A7A3;
+  color: #fff;
+  text-align: center;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.menu-icon {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 10000;
+  box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.5); /* 影の設定 */
+}
+
+footer button {
+  flex: 1;
+  background-color: #ffffff;
+  color: #9E9E9E;
+  border: none;
+  padding: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+footer .material-icons{
+  color: #666666;
+}
+
+main {
+  padding: 60px 20px 60px;
+  min-height: 100vh;
+  background-color: #fff2f2;
+}
+
+.styled-image {
+  padding: 0px 0px 40px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横3列 */
+  grid-template-rows: repeat(2, 1fr); /* 縦2行 */
+  gap: 5px; /* アイコン間の隙間 */
+  height: 20px; /* グリッドの高さ */
+  text-align: center; /* アイコンを中央に配置 */
+  color: #9E9E9E;
+  font-size: 10px;
+}
+
+.app-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-block .material-icons {
+  font-size: 40px; /* アイコンのサイズ */
+  color: #666666; /* アイコンの色 */
+}
+
+/* サイドメニュー */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -100%; /* 初期状態では画面外 */
+  width: 100%;
+  height: 100%;
+  background-color: #fff2f2;
+  color: #9E9E9E;
+  transition: right 0.3s ease-in-out;
+  z-index: 2000;
+}
+
+.side-menu-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff2f2;
+}
+
+.side-menu-header span {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.side-menu ul li {
+  margin: 15px 0;
+}
+
+.side-menu ul li a {
+  color: #9E9E9E;
+  text-decoration: none;
+}
+
+.side-menu ul li a:hover {
+  text-decoration: underline;
+}
+
+/* サイドメニューが表示される状態 */
+.side-menu.open {
+  right: 0;
+}
+
+ /* リストのスタイル */
+        #dataDisplay {
+            list-style-type: none; /* 点を非表示にする */
+            padding: 0; /* 左の余白を取り除く */
+            margin: 0; /* 上下の余白を取り除く */
+        }
+
+        /* リストアイテムのスタイル */
+        #dataDisplay li {
+            border: 1px solid #ccc; /* 枠線 */
+            border-radius: 5px; /* 角を丸くする */
+            padding: 10px; /* 内側の余白 */
+            margin: 5px 0; /* 上下の外側の余白 */
+            display: flex; /* チェックボックスとテキストを横に並べる */
+            align-items: center; /* 縦の中央揃え */
+            background-color: #f9f9f9; /* 背景色 */
+            transition: background-color 0.3s; /* ホバー時の色変更にトランジション効果 */
+        }
+
+        /* ホバー時のスタイル */
+        #dataDisplay li:hover {
+            background-color: #e0e0e0; /* ホバー時の背景色 */
+        }
+
+        /* チェックボックスのスタイル */
+        #dataDisplay input[type="checkbox"] {
+            margin-right: 15px; /* チェックボックスとテキストの間の余白 */
+        }

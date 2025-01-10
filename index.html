@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your App</title>
+	<!-- 拡大縮小禁止 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="manifest" href="config/manifest.json">
+	<link rel="stylesheet" href="master/master.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="config/ServiceWorker.js" defer></script>
+</head>
+<body>
+	<header>
+		PWA
+		 <span id="menu-icon" class="material-icons">menu</span>
+	</header>
+	<main>
+		<img class="styled-image" src="images/header.jpg">
+		<div class="icon-grid">
+			<div class="app-block">
+				<span class="material-icons">notifications_none</span>
+				<span>News</span>
+				<span>お知らせ</span>
+			</div>
+			<div class="app-block">
+				<span class="material-icons">payment</span>
+				<span>Coupon</span>
+				<span>クーポン</span>
+			</div>
+			<div class="app-block">
+				<span class="material-icons">local_activity</span>
+				<span>Stamp</span>
+				<span>スタンプ</span>
+			</div>
+			<div class="app-block">
+				<span class="material-icons">account_circle</span>
+				<span>Profile</span>
+				<span>プロフィール</span>
+			</div>
+			<div class="app-block">
+				<span class="material-icons">menu_book</span>
+				<span>Memory</span>
+				<span>思い出</span>
+			</div>
+			<div class="app-block">
+				<span class="material-icons">auto_awesome</span>
+				<span>Knowledge</span>
+				<span>ノウハウ</span>
+			</div>
+		</div>
+	</main>
+	<footer>
+		<button id="homeButton">
+			<span class="material-icons">home</span>
+			<span>ホーム</span>
+		</button>
+		<button id="couponButton">
+			<span class="material-icons">payment</span>
+			<span>クーポン</span>
+		</button>
+		<button id="memoryButton">
+			<span class="material-icons">menu_book</span>
+			<span>思い出</span>
+		</button>
+		<button id="stampButton">
+			<span class="material-icons">local_activity</span>
+			<span>スタンプ</span>
+		</button>
+		<button id="knowledgeButton">
+			<span class="material-icons">auto_awesome</span>
+			<span>ノウハウ</span>
+		</button>
+	</footer>
+
+	<!-- サイドメニュー -->
+	<div class="side-menu" id="side-menu">
+	<div class="side-menu-header">
+		<span id="close-menu" class="material-icons">highlight_off</span>
+	</div>
+	<ul>
+		<li><a href="#">メニュー1</a></li>
+		<li><a href="#">メニュー2</a></li>
+		<li><a href="#">メニュー3</a></li>
+		<li><a href="#">メニュー4</a></li>
+	</ul>
+	</div>
+
+	<script src="master/master.js"></script>
+</body>
+</html>
