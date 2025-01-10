@@ -1,0 +1,92 @@
+/* モーダルのスタイル */
+.modal {
+    display: none; /* デフォルトは非表示 */
+    position: fixed; /* スクロールしても位置が固定 */
+    z-index: 1; /* 他の要素の上に表示 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 幅を全体に */
+    height: 100%; /* 高さを全体に */
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* 上下のマージン */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* 幅を80%に */
+}
+
+.close-button {
+    color: #aaa;
+    float: right; /* 右寄せ */
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ボタンのスタイル */
+.modal-button {
+    background-color: #4CAF50; /* 緑色 */
+    color: white; /* テキストの色 */
+    border: none; /* ボーダーなし */
+    padding: 1px 20px; /* パディング */
+    text-align: center; /* 中央揃え */
+    text-decoration: none; /* 下線なし */
+    display: inline-block; /* インラインブロックにする */
+    font-size: 12px; /* フォントサイズ */
+    margin: 2px 2px; /* マージン */
+    cursor: pointer; /* カーソルをポインタに */
+    border-radius: 5px; /* 角を丸くする */
+    transition: background-color 0.3s; /* ホバー時のアニメーション */
+}
+
+/* ボタンにホバーしたときのスタイル */
+.modal-button:hover {
+    background-color: #45a049; /* ホバー時の色 */
+}
+
+.container {
+	padding: 30px;
+	margin: 30px;
+	border: 1px solid #eeeeee;
+	border-radius: 10px;
+	background-color: #003b5b;
+}
+
+h4 {
+	margin-bottom: 10px;
+	font-size: 24px;
+	color: white;
+}
+
+input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+textarea {
+	width: 100%;
+	padding: 10px;
+}
+
+#submit {
+	border: none;
+	background-color: orangered;
+	color: white;
+	width: 200px;
+	margin-top: 10px;
+	border-radius: 5px;
+}
+
+#submit:hover {
+	background-color: #333333;
+}

@@ -1,0 +1,78 @@
+span.menu-icon {
+  cursor: pointer;
+}
+
+.app-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-block .material-icons {
+  font-size: 40px; /* アイコンのサイズ */
+  color: #666666; /* アイコンの色 */
+}
+
+.styled-image {
+  padding: 0px 0px 40px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横3列 */
+  grid-template-rows: repeat(2, 1fr); /* 縦2行 */
+  gap: 5px; /* アイコン間の隙間 */
+  height: 20px; /* グリッドの高さ */
+  text-align: center; /* アイコンを中央に配置 */
+  color: #9E9E9E;
+  font-size: 10px;
+}
+
+/* サイドメニュー */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -100%; /* 初期状態では画面外 */
+  width: 100%;
+  height: 100%;
+  background-color: #fff2f2;
+  color: #9E9E9E;
+  transition: right 0.3s ease-in-out;
+  z-index: 2000;
+}
+
+.side-menu-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff2f2;
+}
+
+.side-menu-header span {
+  cursor: pointer;
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 20px;
+}
+
+.side-menu ul li {
+  margin: 15px 0;
+}
+
+.side-menu ul li a {
+  color: #9E9E9E;
+  text-decoration: none;
+}
+
+.side-menu ul li a:hover {
+  text-decoration: underline;
+}
+
+/* サイドメニューが表示される状態 */
+.side-menu.open {
+  right: 0;
+}
