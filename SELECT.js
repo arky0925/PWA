@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz1PLhTKOiSCH6rTVkuJ-5r5hPYZV8RsMbO7U7hv3wM9gb6vUTuwBLsPQ16jz9RmPNz/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz2Og-umBRxJi2mfcMV8qiA8OroKN03ys4pzeVB2hYzuI1ucT3rYnda53VyHGs4diPO/exec';
 
 // import { scriptURL } from './config.js'; // デフォルトインポート
 
