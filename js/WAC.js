@@ -30,3 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.style.display = 'none'; // オーバーレイを非表示
     });
 });
+
+// main.js
+import { API_URL, MAX_ITEMS } from './constants.js';
+
+console.log(API_URL); // "https://api.example.com"
+console.log(MAX_ITEMS); // 100

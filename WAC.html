@@ -12,7 +12,7 @@
 	<script src="ServiceWorker.js" defer></script>
 	<script src="master/master.js" defer></script>
 	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
-	<script src="js/WAC.js" defer></script>
+	<script  type="module" src="js/WAC.js" defer></script>
 </head>
 <body>
 	<header>
@@ -20,6 +20,9 @@
 		<span id="add-icon" class="material-icons add-icon">add</span>
 	</header>
 	<main>
+		<button id="fetchDataButton">データを取得</button>
+		<button id="clearCacheButton">キャッシュをクリア</button>
+		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 		<!-- モーダルウィンドウ -->
 		<div class="overlay"></div> <!-- オーバーレイ -->
 		<div id="myModal" class="modal">
