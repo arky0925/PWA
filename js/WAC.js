@@ -68,7 +68,7 @@ function displayData(data) {
 			if (event.target !== checkbox) { // クリックがチェックボックスでない場合のみ遷移
 				const rowIndex = listItem.dataset.rowIndex; // 行番号を取得
 				const rowData = JSON.parse(localStorage.getItem('spreadsheetData'))[rowIndex - 2]; // キャッシュから行データを取得
-				                // モーダルにデータを渡す
+                // モーダルにデータを渡す
                 document.getElementById('modalInput1').value = rowData[1] || ''; // データ1を設定
                 document.getElementById('modalInput2').value = rowData[2] || ''; // データ2を設定
                 
