@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PWA</title>
+	<!-- 拡大縮小禁止 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta charset="UTF-8">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="master/master.css">
+	<link rel="stylesheet" href="css/WAC.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="ServiceWorker.js" defer></script>
+	<script src="master/master.js" defer></script>
+	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
+	<script src="js/WAC.js" defer></script>
+</head>
+<body>
+	<header>
+		PWA
+		<span id="add-icon" class="material-icons add-icon">add</span>
+	</header>
+	<main>
+		<!-- ボタン、リスト -->
+		<button id="fetchDataButton">データを取得</button>
+		<button id="clearCacheButton">キャッシュをクリア</button>
+		<!-- モーダルウィンドウ(新規追加) -->
+		<div class="overlay"></div> <!-- オーバーレイ -->
+		<div id="insertModal" class="modal">
+			<form method="post" action="" name="insert-form">
+				<div class="title">
+					<h4>新規追加</h4>
+					<span class="close-button" id="closeModal1">&times;</span>
+				</div>
+				<input type="text" name="料理" placeholder="料理" required>
+				<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
+				<input type="submit" value="追加" id="submit1">
+			</form>
+		</div>
+		<!-- モーダルウィンドウ(編集) -->
+		<div class="overlay"></div> <!-- オーバーレイ -->
+		<div id="updateModal" class="modal">
+			<form method="post" action="" name="update-form" id="editForm">
+				<div class="title">
+					<h4>編集</h4>
+					<span class="close-button" id="closeModal2">&times;</span>
+				</div>
+				<input type="text" id="modalInput1" name="料理" placeholder="料理" required>
+				<textarea name="備考欄" id="modalInput2" rows="7" placeholder="メモ"></textarea>
+				<input type="submit" value="更新" id="submit2">
+			</form>
+		</div>
+		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
+	</main>
+	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
+</body>
+</html>
