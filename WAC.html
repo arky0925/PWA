@@ -17,14 +17,19 @@
 <body>
 	<header>
 		PWA
+		<span id="delete-icon" class="material-icons delete-icon" style="display: none;">delete</span>
 		<span id="add-icon" class="material-icons add-icon">add</span>
 	</header>
 	<main>
 		<!-- ボタン、リスト -->
 		<button id="fetchDataButton">データを取得</button>
 		<button id="clearCacheButton">キャッシュをクリア</button>
+		<button id="deleteModeButton">ゴミ箱</button>
+		<div id="reloadOverlay" class="overlay"> <!-- リロードオーバーレイ -->
+			<p>Loading...</p>
+		</div>
+		<div id="modalOverlay" class="overlay"></div> <!-- モーダルオーバーレイ -->
 		<!-- モーダルウィンドウ(新規追加) -->
-		<div class="overlay"></div> <!-- オーバーレイ -->
 		<div id="insertModal" class="modal">
 			<form method="post" action="" name="insert-form">
 				<div class="title">
@@ -37,7 +42,6 @@
 			</form>
 		</div>
 		<!-- モーダルウィンドウ(編集) -->
-		<div class="overlay"></div> <!-- オーバーレイ -->
 		<div id="updateModal" class="modal">
 			<form method="post" action="" name="update-form" id="editForm">
 				<div class="title">
