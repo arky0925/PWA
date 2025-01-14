@@ -1,16 +1,29 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz2Og-umBRxJi2mfcMV8qiA8OroKN03ys4pzeVB2hYzuI1ucT3rYnda53VyHGs4diPO/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbynA4RYqQBphW2FnR1FsfucfcFBeOMGHG-sOjPOGlMRHqoGP6LbsKJyyZD9Nxckslpw/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
 const reloadOverlay = document.getElementById('reloadOverlay'); // リロードオーバーレイを取得
+const headerOverlay = document.getElementById('headerOverlay'); // ヘッダーオーバーレイを取得
+const footerOverlay = document.getElementById('footerOverlay'); // ヘッダーオーバーレイを取得
 
-document.getElementById('fetchDataButton').addEventListener('click', () => {
-	fetchData();
-});
+const rowsToDelete = []; // 削除対象のレコード数
+
+function overlaySetBlock() {
+	reloadOverlay.style.display = 'block';
+	headerOverlay.style.display = 'block';
+	footerOverlay.style.display = 'block';
+}
+
+function overlaySetNone() {
+	reloadOverlay.style.display = 'none';
+	headerOverlay.style.display = 'none';
+	footerOverlay.style.display = 'none';
+}
 
 document.getElementById('clearCacheButton').addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
-	alert('キャッシュがクリアされました。');
+	fetchData();
+	alert('キャッシュをクリアしてデータを取得します。');
 });
 
 window.onload = function() {
@@ -21,14 +34,14 @@ function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
 
 	// オーバーレイを表示
-	reloadOverlay.style.display = 'block';
+	overlaySetBlock();
 
 	if (cachedData) {
 		// キャッシュが存在する場合はそれを使用
 		displayData(JSON.parse(cachedData));
 
 		// オーバーレイを非表示
-		reloadOverlay.style.display = 'none';
+		overlaySetNone();
 	} else {
 		// キャッシュがない場合はスプレッドシートからデータを取得
 		fetch(scriptURL)
@@ -46,7 +59,7 @@ function fetchData() {
 			.catch(error => console.error('Error!', error.message))
 			.finally(() => {
 				// オーバーレイを非表示
-				reloadOverlay.style.display = 'none';
+				overlaySetNone();
 			});
 	}
 }
@@ -74,7 +87,7 @@ function displayData(data) {
 		});
 
 		// 2列目の要素をリストアイテムに追加
-		const secondColumnText = row[1] || ''; // 2列目の値を取得（存在しない場合は空文字）
+		const secondColumnText = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
 		const textNode = document.createElement('span'); // テキストをラップするためのspan要素
 		textNode.textContent = secondColumnText; // テキストを設定
 		listItem.appendChild(textNode); // spanをリストアイテムに追加
@@ -86,12 +99,12 @@ function displayData(data) {
 		deleteCheckbox.style.display = 'none'; // 初期状態で非表示
 		listItem.appendChild(deleteCheckbox); // 2つめのチェックボックスをリストアイテムに追加
 		
-/*		// 新しいチェックボックスの変更イベント（必要に応じて追加）
+		// 新しいチェックボックスの変更イベント（必要に応じて追加）
 		deleteCheckbox.addEventListener('change', (event) => {
 			// 新しいチェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
 			event.stopPropagation();
-			// ここに新しいチェックボックスに対するロジックを追加できます
-		});*/
+			deleteSelect();
+		});
 
 		// リストアイテムにデータ属性を追加
 		listItem.dataset.rowIndex = rowIndex + 2; // 行番号をデータ属性に追加
@@ -105,8 +118,8 @@ function displayData(data) {
 				const rowIndex = listItem.dataset.rowIndex; // 行番号を取得
 				const rowData = JSON.parse(localStorage.getItem('spreadsheetData'))[rowIndex - 2]; // キャッシュから行データを取得
 				// モーダルにデータを渡す
-				document.getElementById('modalInput1').value = rowData[1] || ''; // データ1を設定
-				document.getElementById('modalInput2').value = rowData[2] || ''; // データ2を設定
+				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
+				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
 
 				// 行番号をデータ属性に設定
 				updateModal.dataset.rowIndex = rowIndex; // 行番号を設定
@@ -114,18 +127,30 @@ function displayData(data) {
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
+				headerOverlay.style.display = 'block';
+				footerOverlay.style.display = 'block';
 			}
 		});
 		
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
 			deleteCheckbox.checked = !deleteCheckbox.checked; // チェックボックスの状態を切り替え
-				// チェックボックスの状態に応じてリストアイテムのスタイルを変更
-				if (deleteCheckbox.checked) {
-					listItem.classList.add('selected'); // 選択状態のクラスを追加
-				} else {
-					listItem.classList.remove('selected'); // 選択状態のクラスを削除
+			const rowIndex = parseInt(listItem.dataset.rowIndex); // 行番号を取得
+			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
+			console.log(rowsToDelete);
+			if (deleteCheckbox.checked) {
+				listItem.classList.add('selected'); // 選択状態のクラスを追加
+				// 行を追加する					
+				if (!rowsToDelete.includes(rowIndex)) {
+					rowsToDelete.push(rowIndex); // 行番号を追加
 				}
+			} else {
+				listItem.classList.remove('selected'); // 選択状態のクラスを削除
+				const index = rowsToDelete.indexOf(rowIndex);
+				if (index > -1) {
+					rowsToDelete.splice(index, 1); // 行番号を削除
+				}
+			}
 		}
 
 		display.appendChild(listItem); // リストに追加
@@ -137,7 +162,7 @@ function updateCheckbox(row, isChecked) {
 	const action = isChecked ? 'check' : 'uncheck'; // 更新アクションの決定
 	
 	// オーバーレイを表示
-	reloadOverlay.style.display = 'block';
+	overlaySetBlock();
 	
 	fetch(scriptURL, {
 		method: 'POST',
@@ -176,34 +201,40 @@ function updateCheckbox(row, isChecked) {
 	})
 	.finally(() => {
 		// オーバーレイを非表示
-		reloadOverlay.style.display = 'none';
+		overlaySetNone();
 	});
 }
 
 // モーダル関連
 const insertModal = document.getElementById('insertModal');
+const addIcon = document.getElementById('add-icon');
 
 document.addEventListener('DOMContentLoaded', function() {
 	const closeModal1 = document.getElementById('closeModal1');
 	const closeModal2 = document.getElementById('closeModal2');
-	const addicon = document.getElementById('add-icon');
 
 	// モーダルを表示
-	addicon.addEventListener('click', function() {
+	addIcon.addEventListener('click', function() {
 		insertModal.style.display = 'block'; // モーダルを表示
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		headerOverlay.style.display = 'block';
+		footerOverlay.style.display = 'block';
 	});
 
 	// モーダルを閉じる
 	closeModal1.addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
+		headerOverlay.style.display = 'none';
+		footerOverlay.style.display = 'none';
 	});
 
 	// モーダルを閉じる
 	closeModal2.addEventListener('click', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
+		headerOverlay.style.display = 'none';
+		footerOverlay.style.display = 'none';
 	});
 
 	// モーダルの外側（オーバーレイ）をクリックしたときに閉じる
@@ -211,6 +242,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		updateModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
+		headerOverlay.style.display = 'none';
+		footerOverlay.style.display = 'none';
 	});
 
 });
@@ -225,6 +258,7 @@ insertForm.addEventListener('submit', e => {
 
 	insertModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
+	overlaySetBlock();
 
 	insertFormData.append('action', 'add'); // actionを'add'に設定
 
@@ -258,6 +292,7 @@ updateForm.addEventListener('submit', function(event) {
 
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	updateModal.style.display = 'none'; // モーダルを非表示
+	overlaySetBlock();
 
 	// 更新アクションと行番号を追加
 	updateFormData.append('action', 'update'); // actionを'update'に設定
@@ -290,33 +325,113 @@ updateForm.addEventListener('submit', function(event) {
 let deleteMode = false; // 削除モードの状態を管理
 
 document.addEventListener('DOMContentLoaded', () => {
-	document.getElementById('deleteModeButton').addEventListener('click', () => {
-		deleteMode = !deleteMode; // モードを切り替え
-		deleteCheckboxes(deleteMode); // チェックボックスの表示を切り替え
-		deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
-		// リストの全てのチェックボックスを非活性または活性にする
-		const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
-		checkboxes.forEach(cb => {
-			// deleteCheckboxクラスを持つチェックボックスは非活性にしない
-			if (!cb.classList.contains('delete-checkbox')) {
-				cb.disabled = deleteMode; // チェックボックスを非活性または活性に設定
-			}
-		});
-		// 削除モードが無効な場合、全てのリストアイテムからselectedクラスを外す
-		if (!deleteMode) {
-			const listItems = document.querySelectorAll('#dataDisplay li');
-				listItems.forEach(item => {
-				item.classList.remove('selected'); // selectedクラスを削除
-
-				// deleteCheckboxをすべてFALSEに設定
-				const deleteCheckbox = item.querySelector('.delete-checkbox');
-				if (deleteCheckbox) {
-					deleteCheckbox.checked = false; // チェックボックスをFALSEに設定
-				}
-			});
-		}
+	document.getElementById('delete-icon-false').addEventListener('click', () => {
+		document.querySelector('.left').classList.remove('hidden'); // キャンセルボタンを表示
+		document.querySelector('.center').classList.remove('hidden'); // タイトルを表示
+		deleteModeChange(); // 削除モード=TRUE
 	});
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+	document.getElementById('delete-icon-true').addEventListener('click', () => {
+		overlaySetBlock();
+		document.querySelector('.left').classList.add('hidden'); // キャンセルボタンを非表示
+		document.querySelector('.center').classList.add('hidden'); // タイトルを非表示
+		deleteModeChange(); // 削除モード=FALSE
+		// 削除処理を実行
+		deleteSelectedRecords();
+	});
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+	document.getElementById('cancelButton').addEventListener('click', () => {
+		// キャンセルボタンを非表示
+		document.querySelector('.left').classList.add('hidden'); // キャンセルボタンを非表示
+		document.querySelector('.center').classList.add('hidden'); // タイトルを非表示
+		deleteModeChange(); // 削除モード=FALSE
+	});
+});
+
+
+// 削除するレコードを選択する関数
+function deleteSelectedRecords() {
+	if (rowsToDelete.length === 0) {
+		alert('削除するレコードが選択されていません。');
+		overlaySetNone();
+		return;
+	}
+	// 削除リクエストを送信
+	fetch(scriptURL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: new URLSearchParams({
+			action: 'delete',
+			rows: JSON.stringify(rowsToDelete) // 削除する行の配列を送信
+		}),
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+	return response.json();
+	})
+	.then(data => {
+		console.log('Delete successful:', data);
+		alert("データを削除しました。");
+		localStorage.removeItem('spreadsheetData');
+		fetchData(); // データを再取得してリストを更新
+		// rowsToDeleteを初期化
+		rowsToDelete.length = 0; // 配列を空にする
+	})
+	.catch(error => {
+		console.error('Error deleting records:', error);
+	});
+}
+
+// ゴミ箱アイコン押下アクション
+function deleteModeChange() {
+	deleteMode = !deleteMode; // モードを切り替え
+	headerColor(deleteMode); // ヘッダーの色を切り替え
+	deleteCheckboxes(deleteMode); // チェックボックスの表示を切り替え
+	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
+	
+	// add-iconの表示を切り替える
+	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
+	
+	// リストの全てのチェックボックスを非活性または活性にする
+	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
+	checkboxes.forEach(cb => {
+		// deleteCheckboxクラスを持つチェックボックスは非活性にしない
+		if (!cb.classList.contains('delete-checkbox')) {
+			cb.disabled = deleteMode; // チェックボックスを非活性または活性に設定
+		}
+	});
+	// 削除モードが無効な場合、全てのリストアイテムからselectedクラスを外す
+	if (!deleteMode) {
+		const listItems = document.querySelectorAll('#dataDisplay li');
+			listItems.forEach(item => {
+			item.classList.remove('selected'); // selectedクラスを削除
+
+			// deleteCheckboxをすべてFALSEに設定
+			const deleteCheckbox = item.querySelector('.delete-checkbox');
+			if (deleteCheckbox) {
+				deleteCheckbox.checked = false; // チェックボックスをFALSEに設定
+			}
+		});
+	}
+}
+
+// ヘッダーの色を切り替える関数
+function headerColor(isVisible) {
+	const header = document.getElementById('header');
+		if (isVisible) {
+			header.classList.add('header-delete-mode');
+		} else {
+			header.classList.remove('header-delete-mode');
+		} 
+}
 
 // チェックボックスの表示を切り替える関数
 function deleteCheckboxes(isVisible) {
@@ -328,6 +443,8 @@ function deleteCheckboxes(isVisible) {
 
 // ゴミ箱アイコンの表示を切り替える関数
 function deleteIcon(isVisible) {
-	const deleteIcon = document.getElementById('delete-icon'); // ゴミ箱アイコンを取得
-	deleteIcon.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
+	const deleteIconTrue = document.getElementById('delete-icon-true'); // ゴミ箱アイコンを取得
+	const deleteIconFalse = document.getElementById('delete-icon-false'); // ゴミ箱アイコンを取得
+	deleteIconTrue.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
+	deleteIconFalse.style.display = isVisible ? 'none' : 'inline'; // 表示/非表示を切り替え
 }

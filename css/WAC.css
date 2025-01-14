@@ -1,3 +1,29 @@
+.left {
+	text-align: left; /* 左寄せ（デフォルト） */
+	cursor: pointer;
+}
+
+.center {
+	position: absolute; /* 中央揃えのため絶対配置 */
+	left: 50%; /* 左から50% */
+	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
+	text-align: center; /* 中央揃え */
+}
+
+.right {
+	display: flex; /* 子要素を横並びにする */
+	gap: 10px; /* ボタン間のスペース */
+}
+
+.hidden {
+	visibility: hidden; /* 要素を非表示にするが、スペースは保持 */
+}
+
+.header-delete-mode {
+	background-color: #dc3545; /* 削除モードの背景色 */
+	color: #fff; /* 削除モードの文字色 */
+}
+
 span.add-icon, .delete-icon {
 	cursor: pointer;
 }
@@ -12,27 +38,6 @@ span.add-icon, .delete-icon {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
-}
-
-/* ボタンのスタイル */
-.modal-button {
-	background-color: #FCD8D4; /* ピンク色 */
-	color: #9E9E9E; /* テキストの色 */
-	border: none; /* ボーダーなし */
-	padding: 1px 20px; /* パディング */
-	text-align: center; /* 中央揃え */
-	text-decoration: none; /* 下線なし */
-	display: inline-block; /* インラインブロックにする */
-	font-size: 12px; /* フォントサイズ */
-	margin: 2px 2px; /* マージン */
-	cursor: pointer; /* カーソルをポインタに */
-	border-radius: 5px; /* 角を丸くする */
-	transition: background-color 0.3s; /* ホバー時のアニメーション */
-}
-
-/* ボタンにホバーしたときのスタイル */
-.modal-button:hover {
-	background-color: #45a049; /* ホバー時の色 */
 }
 
 .modal {
@@ -51,6 +56,28 @@ span.add-icon, .delete-icon {
 }
 
 /* オーバーレイのスタイル */
+.header-overlay {
+	display: none; /* 初期状態で非表示 */
+	position: fixed; /* 固定位置に設定 */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 46px;
+	background-color: rgba(0, 0, 0, 0); /* 半透明の黒色 */
+	z-index: 2000; /* モーダルや他の要素よりも上に表示 */
+}
+
+.footer-overlay {
+	display: none; /* 初期状態で非表示 */
+	position: fixed; /* 固定位置に設定 */
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 78.5px;
+	background-color: rgba(0, 0, 0, 0); /* 半透明の黒色 */
+	z-index: 2000; /* モーダルや他の要素よりも上に表示 */
+}
+
 .overlay {
 	display: none; /* 初期状態で非表示 */
 	position: fixed; /* 固定位置に設定 */
@@ -95,6 +122,24 @@ textarea {
 	padding: 10px;
 }
 
+/* フォントの統一 */
+input[type="text"], textarea {
+	font-family: 'Arial', sans-serif; /* 使用したいフォントを指定 */
+	font-size: 14px; /* フォントサイズを指定 */
+	line-height: 1.5; /* 行間を指定 */
+	padding: 10px; /* 内側の余白を指定 */
+	border: 1px solid #ccc; /* ボーダーを指定 */
+	border-radius: 5px; /* 角を丸くする */
+	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
+}
+
+/* フォーカス時のスタイルを追加 */
+input[type="text"]:focus,
+textarea:focus {
+	border-color: #007BFF; /* フォーカス時のボーダー色 */
+	outline: none; /* デフォルトのアウトラインを消す */
+}
+
 #submit1, #submit2 {
 	border: none;
 	background-color: orangered;
@@ -104,7 +149,11 @@ textarea {
 	border-radius: 5px;
 }
 
-#submit:hover {
+#submit1:hover{
+	background-color: #333333;
+}
+
+#submit2:hover{
 	background-color: #333333;
 }
 
@@ -124,6 +173,7 @@ textarea {
 	border: 1px solid #ccc; /* 枠線 */
 	border-radius: 5px; /* 角を丸くする */
 	background-color: #f9f9f9; /* 背景色 */
+	cursor: pointer;
 }
 
 #dataDisplay li span {
@@ -132,6 +182,7 @@ textarea {
 
 #dataDisplay li input[type="checkbox"] {
 	margin-left: 10px; /* チェックボックスの左側にマージンを追加 */
+	cursor: pointer;
 }
 
 /* チェックボックスのスタイル */
