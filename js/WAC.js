@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		sideMenu.classList.remove("open");
 		modalOverlay.style.display = 'none';
 		footerOverlay.style.display = 'none';
-		doClear(); // 絞り込み条件をクリア
 	});
 });
 
@@ -61,7 +60,8 @@ function fetchData() {
 
 	if (cachedData) {
 		// キャッシュが存在する場合はそれを使用
-		displayData(JSON.parse(cachedData));
+		currentData = JSON.parse(cachedData); // currentDataにキャッシュを格納
+		displayData(currentData); // データを表示
 
 		// オーバーレイを非表示
 		overlaySetNone();
@@ -77,6 +77,7 @@ function fetchData() {
 			.then(data => {
 				// キャッシュにデータを保存
 				localStorage.setItem('spreadsheetData', JSON.stringify(data));
+				currentData = data; // currentDataに取得したデータを格納
 				displayData(data);
 			})
 			.catch(error => console.error('Error!', error.message))
@@ -87,8 +88,11 @@ function fetchData() {
 	}
 }
 
+let currentData = []; // 現在表示されているデータを保持する
+
 // データをリストに表示する関数
 function displayData(data) {
+	currentData = data; // 現在表示されているデータを更新
 	const display = document.getElementById('dataDisplay');
 	display.innerHTML = ''; // 既存の内容をクリア
 
@@ -137,14 +141,14 @@ function displayData(data) {
 				deleteSelect();
 			}
 			if (event.target !== checkbox && deleteMode == false) { // クリックがチェックボックスでない場合のみ遷移
-				const rowIndex = listItem.dataset.rowIndex; // 行番号を取得
-				const rowData = JSON.parse(localStorage.getItem('spreadsheetData'))[rowIndex - 2]; // キャッシュから行データを取得
+				const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
+				const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
 				// モーダルにデータを渡す
 				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
 				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
 
 				// 行番号をデータ属性に設定
-				updateModal.dataset.rowIndex = rowIndex; // 行番号を設定
+				updateModal.dataset.rowIndex = rowIndex + 2; // 行番号を設定
 
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
@@ -277,7 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		footerOverlay.style.display = 'none';
 		sideMenu.classList.remove("open");
 		insertForm.reset(); // フォームの内容をクリア
-		doClear(); // 絞り込み条件をクリア
 	});
 
 });
@@ -437,8 +440,8 @@ function deleteModeChange() {
 	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	// tune-iconの非活性化
-    const tuneIcon = document.getElementById('tune-icon');
-    tuneIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モードがTRUEの場合、非活性にする
+	const tuneIcon = document.getElementById('tune-icon');
+	tuneIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モードがTRUEの場合、非活性にする
 	
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
