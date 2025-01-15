@@ -1,7 +1,8 @@
 {
 	"short_name": "PWA",
 	"name": "pwa_sample_app",
-	"theme_color": "#FF5733",
+	"theme_color": "#C9A7A3",
+	"background_color": "#fff2f2",
 	"display": "standalone",
 	"start_url": "index.html",
 	"icons": [
