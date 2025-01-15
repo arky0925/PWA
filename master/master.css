@@ -11,8 +11,6 @@ html {
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #FF5733; /* ステータスバーの下の背景色 */
-    color: #FFFFFF; /* テキストの色 */
 }
 
 :root {
