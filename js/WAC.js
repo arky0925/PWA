@@ -8,6 +8,10 @@ const footerOverlay = document.getElementById('footerOverlay'); // ヘッダー�
 
 const rowsToDelete = []; // 削除対象のレコード数
 
+window.onload = function() {
+	fetchData();
+};
+
 function overlaySetBlock() {
 	reloadOverlay.style.display = 'block';
 	headerOverlay.style.display = 'block';
@@ -20,7 +24,6 @@ function overlaySetNone() {
 	footerOverlay.style.display = 'none';
 }
 
-
 const updateIcon = document.getElementById('update-icon');
 updateIcon.addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
@@ -28,9 +31,27 @@ updateIcon.addEventListener('click', () => {
 	alert('キャッシュをクリアしてデータを取得します。');
 });
 
-window.onload = function() {
-	fetchData();
-};
+// サイドメニュー開閉
+const sideMenu = document.getElementById("side-menu");
+document.addEventListener("DOMContentLoaded", () => {
+	const tuneIcon = document.getElementById("tune-icon");
+	const closeMenu = document.getElementById("close-menu");
+
+	// メニューを開く
+	tuneIcon.addEventListener("click", () => {
+		sideMenu.classList.add("open");
+		modalOverlay.style.display = 'block';
+		footerOverlay.style.display = 'block';
+	});
+
+	// メニューを閉じる
+	closeMenu.addEventListener("click", () => {
+		sideMenu.classList.remove("open");
+		modalOverlay.style.display = 'none';
+		footerOverlay.style.display = 'none';
+		doClear(); // 絞り込み条件をクリア
+	});
+});
 
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
@@ -254,7 +275,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		headerOverlay.style.display = 'none';
 		footerOverlay.style.display = 'none';
+		sideMenu.classList.remove("open");
 		insertForm.reset(); // フォームの内容をクリア
+		doClear(); // 絞り込み条件をクリア
 	});
 
 });
@@ -264,7 +287,7 @@ const insertForm = document.forms['insert-form'];
 
 insertForm.addEventListener('submit', e => {
 	e.preventDefault();
-	// FormDataにactionパラメータを追加
+	
 	const insertFormData = new FormData(insertForm);
 
 	insertModal.style.display = 'none'; // モーダルを非表示
@@ -272,6 +295,7 @@ insertForm.addEventListener('submit', e => {
 	insertForm.reset(); // フォームの内容をクリア
 	overlaySetBlock();
 
+	// FormDataにactionパラメータを追加
 	insertFormData.append('action', 'add'); // actionを'add'に設定
 
 	fetch(scriptURL, { method: 'POST', body: insertFormData })
@@ -412,6 +436,9 @@ function deleteModeChange() {
 	// add-icon,update-conの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
+	// tune-iconの非活性化
+    const tuneIcon = document.getElementById('tune-icon');
+    tuneIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モードがTRUEの場合、非活性にする
 	
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
@@ -480,3 +507,66 @@ function selectedCount(isVisible) {
 	const selectedCount = document.getElementById('selectedCount'); // 削除レコード数を取得
 	selectedCount.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
 }
+
+// 検索機能
+let checkFlgTrue = false; // チェックありのレコード用フラグ
+let checkFlgFalse = false; // チェックなしのレコード用フラグ
+
+// クリアボタン押下アクション
+document.getElementById('clear').addEventListener('click', function() {
+	doClear();
+	fetchData(); // 全データを再取得して表示
+});
+
+// 絞り込み条件解除
+function doClear() {
+	const filterInput = document.getElementById('filterInput'); // テキストボックスを取得
+	filterInput.value = ''; // テキストボックスの値を空にする
+	checkFlgTrue = false;
+	checkTrue.classList.remove('checkboxSelected');
+	checkFlgFalse = false;
+	checkFalse.classList.remove('checkboxSelected');
+}
+
+// チェックボタンのクリックイベント
+const checkTrue = document.getElementById('checkTrue');
+checkTrue.addEventListener('click', function() {
+	checkFlgTrue = !checkFlgTrue; // フラグを切り替え
+	if (checkFlgTrue) {
+		checkTrue.classList.add('checkboxSelected'); 
+	} else {
+		checkTrue.classList.remove('checkboxSelected');
+	}
+});
+
+const checkFalse = document.getElementById('checkFalse');
+checkFalse.addEventListener('click', function() {
+	checkFlgFalse = !checkFlgFalse; // フラグを切り替え
+	if (checkFlgFalse) {
+		checkFalse.classList.add('checkboxSelected'); 
+	} else {
+		checkFalse.classList.remove('checkboxSelected');
+	}
+});
+
+// 検索ボタン押下アクション
+document.getElementById('searchButton').addEventListener('click', function() {
+	const filterInput = document.getElementById('filterInput').value.toLowerCase(); // 小文字に変換して取得
+	const checkTrueSelected = checkFlgTrue; // チェックありのフラグ
+	const checkFalseSelected = checkFlgFalse; // チェックなしのフラグ
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData')) || []; // キャッシュからデータを取得
+
+	// フィルタリングされたデータを格納する配列
+	const filteredData = cachedData.filter(row => {
+		const matchesText = (typeof row[1] === 'string' || typeof row[1] === 'number') && 
+				String(row[1]).toLowerCase().includes(filterInput); // 2列目の値に基づくフィルタリング
+		const matchesCheckbox = (checkTrueSelected && row[0] === true) || (checkFalseSelected && row[0] === false);
+		return matchesText && (checkTrueSelected || checkFalseSelected ? matchesCheckbox : true);
+	});
+
+	sideMenu.classList.remove("open");
+	modalOverlay.style.display = 'none';
+	footerOverlay.style.display = 'none';
+
+	displayData(filteredData); // フィルタリングされたデータを表示
+});

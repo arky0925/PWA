@@ -25,8 +25,56 @@
 	color: #fff; /* 削除モードの文字色 */
 }
 
-span.add-icon, .delete-icon, .update-icon {
+span.add-icon, .delete-icon, .update-icon, button {
 	cursor: pointer;
+}
+
+main #tune-icon {
+	flex: 1;
+	background-color: #fff2f2;
+	color: #ff0000;
+	border: none;
+	padding: 10px;
+	font-size: 10px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* サイドメニュー */
+.side-menu {
+	position: fixed;
+	top: 0;
+	right: -100%; /* 初期状態では画面外 */
+	width: 80%;
+	height: 100%;
+	background-color: #fff2f2;
+	color: #000000;
+	transition: right 0.1s ease-in-out;
+	z-index: 2000;
+}
+
+.side-menu-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 2px solid #ccc; /* 下に線を引く */
+	padding: 10px 20px;
+}
+
+hr {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.side-menu-header span {
+	cursor: pointer;
+}
+
+/* サイドメニューが表示される状態 */
+.side-menu.open {
+	right: 0;
 }
 
 .close-button {
@@ -39,6 +87,80 @@ span.add-icon, .delete-icon, .update-icon {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.cook {
+	padding: 10px 20px;
+	display: flex; /* フレックスボックスを使用 */
+	flex-direction: column; /* 縦に配置 */
+}
+
+.blockName {
+	padding: 10px 0px; /* アイテムのパディング */
+	font-weight: 900;
+	margin-bottom: 10px;
+}
+
+.cook input {
+	margin-bottom: 10px;
+}
+
+.checkFilter {
+	padding: 10px 20px;
+	display: flex; /* フレックスボックスを使用 */
+	flex-direction: column; /* 縦に配置 */
+}
+
+.checkFilterButton {
+	display: flex; /* フレックスボックスを使用 */
+	justify-content: space-between; /* アイテムの間にスペースを均等に配置 */
+	margin-bottom: 10px;
+}
+
+#checkTrue, #checkFalse {
+	display: flex; /* フレックスボックスを使用 */
+	justify-content: center; /* 水平方向に中央揃え */
+	align-items: center; /* 垂直方向に中央揃え */
+	background-color: #007bff; /* ボタンの背景色 */
+	border: none; /* ボーダーをなしに */
+	padding: 10px 50px; /* パディング */
+	border-radius: 5px; /* 角を丸く */
+	cursor: pointer; /* カーソルをポインターに */
+	transition: background-color 0.3s; /* ホバー時のアニメーション */
+}
+
+.checkboxSelected {
+	background-color: #0056b3 !important; /* 選択状態の背景色 */
+}
+
+.side-menu-footer {
+	padding: 20px 20px; /* フッターのパディング */
+	border-top: 2px solid #ccc; /* 上に線を引く */
+}
+
+.search-button {
+	display: flex; /* フレックスボックスを使用 */
+	justify-content: center; /* 水平方向に中央揃え */
+	align-items: center; /* 垂直方向の中央揃え */
+	background-color: #007bff; /* ボタンの背景色 */
+	color: white; /* テキストの色 */
+	border: none; /* ボーダーをなしに */
+	padding: 10px 15px; /* パディング */
+	border-radius: 5px; /* 角を丸く */
+	cursor: pointer; /* カーソルをポインターに */
+	transition: background-color 0.3s, transform 0.2s; /* ホバー時のアニメーション */
+	font-size: 16px;/* フォントサイズ */
+	font-weight: 900; /* 太字 */
+	width: 100%; /* ボタンを全幅に */
+}
+
+.search-button:hover {
+	background-color: #0056b3; /* ホバー時の色 */
+	transform: translateY(-2px); /* ホバー時に少し上に移動 */
+}
+
+.search-button:active {
+	transform: translateY(0); /* アクティブ時に元の位置に戻す */
 }
 
 .modal {

@@ -28,6 +28,10 @@
 	</header>
 	<div id="headerOverlay" class="header-overlay"></div> <!-- ヘッダー専用オーバーレイ -->
 	<main>
+		<button id="tune-icon">
+			<span class="material-icons tune-icon">tune</span>
+			<span>絞り込み</span>
+		</button>
 		<div id="reloadOverlay" class="overlay"> <!-- リロードオーバーレイ -->
 			<p>Loading...</p>
 		</div>
@@ -58,6 +62,33 @@
 		</div>
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 	</main>
+	<!-- サイドメニュー -->
+		<div class="side-menu" id="side-menu">
+			<div class="side-menu-header">
+				<span id="close-menu" class="material-icons">highlight_off</span>
+				<div class="center">絞り込み</div>
+				<div id="clear" class="left">クリア</div>
+			</div>
+			<div class="cook">
+				<span class="blockName">料理名</span>
+				<input type="text" id="filterInput" placeholder="名前で絞り込み">
+			</div>
+			<hr>
+			<div class="checkFilter">
+				<span class="blockName">チェックボックスの状態</span>
+				<div class="checkFilterButton">
+					<button id="checkTrue">
+						<span class="material-icons">check_box</spa>
+					</button>
+					<button id="checkFalse">
+						<span class="material-icons">check_box_outline_blank</spa>
+					</button>
+				</div>
+			</div>
+			<div class="side-menu-footer">
+				<button id="searchButton" class="search-button">検索</button>
+			</div>
+		</div>
 	<div id="footerOverlay" class="footer-overlay"></div> <!-- フッター専用オーバーレイ -->
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </body>
