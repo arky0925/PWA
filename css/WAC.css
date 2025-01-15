@@ -8,6 +8,7 @@
 	left: 50%; /* 左から50% */
 	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
 	text-align: center; /* 中央揃え */
+	font-weight: 900; /* 太字 */
 }
 
 .right {
@@ -24,7 +25,7 @@
 	color: #fff; /* 削除モードの文字色 */
 }
 
-span.add-icon, .delete-icon {
+span.add-icon, .delete-icon, .update-icon {
 	cursor: pointer;
 }
 

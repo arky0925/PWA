@@ -19,16 +19,15 @@
 		<div id="cancelButton" class="left hidden">キャンセル</div>
 		<div class="center hidden">一括削除</div>
 		<div class="right">
+			<span id="selectedCount" class="selected-count" style="display: none;">0</span> <!-- 選択数を表示する要素 -->
+			<span id="update-icon" class="material-icons update-icon">update</span>
 			<span id="add-icon" class="material-icons add-icon">add</span>
 			<span id="delete-icon-false" class="material-icons delete-icon">delete</span>
 			<span id="delete-icon-true" class="material-icons delete-icon" style="display: none;">delete_forever</span>
-
 		</div>
 	</header>
 	<div id="headerOverlay" class="header-overlay"></div> <!-- ヘッダー専用オーバーレイ -->
 	<main>
-		<!-- ボタン、リスト -->
-		<button id="clearCacheButton">キャッシュをクリアしてデータを取得</button>
 		<div id="reloadOverlay" class="overlay"> <!-- リロードオーバーレイ -->
 			<p>Loading...</p>
 		</div>
