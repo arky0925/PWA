@@ -338,8 +338,6 @@ let deleteMode = false; // 削除モードの状態を管理
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('delete-icon-false').addEventListener('click', () => {
-		document.querySelector('.left').classList.remove('hidden'); // キャンセルボタンを表示
-		document.querySelector('.center').classList.remove('hidden'); // タイトルを表示
 		deleteModeChange(); // 削除モード=TRUE
 	});
 });
@@ -347,8 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('delete-icon-true').addEventListener('click', () => {
 		overlaySetBlock();
-		document.querySelector('.left').classList.add('hidden'); // キャンセルボタンを非表示
-		document.querySelector('.center').classList.add('hidden'); // タイトルを非表示
 		deleteModeChange(); // 削除モード=FALSE
 		// 削除処理を実行
 		deleteSelectedRecords();
@@ -360,9 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('cancelButton').addEventListener('click', () => {
-		// キャンセルボタンを非表示
-		document.querySelector('.left').classList.add('hidden'); // キャンセルボタンを非表示
-		document.querySelector('.center').classList.add('hidden'); // タイトルを非表示
 		deleteModeChange(); // 削除モード=FALSE
 		// ヘッダーの削除レコード数をリセット
 		rowsToDelete.length = 0; // 配列を空にする
@@ -411,6 +404,7 @@ function deleteSelectedRecords() {
 function deleteModeChange() {
 	deleteMode = !deleteMode; // モードを切り替え
 	headerColor(deleteMode); // ヘッダーの色を切り替え
+	headerChar(deleteMode); // ヘッダーの文字を切り替え
 	deleteCheckboxes(deleteMode); // チェックボックスの表示を切り替え
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
@@ -449,6 +443,19 @@ function headerColor(isVisible) {
 			header.classList.add('header-delete-mode');
 		} else {
 			header.classList.remove('header-delete-mode');
+		} 
+}
+
+// ヘッダーの文字を切り替える関数
+function headerChar(isVisible) {
+	const cancelButton = document.querySelector('.left');
+	const title = document.querySelector('.center');
+		if (isVisible) {
+			cancelButton.classList.remove('hidden'); // キャンセルボタンを非表示
+			title.classList.remove('hidden'); // タイトルを非表示
+		} else {
+			cancelButton.classList.add('hidden'); // キャンセルボタンを非表示
+			title.classList.add('hidden'); // タイトルを非表示
 		} 
 }
 
