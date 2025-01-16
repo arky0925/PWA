@@ -1,3 +1,4 @@
+
 const scriptURL = 'https://script.google.com/macros/s/AKfycbynA4RYqQBphW2FnR1FsfucfcFBeOMGHG-sOjPOGlMRHqoGP6LbsKJyyZD9Nxckslpw/exec';
 
 const updateModal = document.getElementById('updateModal');
@@ -89,10 +90,12 @@ function fetchData() {
 }
 
 let currentData = []; // 現在表示されているデータを保持する
+let chacheDate = []; // キャッシュデータを保持する
 
 // データをリストに表示する関数
 function displayData(data) {
 	currentData = data; // 現在表示されているデータを更新
+	chacheDate = JSON.parse(localStorage.getItem('spreadsheetData')); // chacheDateにキャッシュを格納
 	const display = document.getElementById('dataDisplay');
 	display.innerHTML = ''; // 既存の内容をクリア
 
@@ -109,7 +112,23 @@ function displayData(data) {
 		checkbox.addEventListener('change', (event) => {
 			// チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
 			event.stopPropagation();
-			updateCheckbox(rowIndex + 2, checkbox.checked); // 行番号は1ベースなので+2
+				
+			const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
+			const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
+
+			// 更新対象の値を取得
+			const targetValue1 = rowData[0]; // 1列目の値
+			const targetValue2 = rowData[1]; // 2列目の値
+			const targetValue3 = rowData[2]; // 3列目の値
+
+			// キャッシュ内での行番号を検索
+			const chacheRowIndex = chacheDate.findIndex(chacheRow => {
+			// 比較するプロパティを指定
+				return chacheRow[0] === targetValue1 && // 1列目で比較
+					   chacheRow[1] === targetValue2 && // 2列目で比較
+					   chacheRow[2] === targetValue3; // 3列目で比較
+			});
+			updateCheckbox(chacheRowIndex + 2, checkbox.checked); // 行番号は1ベースなので+2
 		});
 
 		// 2列目の要素をリストアイテムに追加
@@ -141,14 +160,31 @@ function displayData(data) {
 				deleteSelect();
 			}
 			if (event.target !== checkbox && deleteMode == false) { // クリックがチェックボックスでない場合のみ遷移
+				
 				const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
 				const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
+
+				// 更新対象の値を取得
+				const targetValue1 = rowData[0]; // 1列目の値
+				const targetValue2 = rowData[1]; // 2列目の値
+				const targetValue3 = rowData[2]; // 3列目の値
+
+				// キャッシュ内での行番号を検索
+				const chacheRowIndex = chacheDate.findIndex(chacheRow => {
+				// 比較するプロパティを指定
+					return chacheRow[0] === targetValue1 && // 1列目で比較
+						   chacheRow[1] === targetValue2 && // 2列目で比較
+						   chacheRow[2] === targetValue3; // 3列目で比較
+				});
+
 				// モーダルにデータを渡す
 				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
 				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
+				console.log(`Filtered Row Index: ${rowIndex}, Original Row Index: ${chacheRowIndex}`); // デバッグ用
 
 				// 行番号をデータ属性に設定
-				updateModal.dataset.rowIndex = rowIndex + 2; // 行番号を設定
+				updateModal.dataset.rowIndex = rowIndex; // 検索結果内の行番号を設定
+				updateModal.dataset.chacheRowIndex = chacheRowIndex + 2; // キャッシュデータ内の行番号を設定
 
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
@@ -161,18 +197,34 @@ function displayData(data) {
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
 			deleteCheckbox.checked = !deleteCheckbox.checked; // チェックボックスの状態を切り替え
-			const rowIndex = parseInt(listItem.dataset.rowIndex); // 行番号を取得
+			const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
+				const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
+
+				// 更新対象の値を取得
+				const targetValue1 = rowData[0]; // 1列目の値
+				const targetValue2 = rowData[1]; // 2列目の値
+				const targetValue3 = rowData[2]; // 3列目の値
+
+				// キャッシュ内での行番号を検索
+				const chacheRowIndex = chacheDate.findIndex(chacheRow => {
+				// 比較するプロパティを指定
+					return chacheRow[0] === targetValue1 && // 1列目で比較
+						   chacheRow[1] === targetValue2 && // 2列目で比較
+						   chacheRow[2] === targetValue3; // 3列目で比較
+				});
+
+				const adjustedRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
+
 			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
-			console.log(rowsToDelete);
 			if (deleteCheckbox.checked) {
 				listItem.classList.add('selected'); // 選択状態のクラスを追加
-				// 行を追加する					
-				if (!rowsToDelete.includes(rowIndex)) {
-					rowsToDelete.push(rowIndex); // 行番号を追加
+				// 削除対象の行を追加する					
+				if (!rowsToDelete.includes(adjustedRowIndex)) {
+					rowsToDelete.push(adjustedRowIndex); // 行番号を追加
 				}
 			} else {
 				listItem.classList.remove('selected'); // 選択状態のクラスを削除
-				const index = rowsToDelete.indexOf(rowIndex);
+				const index = rowsToDelete.indexOf(adjustedRowIndex);
 				if (index > -1) {
 					rowsToDelete.splice(index, 1); // 行番号を削除
 				}
@@ -320,26 +372,43 @@ insertForm.addEventListener('submit', e => {
 	// alert('キャッシュがクリアされました。');
 });
 
+
+
 // 更新フォーム送信
 const updateForm = document.forms['update-form'];
 
 updateForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 
-	const rowIndex = updateModal.dataset.rowIndex; // 行番号を取得
-	const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
+	const rowIndex = parseInt(updateModal.dataset.rowIndex); // 検索結果内の行番号を取得
+	const chacheRowIndex = parseInt(updateModal.dataset.chacheRowIndex); // キャッシュデータ内の行番号を取得
+
+	const modalInput1 = document.getElementById('modalInput1').value;
+	const modalInput2 = document.getElementById('modalInput2').value;
+
+	// currentDataを更新
+	if (rowIndex !== -1 && currentData[rowIndex]) {
+		currentData[rowIndex][1] = modalInput1; // 1列目を更新
+		currentData[rowIndex][2] = modalInput2; // 2列目を更新
+
+		// localStorageを更新
+		localStorage.setItem('spreadsheetData', JSON.stringify(currentData));
+		displayData(currentData); // 更新されたデータを表示
+	} 
 
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	updateModal.style.display = 'none'; // モーダルを非表示
 	overlaySetBlock();
 
+	const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
+	
 	// 更新アクションと行番号を追加
 	updateFormData.append('action', 'update'); // actionを'update'に設定
-	updateFormData.append('row', rowIndex); // 更新する行番号を追加
+	updateFormData.append('row', chacheRowIndex); // 更新する行番号を追加
 
 	// モーダルの入力データを追加
-	updateFormData.append('data1', document.getElementById('modalInput1').value);
-	updateFormData.append('data2', document.getElementById('modalInput2').value);
+	updateFormData.append('data1', modalInput1);
+	updateFormData.append('data2', modalInput2);
 
 	fetch(scriptURL, { method: 'POST', body: updateFormData })
 		.then(response => {
