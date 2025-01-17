@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		sideMenu.classList.remove("open");
 		modalOverlay.style.display = 'none';
 		footerOverlay.style.display = 'none';
+		updateTuneIconText(); // 絞り込み中の有無
 	});
 });
 
@@ -63,6 +64,7 @@ function fetchData() {
 		// キャッシュが存在する場合はそれを使用
 		currentData = JSON.parse(cachedData); // currentDataにキャッシュを格納
 		displayData(currentData); // データを表示
+		search();
 
 		// オーバーレイを非表示
 		overlaySetNone();
@@ -80,6 +82,7 @@ function fetchData() {
 				localStorage.setItem('spreadsheetData', JSON.stringify(data));
 				currentData = data; // currentDataに取得したデータを格納
 				displayData(data);
+				search();
 			})
 			.catch(error => console.error('Error!', error.message))
 			.finally(() => {
@@ -333,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		footerOverlay.style.display = 'none';
 		sideMenu.classList.remove("open");
 		insertForm.reset(); // フォームの内容をクリア
+		updateTuneIconText(); // 絞り込み中の有無
 	});
 
 });
@@ -583,6 +587,8 @@ function selectedCount(isVisible) {
 // 検索機能
 let checkFlgTrue = false; // チェックありのレコード用フラグ
 let checkFlgFalse = false; // チェックなしのレコード用フラグ
+let lastSearchValue = ''; // 検索ボックスの最後の値を保持するための変数
+const filterInput = document.getElementById('filterInput'); // 現在の値を取得
 
 // クリアボタン押下アクション
 document.getElementById('clear').addEventListener('click', function() {
@@ -592,20 +598,41 @@ document.getElementById('clear').addEventListener('click', function() {
 
 // 絞り込み条件解除
 function doClear() {
-	const filterInput = document.getElementById('filterInput'); // テキストボックスを取得
 	filterInput.value = ''; // テキストボックスの値を空にする
+	lastSearchValue = ''; // 検索の最後の値もクリア
 	checkFlgTrue = false;
 	checkTrue.classList.remove('checkboxSelected');
 	checkFlgFalse = false;
 	checkFalse.classList.remove('checkboxSelected');
 }
 
+// 検索機能
+function search() {
+	const filterInputSearch = filterInput.value.toLowerCase(); // 小文字に変換して取得
+	const checkTrueSelected = checkFlgTrue; // チェックありのフラグ
+	const checkFalseSelected = checkFlgFalse; // チェックなしのフラグ
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData')) || []; // キャッシュからデータを取得
+
+	// フィルタリングされたデータを格納する配列
+	const filteredData = cachedData.filter(row => {
+		const matchesText = (typeof row[1] === 'string' || typeof row[1] === 'number') && 
+				String(row[1]).toLowerCase().includes(filterInputSearch); // 2列目の値に基づくフィルタリング
+		const matchesCheckbox = (checkTrueSelected && row[0] === true) || (checkFalseSelected && row[0] === false);
+		return matchesText && (checkTrueSelected || checkFalseSelected ? matchesCheckbox : true);
+	});
+
+	displayData(filteredData); // フィルタリングされたデータを表示
+}
+
 // チェックボタンのクリックイベント
 const checkTrue = document.getElementById('checkTrue');
 checkTrue.addEventListener('click', function() {
 	checkFlgTrue = !checkFlgTrue; // フラグを切り替え
+	search();
 	if (checkFlgTrue) {
-		checkTrue.classList.add('checkboxSelected'); 
+		checkFlgFalse = false;
+		checkTrue.classList.add('checkboxSelected');
+		checkFalse.classList.remove('checkboxSelected');
 	} else {
 		checkTrue.classList.remove('checkboxSelected');
 	}
@@ -614,31 +641,39 @@ checkTrue.addEventListener('click', function() {
 const checkFalse = document.getElementById('checkFalse');
 checkFalse.addEventListener('click', function() {
 	checkFlgFalse = !checkFlgFalse; // フラグを切り替え
+	search();
 	if (checkFlgFalse) {
-		checkFalse.classList.add('checkboxSelected'); 
+		checkFlgTrue = false;
+		checkFalse.classList.add('checkboxSelected');
+		checkTrue.classList.remove('checkboxSelected');
 	} else {
 		checkFalse.classList.remove('checkboxSelected');
 	}
 });
 
+filterInput.addEventListener('blur', function() {
+	search();
+	if (filterInput.value != '') {
+		if (checkFlgTrue == true || checkFlgFalse == true) {
+	}}
+});
+
 // 検索ボタン押下アクション
-document.getElementById('searchButton').addEventListener('click', function() {
-	const filterInput = document.getElementById('filterInput').value.toLowerCase(); // 小文字に変換して取得
-	const checkTrueSelected = checkFlgTrue; // チェックありのフラグ
-	const checkFalseSelected = checkFlgFalse; // チェックなしのフラグ
-	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData')) || []; // キャッシュからデータを取得
-
-	// フィルタリングされたデータを格納する配列
-	const filteredData = cachedData.filter(row => {
-		const matchesText = (typeof row[1] === 'string' || typeof row[1] === 'number') && 
-				String(row[1]).toLowerCase().includes(filterInput); // 2列目の値に基づくフィルタリング
-		const matchesCheckbox = (checkTrueSelected && row[0] === true) || (checkFalseSelected && row[0] === false);
-		return matchesText && (checkTrueSelected || checkFalseSelected ? matchesCheckbox : true);
-	});
-
+document.getElementById('searchButton').addEventListener('click', () => {
+	lastSearchValue = filterInput.value; // 値を保持
+	search();
+	updateTuneIconText();
 	sideMenu.classList.remove("open");
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
-
-	displayData(filteredData); // フィルタリングされたデータを表示
 });
+
+// チェックボックスが変更されたときに呼び出す関数
+function updateTuneIconText() {
+	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
+	if (checkFlgTrue == true || checkFlgFalse == true || filterInput.value != ''){
+		tuneIconText.textContent = '絞り込み中'; // テキストを変更
+	} else {
+		tuneIconText.textContent = '絞り込み'; // テキストを変更
+	}
+}	

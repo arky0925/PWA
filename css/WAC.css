@@ -29,6 +29,12 @@ span.add-icon, .delete-icon, .update-icon, button {
 	cursor: pointer;
 }
 
+.action-button {
+	overflow: hidden;
+	margin-bottom: 10px;
+	
+}
+
 main #tune-icon {
 	flex: 1;
 	background-color: #fff2f2;
@@ -40,6 +46,7 @@ main #tune-icon {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	float: right;
 }
 
 /* サイドメニュー */
@@ -66,6 +73,7 @@ main #tune-icon {
 hr {
 	width: 90%;
 	margin: 0 auto;
+	color: #ccc;
 }
 
 .side-menu-header span {
@@ -121,7 +129,7 @@ hr {
 	display: flex; /* フレックスボックスを使用 */
 	justify-content: center; /* 水平方向に中央揃え */
 	align-items: center; /* 垂直方向に中央揃え */
-	background-color: #007bff; /* ボタンの背景色 */
+	background-color: #ffc4c4; /* ボタンの背景色 */
 	border: none; /* ボーダーをなしに */
 	padding: 10px 50px; /* パディング */
 	border-radius: 5px; /* 角を丸く */
@@ -130,7 +138,7 @@ hr {
 }
 
 .checkboxSelected {
-	background-color: #0056b3 !important; /* 選択状態の背景色 */
+	background-color: #ff4d4d !important; /* 選択状態の背景色 */
 }
 
 .side-menu-footer {
@@ -142,7 +150,7 @@ hr {
 	display: flex; /* フレックスボックスを使用 */
 	justify-content: center; /* 水平方向に中央揃え */
 	align-items: center; /* 垂直方向の中央揃え */
-	background-color: #007bff; /* ボタンの背景色 */
+	background-color: #ff4d4d; /* ボタンの背景色 */
 	color: white; /* テキストの色 */
 	border: none; /* ボーダーをなしに */
 	padding: 10px 15px; /* パディング */
@@ -155,7 +163,6 @@ hr {
 }
 
 .search-button:hover {
-	background-color: #0056b3; /* ホバー時の色 */
 	transform: translateY(-2px); /* ホバー時に少し上に移動 */
 }
 
