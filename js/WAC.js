@@ -676,4 +676,35 @@ function updateTuneIconText() {
 	} else {
 		tuneIconText.textContent = '絞り込み'; // テキストを変更
 	}
-}	
+}
+
+// プルダウン表示
+const sortIcon = document.getElementById('sort-icon');
+const sortDropdown = document.getElementById('sort-dropdown');
+
+// sort-iconをクリックしたときにプルダウンを表示
+sortIcon.addEventListener('click', () => {
+	sortDropdown.style.display = sortDropdown.style.display === 'block' ? 'none' : 'block';
+});
+
+// 昇順と降順のオプションをクリックしたときの処理
+document.getElementById('sort-asc').addEventListener('click', () => {
+	console.log('昇順でソート');
+	// 昇順ソートの処理をここに追加
+
+	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
+});
+
+document.getElementById('sort-desc').addEventListener('click', () => {
+	console.log('降順でソート');
+	// 降順ソートの処理をここに追加
+
+	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
+});
+
+// ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
+document.addEventListener('click', (event) => {
+	if (!sortIcon.contains(event.target) && !sortDropdown.contains(event.target)) {
+		sortDropdown.style.display = 'none';
+	}
+});
