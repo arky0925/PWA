@@ -65,6 +65,7 @@ function fetchData() {
 		currentData = JSON.parse(cachedData); // currentDataにキャッシュを格納
 		displayData(currentData); // データを表示
 		search();
+		sortList(sortIconMode);
 
 		// オーバーレイを非表示
 		overlaySetNone();
@@ -83,6 +84,7 @@ function fetchData() {
 				currentData = data; // currentDataに取得したデータを格納
 				displayData(data);
 				search();
+				sortList(sortIconMode);
 			})
 			.catch(error => console.error('Error!', error.message))
 			.finally(() => {
@@ -376,8 +378,6 @@ insertForm.addEventListener('submit', e => {
 	// alert('キャッシュがクリアされました。');
 });
 
-
-
 // 更新フォーム送信
 const updateForm = document.forms['update-form'];
 
@@ -512,9 +512,9 @@ function deleteModeChange() {
 	// add-icon,update-conの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
-	// tune-iconの非活性化
-	const tuneIcon = document.getElementById('tune-icon');
-	tuneIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モードがTRUEの場合、非活性にする
+	// action-buttonの非活性化
+	const actionbutton = document.getElementById('action-button');
+	actionbutton.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非活性にする
 	
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
@@ -668,7 +668,7 @@ document.getElementById('searchButton').addEventListener('click', () => {
 	footerOverlay.style.display = 'none';
 });
 
-// チェックボックスが変更されたときに呼び出す関数
+// 絞り込み条件の有無
 function updateTuneIconText() {
 	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
 	if (checkFlgTrue == true || checkFlgFalse == true || filterInput.value != ''){
@@ -681,26 +681,109 @@ function updateTuneIconText() {
 // プルダウン表示
 const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
+let sortIconMode = "cookasc";
 
 // sort-iconをクリックしたときにプルダウンを表示
 sortIcon.addEventListener('click', () => {
 	sortDropdown.style.display = sortDropdown.style.display === 'block' ? 'none' : 'block';
 });
 
-// 昇順と降順のオプションをクリックしたときの処理
-document.getElementById('sort-asc').addEventListener('click', () => {
-	console.log('昇順でソート');
+// 並び替えプルダウンをクリックしたときの処理
+const sortCookAsc = document.getElementById('sort-cook-asc');
+sortCookAsc.addEventListener('click', () => {
 	// 昇順ソートの処理をここに追加
-
+	sortIconMode = "cookasc";
+	sortList(sortIconMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-document.getElementById('sort-desc').addEventListener('click', () => {
-	console.log('降順でソート');
+const sortCookDesc = document.getElementById('sort-cook-desc');
+sortCookDesc.addEventListener('click', () => {
 	// 降順ソートの処理をここに追加
-
+	sortIconMode = "cookdesc";
+	sortList(sortIconMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
+
+const sortCheckboxAsc = document.getElementById('sort-checkbox-asc');
+sortCheckboxAsc.addEventListener('click', () => {
+	// 昇順ソートの処理をここに追加
+	sortIconMode = "checkboxasc";
+	sortList(sortIconMode);
+	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
+});
+
+const sortCheckboxDesc = document.getElementById('sort-checkbox-desc');
+sortCheckboxDesc.addEventListener('click', () => {
+	// 降順ソートの処理をここに追加
+	sortIconMode = "checkboxdesc";
+	sortList(sortIconMode);
+	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
+});
+
+// リストをソートする関数
+function sortList(order) {
+	currentData.sort((a, b) => {
+
+		const aValue = String(a[1]); // 明示的に文字列に変換
+		const bValue = String(b[1]); // 明示的に文字列に変換
+
+		// テキストに基づいてソート
+		if (order === 'cookasc') {
+			// 表示テキストを文字列として比較
+			return aValue.localeCompare(bValue); // 昇順でソート
+		} else if (order === 'cookdesc') {
+			// 表示テキストを文字列として比較
+			return bValue.localeCompare(aValue); // 降順でソート
+		// チェックボックスの状態に基づいてソート
+		} else if (order === 'checkboxasc') {
+			if (a[0] === true && b[0] === false) {
+				return -1; // aを上に
+			} else if (a[0] === false && b[0] === true) {
+				return 1; // bを上に
+			} else {
+				return 0; // 同じ場合はそのまま
+			}
+		} else if (order === 'checkboxdesc') {	
+			if (a[0] === false && b[0] === true) {
+				return -1; // aを上に
+			} else if (a[0] === true && b[0] === false) {
+				return 1; // bを上に
+			} else {
+				return 0; // 同じ場合はそのまま
+			}
+		}
+	});
+
+	// ソートされたcurrentDataをdisplayData関数に渡して表示
+	displayData(currentData);
+	// プルダウンの色を変更
+	dropdownColor(sortIconMode);
+}
+
+// プルダウンの色を変更
+function dropdownColor(order) {
+	if (order === 'cookasc') {
+		sortCookAsc.classList.add('sort-top'); // クラスを追加
+	} else {
+		sortCookAsc.classList.remove('sort-top'); // クラスを削除
+	}
+	if (order === 'cookdesc') {
+		sortCookDesc.classList.add('sort-center'); // クラスを追加
+	} else {
+		sortCookDesc.classList.remove('sort-center'); // クラスを削除
+	}
+	if (order === 'checkboxasc') {
+		sortCheckboxAsc.classList.add('sort-center'); // クラスを追加
+	} else {
+		sortCheckboxAsc.classList.remove('sort-center'); // クラスを削除
+	}
+	if (order === 'checkboxdesc') {
+		sortCheckboxDesc.classList.add('sort-bottom'); // クラスを追加
+	} else {
+		sortCheckboxDesc.classList.remove('sort-bottom'); // クラスを削除
+	}
+}
 
 // ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
 document.addEventListener('click', (event) => {
