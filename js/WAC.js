@@ -36,7 +36,7 @@ updateIcon.addEventListener('click', () => {
 const sideMenu = document.getElementById("side-menu");
 document.addEventListener("DOMContentLoaded", () => {
 	const tuneIcon = document.getElementById("tune-icon");
-	const closeMenu = document.getElementById("close-menu");
+	
 
 	// メニューを開く
 	tuneIcon.addEventListener("click", () => {
@@ -44,15 +44,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		modalOverlay.style.display = 'block';
 		footerOverlay.style.display = 'block';
 	});
-
+	
 	// メニューを閉じる
+	const closeMenu = document.getElementById("close-menu");
 	closeMenu.addEventListener("click", () => {
-		sideMenu.classList.remove("open");
-		modalOverlay.style.display = 'none';
-		footerOverlay.style.display = 'none';
-		updateTuneIconText(); // 絞り込み中の有無
+		sideMenuClose();
 	});
 });
+	
+// サイドメニューを閉じる
+function sideMenuClose() {
+	sideMenu.classList.remove("open");
+	modalOverlay.style.display = 'none';
+	footerOverlay.style.display = 'none';
+	updateFilterIcon(); // 絞り込み条件の有無
+}
 
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
@@ -65,7 +71,6 @@ function fetchData() {
 		currentData = JSON.parse(cachedData); // currentDataにキャッシュを格納
 		displayData(currentData); // データを表示
 		search();
-		sortList(sortIconMode);
 
 		// オーバーレイを非表示
 		overlaySetNone();
@@ -84,7 +89,6 @@ function fetchData() {
 				currentData = data; // currentDataに取得したデータを格納
 				displayData(data);
 				search();
-				sortList(sortIconMode);
 			})
 			.catch(error => console.error('Error!', error.message))
 			.finally(() => {
@@ -333,12 +337,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	modalOverlay.addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		updateModal.style.display = 'none'; // モーダルを非表示
-		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		headerOverlay.style.display = 'none';
-		footerOverlay.style.display = 'none';
-		sideMenu.classList.remove("open");
 		insertForm.reset(); // フォームの内容をクリア
-		updateTuneIconText(); // 絞り込み中の有無
+		sideMenuClose(); // フッターとモーダルのオーバーレイ非表示を含む
 	});
 
 });
@@ -512,9 +513,9 @@ function deleteModeChange() {
 	// add-icon,update-conの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
-	// action-buttonの非活性化
+	// action-buttonの表示を切り替える
 	const actionbutton = document.getElementById('action-button');
-	actionbutton.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非活性にする
+	actionbutton.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
 	
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
@@ -593,7 +594,7 @@ const filterInput = document.getElementById('filterInput'); // 現在の値を�
 // クリアボタン押下アクション
 document.getElementById('clear').addEventListener('click', function() {
 	doClear();
-	fetchData(); // 全データを再取得して表示
+	search();
 });
 
 // 絞り込み条件解除
@@ -622,6 +623,7 @@ function search() {
 	});
 
 	displayData(filteredData); // フィルタリングされたデータを表示
+	sortList(sortIconMode);
 }
 
 // チェックボタンのクリックイベント
@@ -662,21 +664,31 @@ filterInput.addEventListener('blur', function() {
 document.getElementById('searchButton').addEventListener('click', () => {
 	lastSearchValue = filterInput.value; // 値を保持
 	search();
-	updateTuneIconText();
+	updateFilterIcon();
 	sideMenu.classList.remove("open");
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 });
 
 // 絞り込み条件の有無
-function updateTuneIconText() {
+function updateFilterIcon() {
 	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
+	// filter-reset-iconの表示を切り替える
+	const filterResetIcon = document.getElementById('filter-reset-icon');
 	if (checkFlgTrue == true || checkFlgFalse == true || filterInput.value != ''){
 		tuneIconText.textContent = '絞り込み中'; // テキストを変更
+		filterResetIcon.style.display = 'flex'; // 絞り込み中の場合、表示する
 	} else {
 		tuneIconText.textContent = '絞り込み'; // テキストを変更
+		filterResetIcon.style.display = 'none'; // 絞り込み中の場合、表示する
 	}
 }
+
+document.getElementById('filter-reset-icon').addEventListener('click', () => {
+	doClear();
+	search();
+	updateFilterIcon();
+});
 
 // プルダウン表示
 const sortIcon = document.getElementById('sort-icon');
