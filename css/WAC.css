@@ -141,6 +141,10 @@ hr {
 	background-color: #ff4d4d !important; /* 選択状態の背景色 */
 }
 
+.checkFilterButton .material-icons {
+	color: #000000;
+}
+
 .side-menu-footer {
 	padding: 20px 20px; /* フッターのパディング */
 	border-top: 2px solid #ccc; /* 上に線を引く */
