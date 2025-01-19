@@ -1,5 +1,5 @@
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz6SIHhP63YdN_rOMVQ9_qew9KD02FvXhW4sDeDPN67QSEABV9pCljZoIWIff1d8TF9/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxz9SJ2Oz5Y-DkXeTzFYWwRvcRo0ldvOaiLjuEkWqd1M7q-jBri4y8eGmXSl0hNKe_n/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -143,22 +143,30 @@ function displayData(data) {
 		// 2列目の要素をリストアイテムに追加
 		const secondColumnText = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
 		const textNode = document.createElement('span'); // テキストをラップするためのspan要素
+		textNode.classList.add('text-Node'); // クラスを追加してデザインを管理
 		textNode.textContent = secondColumnText; // テキストを設定
 		listItem.appendChild(textNode); // spanをリストアイテムに追加
 		
-		// 新しいチェックボックスを作成
+		// 削除チェックボックスを作成
 		const deleteCheckbox = document.createElement('input'); // 新しいチェックボックスを作成
 		deleteCheckbox.type = 'checkbox'; // 新しいチェックボックス
 		deleteCheckbox.classList.add('delete-checkbox'); // クラスを追加して後で管理
-		deleteCheckbox.style.visibility = 'hidden'; // 初期状態で非表示
+		deleteCheckbox.style.display = 'none'; // 初期状態で非表示
 		listItem.appendChild(deleteCheckbox); // 2つめのチェックボックスをリストアイテムに追加
 		
-		// 新しいチェックボックスの変更イベント（必要に応じて追加）
+		// 削除チェックボックスの変更イベント（必要に応じて追加）
 		deleteCheckbox.addEventListener('change', (event) => {
-			// 新しいチェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
+			// 削除チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
 			event.stopPropagation();
 			deleteSelect();
 		});
+		
+		// 削除ボタンを作成
+		const deleteButton = document.createElement('span');
+		deleteButton.textContent = 'delete_outline';
+		deleteButton.classList.add('material-icons'); // クラスを追加
+		deleteButton.classList.add('single-delete-icons'); // クラスを追加
+		listItem.appendChild(deleteButton); // リストアイテムに追加
 
 		// リストアイテムにデータ属性を追加
 		listItem.dataset.rowIndex = rowIndex + 2; // 行番号をデータ属性に追加
@@ -227,97 +235,42 @@ function displayData(data) {
 			updateSelectedCount();
 		}
 
-		// 削除ボタンを作成
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '削除';
-        deleteButton.classList.add('delete-button'); // クラスを追加
-        deleteButton.style.display = 'none'; // 初期状態では非表示
-        listItem.appendChild(deleteButton); // リストアイテムに追加
-
-
-        // スワイプを検出するための変数
-        let startX, endX;
-
-        // タッチ開始イベント
-        listItem.addEventListener('touchstart', (event) => {
-            startX = event.touches[0].clientX; // スタート位置を記録
-        });
-
-        // タッチ移動イベント
-        listItem.addEventListener('touchmove', (event) => {
-            endX = event.touches[0].clientX; // エンド位置を記録
-            
-            const distanceX = startX - endX;
-    // スワイプ距離に応じてリストアイテムを移動
-    if (distanceX > 0 && distanceX < 50) { // 右から左にスワイプ
-        listItem.style.transform = `translateX(${-distanceX}px)`;
-        deleteButton.style.display = 'block'; // 削除ボタンを表示
-    }
-        });
-
-        // タッチ終了イベント
-        listItem.addEventListener('touchend', () => {
-			if (endX) {
-            // スワイプの距離を計算
-            const distanceX = startX - endX;
-
-            // スワイプが一定の距離を超えたらスライドする
-            if (distanceX > 50) { // 左にスワイプ
-            // 完全にスワイプしたときの動作を追加
-            listItem.style.transform = 'translateX(-50px)'; // スワイプ完了
-
-            } else {
-            // スワイプが不十分な場合は元に戻す
-            listItem.style.transform = 'translateX(0)';
-                deleteButton.style.display = 'none'; // 削除ボタンを非表示
-            }
-            }
-        });
-        
-/*                        // ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
-document.addEventListener('click', (event) => {
-	if (!deleteButton.contains(event.target)) {
-		listItem.style.transform = 'translateX(0)';
-		deleteButton.style.display = 'none';
-	}
-});*/
-
-            // 削除対象の1行を送信
-deleteButton.addEventListener('click', (event) => {
-    event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
-    // スプレッドシートへの削除リクエストを送信
-    fetch(scriptURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            action: 'singleDelete', // 削除アクション
-            row: sheetRowIndex // 行番号を送信
-        }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Delete successful:', data);
-        if (data.result === 'error') {
-            alert("削除に失敗しました。該当データが見つかりませんでした。");
-        } else {
-            alert("削除が成功しました。");
-            listItem.remove(); // リストアイテムを削除
+		// 削除対象の1行を送信
+		deleteButton.addEventListener('click', (event) => {
+		event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
+		// スプレッドシートへの削除リクエストを送信
+		fetch(scriptURL, {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams({
+				action: 'singleDelete', // 削除アクション
+				row: sheetRowIndex // 行番号を送信
+			}),
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log('Delete successful:', data);
+			if (data.result === 'success') {
+				alert("データを削除しました。");
+				listItem.remove(); // リストアイテムを削除
 				localStorage.removeItem('spreadsheetData');
 				fetchData(); // データを再取得してリストを更新
-        }
-    })
-    .catch(error => {
-        console.error('Error deleting record:', error);
-        alert("エラーが発生しました。");
-    });
-});
+			} else {
+				alert("削除に失敗しました。該当データが見つかりませんでした。");
+			}
+		})
+		.catch(error => {
+			console.error('Error deleting record:', error);
+			alert("エラーが発生しました。");
+		});
+	});
 
 		display.appendChild(listItem); // リストに追加
 	});
@@ -584,6 +537,7 @@ function deleteModeChange() {
 	headerColor(deleteMode); // ヘッダーの色を切り替え
 	headerChar(deleteMode); // ヘッダーの文字を切り替え
 	deleteCheckboxes(deleteMode); // チェックボックスの表示を切り替え
+	deleteButton(deleteMode); // 単体削除ボタンの表示を切り替える関数
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
 	
@@ -644,7 +598,15 @@ function headerChar(isVisible) {
 function deleteCheckboxes(isVisible) {
 	const checkboxes = document.querySelectorAll('.delete-checkbox'); // 削除用のチェックボックスを取得
 	checkboxes.forEach(checkbox => {
-		checkbox.style.visibility = isVisible ? 'visible' : 'hidden'; // 表示/非表示を切り替え
+		checkbox.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
+	});
+}
+
+// 単体削除ボタンの表示を切り替える関数
+function deleteButton(isVisible) {
+	const deleteButton = document.querySelectorAll('.single-delete-icons'); // 削除用のチェックボックスを取得
+	deleteButton.forEach(deleteButton => {
+		deleteButton.style.display = isVisible ? 'none' : 'inline'; // 表示/非表示を切り替え
 	});
 }
 
@@ -700,7 +662,7 @@ function search() {
 	});
 
 	displayData(filteredData); // フィルタリングされたデータを表示
-	sortList(sortIconMode);
+	sortList(sortMode);
 }
 
 // チェックボタンのクリックイベント
@@ -770,7 +732,37 @@ document.getElementById('filter-reset-icon').addEventListener('click', () => {
 // プルダウン表示
 const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
-let sortIconMode = "cookasc";
+let sortMode = "insert";
+let sort = "asc";
+
+
+const ascIcon = document.getElementById('asc-icon');
+const descIcon = document.getElementById('desc-icon');
+ascIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
+
+// 昇順、降順ボタンのクリックイベント
+ascIcon.addEventListener('click', function() {
+	sort = 'asc'; // フラグを切り替え
+	if (sort === 'asc') {
+		ascIcon.classList.add('actionButtonSelected');
+		descIcon.classList.remove('actionButtonSelected');
+	} else {
+		ascIcon.classList.remove('actionButtonSelected');
+	}
+	sortList(sortMode);
+});
+
+descIcon.addEventListener('click', function() {
+	sort = 'desc'; // フラグを切り替え
+	ascIcon.classList.remove('#asc-icon');
+	if (sort === 'desc') {
+		descIcon.classList.add('actionButtonSelected');
+		ascIcon.classList.remove('actionButtonSelected');
+	} else {
+		descIcon.classList.remove('actionButtonSelected');
+	}
+	sortList(sortMode);
+});
 
 // sort-iconをクリックしたときにプルダウンを表示
 sortIcon.addEventListener('click', () => {
@@ -778,35 +770,35 @@ sortIcon.addEventListener('click', () => {
 });
 
 // 並び替えプルダウンをクリックしたときの処理
-const sortCookAsc = document.getElementById('sort-cook-asc');
-sortCookAsc.addEventListener('click', () => {
-	// 昇順ソートの処理をここに追加
-	sortIconMode = "cookasc";
-	sortList(sortIconMode);
+const sortInsert = document.getElementById('sort-insert');
+sortInsert.addEventListener('click', () => {
+	// 追加日時の処理をここに追加
+	sortMode = "insert";
+	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortCookDesc = document.getElementById('sort-cook-desc');
-sortCookDesc.addEventListener('click', () => {
-	// 降順ソートの処理をここに追加
-	sortIconMode = "cookdesc";
-	sortList(sortIconMode);
+const sortUpdate = document.getElementById('sort-update');
+sortUpdate.addEventListener('click', () => {
+	// 更新日時の処理をここに追加
+	sortMode = "update";
+	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortCheckboxAsc = document.getElementById('sort-checkbox-asc');
-sortCheckboxAsc.addEventListener('click', () => {
-	// 昇順ソートの処理をここに追加
-	sortIconMode = "checkboxasc";
-	sortList(sortIconMode);
+const sortCook = document.getElementById('sort-cook');
+sortCook.addEventListener('click', () => {
+	// 料理名の処理をここに追加
+	sortMode = "cook";
+	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortCheckboxDesc = document.getElementById('sort-checkbox-desc');
-sortCheckboxDesc.addEventListener('click', () => {
-	// 降順ソートの処理をここに追加
-	sortIconMode = "checkboxdesc";
-	sortList(sortIconMode);
+const sortCheckbox = document.getElementById('sort-checkbox');
+sortCheckbox.addEventListener('click', () => {
+	// チェックボックスの処理をここに追加
+	sortMode = "checkbox";
+	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
@@ -816,16 +808,45 @@ function sortList(order) {
 
 		const aValue = String(a[1]); // 明示的に文字列に変換
 		const bValue = String(b[1]); // 明示的に文字列に変換
+		const ainsertTimestamp = new Date(a[4]); // E列の値を日時に変換
+		const binsertTimestamp = new Date(b[4]); // E列の値を日時に変換
+		const aupdateTimestamp = new Date(a[5]); // F列の値を日時に変換
+		const bupdateTimestamp = new Date(b[5]); // F列の値を日時に変換
 
-		// テキストに基づいてソート
-		if (order === 'cookasc') {
+		// ①追加日時に基づいてソート
+		if (order === 'insert' && sort === 'asc') {
+			if (!a[4] && !b[4]) return 0; // 両方空の場合はそのまま
+			if (!a[4]) return 1; // aが空の場合はbを上に
+			if (!b[4]) return -1; // bが空の場合はaを上に
+			return ainsertTimestamp - binsertTimestamp; // 昇順でソート
+		} else if (order === 'insert' && sort === 'desc') {
+			if (!a[4] && !b[4]) return 0; // 両方空の場合はそのまま
+			if (!a[4]) return -1; // aが空の場合はbを上に
+			if (!b[4]) return 1; // bが空の場合はaを上に
+			return binsertTimestamp - ainsertTimestamp; // 降順でソート
+		}
+		// ②更新日時に基づいてソート
+		if (order === 'update' && sort === 'asc') {
+			if (!a[5] && !b[5]) return 0; // 両方空の場合はそのまま
+			if (!a[5]) return 1; // aが空の場合はbを上に
+			if (!b[5]) return -1; // bが空の場合はaを上に
+			return aupdateTimestamp - bupdateTimestamp; // 昇順でソート
+		} else if (order === 'update' && sort === 'desc') {
+			if (!a[5] && !b[5]) return 0; // 両方空の場合はそのまま
+			if (!a[5]) return -1; // aが空の場合はbを上に
+			if (!b[5]) return 1; // bが空の場合はaを上に
+			return bupdateTimestamp - aupdateTimestamp; // 降順でソート
+		}
+		// ③テキストに基づいてソート
+		if (order === 'cook' && sort === 'asc') {
 			// 表示テキストを文字列として比較
 			return aValue.localeCompare(bValue); // 昇順でソート
-		} else if (order === 'cookdesc') {
+		} else if (order === 'cook' && sort === 'desc') {
 			// 表示テキストを文字列として比較
 			return bValue.localeCompare(aValue); // 降順でソート
-		// チェックボックスの状態に基づいてソート
-		} else if (order === 'checkboxasc') {
+		}
+		// ④チェックボックスの状態に基づいてソート
+		if (order === 'checkbox' && sort === 'asc') {
 			if (a[0] === true && b[0] === false) {
 				return -1; // aを上に
 			} else if (a[0] === false && b[0] === true) {
@@ -833,7 +854,7 @@ function sortList(order) {
 			} else {
 				return 0; // 同じ場合はそのまま
 			}
-		} else if (order === 'checkboxdesc') {	
+		} else if (order === 'checkbox' && sort === 'desc') {	
 			if (a[0] === false && b[0] === true) {
 				return -1; // aを上に
 			} else if (a[0] === true && b[0] === false) {
@@ -847,30 +868,30 @@ function sortList(order) {
 	// ソートされたcurrentDataをdisplayData関数に渡して表示
 	displayData(currentData);
 	// プルダウンの色を変更
-	dropdownColor(sortIconMode);
+	dropdownColor(sortMode);
 }
 
 // プルダウンの色を変更
 function dropdownColor(order) {
-	if (order === 'cookasc') {
-		sortCookAsc.classList.add('sort-top'); // クラスを追加
+	if (order === 'insert') {
+		sortInsert.classList.add('sort-top'); // クラスを追加
 	} else {
-		sortCookAsc.classList.remove('sort-top'); // クラスを削除
+		sortInsert.classList.remove('sort-top'); // クラスを削除
 	}
-	if (order === 'cookdesc') {
-		sortCookDesc.classList.add('sort-center'); // クラスを追加
+	if (order === 'update') {
+		sortUpdate.classList.add('sort-center'); // クラスを追加
 	} else {
-		sortCookDesc.classList.remove('sort-center'); // クラスを削除
+		sortUpdate.classList.remove('sort-center'); // クラスを削除
 	}
-	if (order === 'checkboxasc') {
-		sortCheckboxAsc.classList.add('sort-center'); // クラスを追加
+	if (order === 'cook') {
+		sortCook.classList.add('sort-center'); // クラスを追加
 	} else {
-		sortCheckboxAsc.classList.remove('sort-center'); // クラスを削除
+		sortCook.classList.remove('sort-center'); // クラスを削除
 	}
-	if (order === 'checkboxdesc') {
-		sortCheckboxDesc.classList.add('sort-bottom'); // クラスを追加
+	if (order === 'checkbox') {
+		sortCheckbox.classList.add('sort-bottom'); // クラスを追加
 	} else {
-		sortCheckboxDesc.classList.remove('sort-bottom'); // クラスを削除
+		sortCheckbox.classList.remove('sort-bottom'); // クラスを削除
 	}
 }
 

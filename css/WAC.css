@@ -52,6 +52,10 @@ span.add-icon, .delete-icon, .update-icon, button {
 	color: #ff0000;
 }
 
+.actionButtonSelected {
+	color: #ff0000 !important;
+}
+
 .dropdown {
 	display: none; /* 初期状態で非表示 */
 	position: absolute;
@@ -357,42 +361,52 @@ textarea:focus {
 #dataDisplay li {
 	display: flex; /* フレックスボックスを使って項目を横に並べる */
 	align-items: center; /* 縦方向の中央揃え */
-	padding: 10px; /* 内側の余白 */
+	padding: 10px 0; /* 内側の余白 */
 	margin: 5px 0; /* 上下の外側の余白 */
 	border: 1px solid #ccc; /* 枠線 */
 	border-radius: 5px; /* 角を丸くする */
 	background-color: #f9f9f9; /* 背景色 */
 	cursor: pointer;
 	position: relative;
-
 	transition: transform 0.3s ease; /* スライドのアニメーション */
 	z-index: 0;
+	overflow: hidden; /* はみ出した部分を隠す */
+	text-align: center;
 }
 
 .delete-button {
-    position: absolute;
-    right: -50px; /* ボタンの位置 */
-    background: red; /* ボタンの背景色 */
-    color: white; /* ボタンの文字色 */
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    transition: opacity 0.3s ease; /* ボタンのフェードイン・アウト */
-}
-
-#dataDisplay li span {
-	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
-}
-
-#dataDisplay li input[type="checkbox"] {
-	margin-left: 10px; /* チェックボックスの左側にマージンを追加 */
+	position: absolute;
+	right: 10px; /* ボタンの位置 */
+	background: red; /* ボタンの背景色 */
+	color: white; /* ボタンの文字色 */
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
 	cursor: pointer;
+	transition: opacity 0.3s ease; /* ボタンのフェードイン・アウト */
+}
+
+#dataDisplay .text-Node {
+	width: 0%; /* 幅を100%に設定 */
+	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
+	overflow-wrap: break-word; /* 単語の途切れを許可 */
+	word-wrap: break-word; /* 古いブラウザのサポート */
+	hyphens: auto; /* ハイフネーションを自動にする */
+	text-align: left;
 }
 
 /* チェックボックスのスタイル */
-#dataDisplay input[type="checkbox"] {
+#dataDisplay li input[type="checkbox"] {
+	margin-left: 15px; /* チェックボックスの左側にマージンを追加 */
 	margin-right: 15px; /* チェックボックスとテキストの間の余白 */
+	cursor: pointer;
+}
+
+/* 削除ボタンのスタイル */
+#dataDisplay .single-delete-icons {
+	text-align: center;
+	margin: 0 9.5px; /* チェックボックスのサイズ+余白に合わせたサイズ */
+	cursor: pointer;
 }
 
 .selected {
