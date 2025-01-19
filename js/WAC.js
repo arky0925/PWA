@@ -1,5 +1,5 @@
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbynA4RYqQBphW2FnR1FsfucfcFBeOMGHG-sOjPOGlMRHqoGP6LbsKJyyZD9Nxckslpw/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz6SIHhP63YdN_rOMVQ9_qew9KD02FvXhW4sDeDPN67QSEABV9pCljZoIWIff1d8TF9/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -163,33 +163,36 @@ function displayData(data) {
 		// リストアイテムにデータ属性を追加
 		listItem.dataset.rowIndex = rowIndex + 2; // 行番号をデータ属性に追加
 
+		// 行番号を取得（1ベース）
+		rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
+		const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
+
+		// 更新対象の値を取得
+		const targetValue1 = rowData[0]; // 1列目の値
+		const targetValue2 = rowData[1]; // 2列目の値
+		const targetValue3 = rowData[2]; // 3列目の値
+
+		// キャッシュ内での行番号を検索
+		const chacheRowIndex = chacheDate.findIndex(chacheRow => {
+		// 比較するプロパティを指定
+			return chacheRow[0] === targetValue1 && // 1列目で比較
+				   chacheRow[1] === targetValue2 && // 2列目で比較
+				   chacheRow[2] === targetValue3; // 3列目で比較
+		});
+		
+		// スプレッドシート上の行番号
+		const sheetRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
+
 		// リストアイテムにクリックイベントを追加
 		listItem.addEventListener('click', (event) => {
 			if (deleteMode) {
 				deleteSelect();
 			}
 			if (event.target !== checkbox && deleteMode == false) { // クリックがチェックボックスでない場合のみ遷移
-				
-				const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
-				const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
-
-				// 更新対象の値を取得
-				const targetValue1 = rowData[0]; // 1列目の値
-				const targetValue2 = rowData[1]; // 2列目の値
-				const targetValue3 = rowData[2]; // 3列目の値
-
-				// キャッシュ内での行番号を検索
-				const chacheRowIndex = chacheDate.findIndex(chacheRow => {
-				// 比較するプロパティを指定
-					return chacheRow[0] === targetValue1 && // 1列目で比較
-						   chacheRow[1] === targetValue2 && // 2列目で比較
-						   chacheRow[2] === targetValue3; // 3列目で比較
-				});
-
 				// モーダルにデータを渡す
 				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
 				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
-				console.log(`Filtered Row Index: ${rowIndex}, Original Row Index: ${chacheRowIndex}`); // デバッグ用
+				console.log(`Filtered Row Index: ${rowIndex}, Original Row Index: ${sheetRowIndex}`); // デバッグ用
 
 				// 行番号をデータ属性に設定
 				updateModal.dataset.rowIndex = rowIndex; // 検索結果内の行番号を設定
@@ -206,34 +209,16 @@ function displayData(data) {
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
 			deleteCheckbox.checked = !deleteCheckbox.checked; // チェックボックスの状態を切り替え
-			const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
-				const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
-
-				// 更新対象の値を取得
-				const targetValue1 = rowData[0]; // 1列目の値
-				const targetValue2 = rowData[1]; // 2列目の値
-				const targetValue3 = rowData[2]; // 3列目の値
-
-				// キャッシュ内での行番号を検索
-				const chacheRowIndex = chacheDate.findIndex(chacheRow => {
-				// 比較するプロパティを指定
-					return chacheRow[0] === targetValue1 && // 1列目で比較
-						   chacheRow[1] === targetValue2 && // 2列目で比較
-						   chacheRow[2] === targetValue3; // 3列目で比較
-				});
-
-				const adjustedRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
-
 			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
 			if (deleteCheckbox.checked) {
 				listItem.classList.add('selected'); // 選択状態のクラスを追加
 				// 削除対象の行を追加する					
-				if (!rowsToDelete.includes(adjustedRowIndex)) {
-					rowsToDelete.push(adjustedRowIndex); // 行番号を追加
+				if (!rowsToDelete.includes(sheetRowIndex)) {
+					rowsToDelete.push(sheetRowIndex); // 行番号を追加
 				}
 			} else {
 				listItem.classList.remove('selected'); // 選択状態のクラスを削除
-				const index = rowsToDelete.indexOf(adjustedRowIndex);
+				const index = rowsToDelete.indexOf(sheetRowIndex);
 				if (index > -1) {
 					rowsToDelete.splice(index, 1); // 行番号を削除
 				}
@@ -241,6 +226,90 @@ function displayData(data) {
 			// ヘッダーの削除レコード数を更新
 			updateSelectedCount();
 		}
+
+		// 削除ボタンを作成
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '削除';
+        deleteButton.classList.add('delete-button'); // クラスを追加
+        deleteButton.style.display = 'none'; // 初期状態では非表示
+        listItem.appendChild(deleteButton); // リストアイテムに追加
+
+
+        // スワイプを検出するための変数
+        let startX, endX;
+
+        // タッチ開始イベント
+        listItem.addEventListener('touchstart', (event) => {
+            startX = event.touches[0].clientX; // スタート位置を記録
+        });
+
+        // タッチ移動イベント
+        listItem.addEventListener('touchmove', (event) => {
+            endX = event.touches[0].clientX; // エンド位置を記録
+            
+            const distanceX = startX - endX;
+    // スワイプ距離に応じてリストアイテムを移動
+    if (distanceX > 0 && distanceX < 100) { // 右から左にスワイプ
+        listItem.style.transform = `translateX(${-distanceX}px)`;
+        deleteButton.style.display = 'block'; // 削除ボタンを表示
+    }
+        });
+
+        // タッチ終了イベント
+        listItem.addEventListener('touchend', () => {
+			if (endX) {
+            // スワイプの距離を計算
+            const distanceX = startX - endX;
+
+            // スワイプが一定の距離を超えたらスライドする
+            if (distanceX > 50) { // 左にスワイプ
+            // 完全にスワイプしたときの動作を追加
+            listItem.style.transform = 'translateX(-100px)'; // スワイプ完了
+
+            } else {
+            // スワイプが不十分な場合は元に戻す
+            listItem.style.transform = 'translateX(0)';
+                deleteButton.style.display = 'none'; // 削除ボタンを非表示
+            }
+            }
+        });
+
+            // 削除対象の1行を送信
+deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
+    // スプレッドシートへの削除リクエストを送信
+    fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            action: 'singleDelete', // 削除アクション
+            row: sheetRowIndex // 行番号を送信
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Delete successful:', data);
+        if (data.result === 'error') {
+            alert("削除に失敗しました。該当データが見つかりませんでした。");
+        } else {
+            alert("削除が成功しました。");
+            listItem.remove(); // リストアイテムを削除
+				localStorage.removeItem('spreadsheetData');
+				fetchData(); // データを再取得してリストを更新
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting record:', error);
+        alert("エラーが発生しました。");
+    });
+});
 
 		display.appendChild(listItem); // リストに追加
 	});
@@ -630,7 +699,6 @@ function search() {
 const checkTrue = document.getElementById('checkTrue');
 checkTrue.addEventListener('click', function() {
 	checkFlgTrue = !checkFlgTrue; // フラグを切り替え
-	search();
 	if (checkFlgTrue) {
 		checkFlgFalse = false;
 		checkTrue.classList.add('checkboxSelected');
@@ -638,12 +706,12 @@ checkTrue.addEventListener('click', function() {
 	} else {
 		checkTrue.classList.remove('checkboxSelected');
 	}
+	search();
 });
 
 const checkFalse = document.getElementById('checkFalse');
 checkFalse.addEventListener('click', function() {
 	checkFlgFalse = !checkFlgFalse; // フラグを切り替え
-	search();
 	if (checkFlgFalse) {
 		checkFlgTrue = false;
 		checkFalse.classList.add('checkboxSelected');
@@ -651,6 +719,7 @@ checkFalse.addEventListener('click', function() {
 	} else {
 		checkFalse.classList.remove('checkboxSelected');
 	}
+	search();
 });
 
 filterInput.addEventListener('blur', function() {
