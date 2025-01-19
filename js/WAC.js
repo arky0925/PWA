@@ -628,6 +628,7 @@ function selectedCount(isVisible) {
 let checkFlgTrue = false; // チェックありのレコード用フラグ
 let checkFlgFalse = false; // チェックなしのレコード用フラグ
 let lastSearchValue = ''; // 検索ボックスの最後の値を保持するための変数
+let bookmarkFlg = false; // ブックマークのレコード用フラグ
 const filterInput = document.getElementById('filterInput'); // 現在の値を取得
 
 // クリアボタン押下アクション
@@ -641,9 +642,11 @@ function doClear() {
 	filterInput.value = ''; // テキストボックスの値を空にする
 	lastSearchValue = ''; // 検索の最後の値もクリア
 	checkFlgTrue = false;
-	checkTrue.classList.remove('checkboxSelected');
+	checkTrue.classList.remove('searchOptionSelected');
 	checkFlgFalse = false;
-	checkFalse.classList.remove('checkboxSelected');
+	checkFalse.classList.remove('searchOptionSelected');
+	bookmarkFlg = false;
+	bookmark.classList.remove('searchOptionSelected');
 }
 
 // 検索機能
@@ -671,10 +674,10 @@ checkTrue.addEventListener('click', function() {
 	checkFlgTrue = !checkFlgTrue; // フラグを切り替え
 	if (checkFlgTrue) {
 		checkFlgFalse = false;
-		checkTrue.classList.add('checkboxSelected');
-		checkFalse.classList.remove('checkboxSelected');
+		checkTrue.classList.add('searchOptionSelected');
+		checkFalse.classList.remove('searchOptionSelected');
 	} else {
-		checkTrue.classList.remove('checkboxSelected');
+		checkTrue.classList.remove('searchOptionSelected');
 	}
 	search();
 });
@@ -684,10 +687,10 @@ checkFalse.addEventListener('click', function() {
 	checkFlgFalse = !checkFlgFalse; // フラグを切り替え
 	if (checkFlgFalse) {
 		checkFlgTrue = false;
-		checkFalse.classList.add('checkboxSelected');
-		checkTrue.classList.remove('checkboxSelected');
+		checkFalse.classList.add('searchOptionSelected');
+		checkTrue.classList.remove('searchOptionSelected');
 	} else {
-		checkFalse.classList.remove('checkboxSelected');
+		checkFalse.classList.remove('searchOptionSelected');
 	}
 	search();
 });
@@ -697,6 +700,17 @@ filterInput.addEventListener('blur', function() {
 	if (filterInput.value != '') {
 		if (checkFlgTrue == true || checkFlgFalse == true) {
 	}}
+});
+
+const bookmark = document.getElementById('bookmark');
+bookmark.addEventListener('click', function() {
+	bookmarkFlg = !bookmarkFlg; // フラグを切り替え
+	if (bookmarkFlg) {
+		bookmark.classList.add('searchOptionSelected');
+	} else {
+		bookmark.classList.remove('searchOptionSelected');
+	}
+	search();
 });
 
 // 検索ボタン押下アクション
@@ -714,7 +728,7 @@ function updateFilterIcon() {
 	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
 	// filter-reset-iconの表示を切り替える
 	const filterResetIcon = document.getElementById('filter-reset-icon');
-	if (checkFlgTrue == true || checkFlgFalse == true || filterInput.value != ''){
+	if (checkFlgTrue == true || checkFlgFalse == true || bookmarkFlg == true || filterInput.value != ''){
 		tuneIconText.textContent = '絞り込み中'; // テキストを変更
 		filterResetIcon.style.display = 'flex'; // 絞り込み中の場合、表示する
 	} else {
