@@ -364,14 +364,14 @@ textarea:focus {
 	background-color: #f9f9f9; /* 背景色 */
 	cursor: pointer;
 	position: relative;
-	overflow: hidden; /* 内容がはみ出さないように */
+
 	transition: transform 0.3s ease; /* スライドのアニメーション */
 	z-index: 0;
 }
 
 .delete-button {
     position: absolute;
-    right: 10px; /* ボタンの位置 */
+    right: -50px; /* ボタンの位置 */
     background: red; /* ボタンの背景色 */
     color: white; /* ボタンの文字色 */
     border: none;

@@ -249,7 +249,7 @@ function displayData(data) {
             
             const distanceX = startX - endX;
     // スワイプ距離に応じてリストアイテムを移動
-    if (distanceX > 0 && distanceX < 100) { // 右から左にスワイプ
+    if (distanceX > 0 && distanceX < 50) { // 右から左にスワイプ
         listItem.style.transform = `translateX(${-distanceX}px)`;
         deleteButton.style.display = 'block'; // 削除ボタンを表示
     }
@@ -264,7 +264,7 @@ function displayData(data) {
             // スワイプが一定の距離を超えたらスライドする
             if (distanceX > 50) { // 左にスワイプ
             // 完全にスワイプしたときの動作を追加
-            listItem.style.transform = 'translateX(-100px)'; // スワイプ完了
+            listItem.style.transform = 'translateX(-50px)'; // スワイプ完了
 
             } else {
             // スワイプが不十分な場合は元に戻す
@@ -273,6 +273,14 @@ function displayData(data) {
             }
             }
         });
+        
+/*                        // ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
+document.addEventListener('click', (event) => {
+	if (!deleteButton.contains(event.target)) {
+		listItem.style.transform = 'translateX(0)';
+		deleteButton.style.display = 'none';
+	}
+});*/
 
             // 削除対象の1行を送信
 deleteButton.addEventListener('click', (event) => {
