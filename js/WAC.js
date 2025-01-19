@@ -869,6 +869,8 @@ function sortList(order) {
 	displayData(currentData);
 	// プルダウンの色を変更
 	dropdownColor(sortMode);
+	// 並び替えの条件テキストを変更
+	updateDropdownIcon();
 }
 
 // プルダウンの色を変更
@@ -892,6 +894,20 @@ function dropdownColor(order) {
 		sortCheckbox.classList.add('sort-bottom'); // クラスを追加
 	} else {
 		sortCheckbox.classList.remove('sort-bottom'); // クラスを削除
+	}
+}
+
+// 並び替え条件のテキスト
+function updateDropdownIcon() {
+	const sortIconText = document.querySelector('#sort-icon span:last-child'); // <span>要素を取得
+	if (sortMode == "insert"){
+		sortIconText.textContent = '追加日時順'; // テキストを変更
+	} else if (sortMode == "update") {
+		sortIconText.textContent = '更新日時順'; // テキストを変更
+	} else if (sortMode == "cook") {
+		sortIconText.textContent = '料理名順'; // テキストを変更
+	} else if (sortMode == "checkbox") {
+		sortIconText.textContent = 'チェック順'; // テキストを変更
 	}
 }
 
