@@ -616,6 +616,18 @@ function deleteModeChange() {
 			cb.disabled = deleteMode; // チェックボックスを非活性または活性に設定
 		}
 	});
+	// ブックマークアイコンの非活性化
+	const bookmarkOnIcons = document.querySelectorAll('#bookmark-on');
+	const bookmarkOffIcons = document.querySelectorAll('#bookmark-off');
+	bookmarkOnIcons.forEach(icon => {
+		icon.style.pointerEvents = deleteMode ? 'none' : 'auto'; // クリックイベントを無効化
+	icon.style.opacity = deleteMode ? '0.5' : '1'; // 見た目を変えるために透明度を変更
+	});
+	bookmarkOffIcons.forEach(icon => {
+		icon.style.pointerEvents = deleteMode ? 'none' : 'auto'; // クリックイベントを無効化
+		icon.style.opacity = deleteMode ? '0.5' : '1'; // 見た目を変えるために透明度を変更
+	});
+
 	// 削除モードが無効な場合、全てのリストアイテムからselectedクラスを外す
 	if (!deleteMode) {
 		const listItems = document.querySelectorAll('#dataDisplay li');
