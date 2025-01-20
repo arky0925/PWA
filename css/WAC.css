@@ -62,7 +62,7 @@ span.add-icon, .delete-icon, .update-icon, button {
 	background-color: #ffffff; /* 背景色 */
 	border-radius: 8px; /* 角を丸くする */
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
-	z-index: 1000; /* 上に表示するための設定 */
+	z-index: 999; /* 上に表示するための設定 */
 	transition: all 0.3s ease; /* アニメーション */
 	width: 230px; /* 幅 */
 	/* 位置調整 */
@@ -203,6 +203,7 @@ hr {
 .optionButton button {
 	background-color:  #ffffff;
 	border: 1px solid #ccc; /* 枠線 */
+	color: #000000;
 }
 
 .searchOptionSelected {
@@ -215,6 +216,7 @@ hr {
 	align-items: center; /* 垂直方向に中央揃え */
 	padding: 10px 10px; /* パディング */
 	border-radius: 30px; /* 角を丸く */
+	height: 40px; /* ボタンの縦幅 */
 }
 
 .side-menu-footer {
@@ -387,6 +389,10 @@ textarea:focus {
 	text-align: center;
 }
 
+.comment-size {
+	font-size: 20px;
+}
+
 .delete-button {
 	position: absolute;
 	right: 10px; /* ボタンの位置 */
@@ -415,9 +421,13 @@ textarea:focus {
 	cursor: pointer;
 }
 
-/* 削除ボタンのスタイル */
+/* ボタンのスタイル */
+#dataDisplay .bookmark-icon {
+	margin-left: 9.5px;
+	cursor: pointer;
+}
+
 #dataDisplay .single-delete-icons {
-	text-align: center;
 	margin: 0 9.5px; /* チェックボックスのサイズ+余白に合わせたサイズ */
 	cursor: pointer;
 }

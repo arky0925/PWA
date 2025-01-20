@@ -1,5 +1,5 @@
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxz9SJ2Oz5Y-DkXeTzFYWwRvcRo0ldvOaiLjuEkWqd1M7q-jBri4y8eGmXSl0hNKe_n/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzXmCbWkzudGr07uwmhKIzVFLgog2EwFTNMhtLj18bBGnefhKrmqk7zUkdbsvgdMGE1/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -110,64 +110,6 @@ function displayData(data) {
 
 	data.forEach((row, rowIndex) => {
 		const listItem = document.createElement('li'); // リストアイテムを作成
-
-		// チェックボックスを作成
-		const checkbox = document.createElement('input'); // チェックボックスを作成
-		checkbox.type = 'checkbox';
-		checkbox.checked = row[0] === true; // チェックボックスの状態を設定
-		listItem.appendChild(checkbox); // チェックボックスをリストアイテムに追加
-		
-		// チェックボックスの変更イベント
-		checkbox.addEventListener('change', (event) => {
-			// チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
-			event.stopPropagation();
-				
-			const rowIndex = parseInt(listItem.dataset.rowIndex) - 2; // データ配列のインデックスに変換
-			const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
-
-			// 更新対象の値を取得
-			const targetValue1 = rowData[0]; // 1列目の値
-			const targetValue2 = rowData[1]; // 2列目の値
-			const targetValue3 = rowData[2]; // 3列目の値
-
-			// キャッシュ内での行番号を検索
-			const chacheRowIndex = chacheDate.findIndex(chacheRow => {
-			// 比較するプロパティを指定
-				return chacheRow[0] === targetValue1 && // 1列目で比較
-					   chacheRow[1] === targetValue2 && // 2列目で比較
-					   chacheRow[2] === targetValue3; // 3列目で比較
-			});
-			updateCheckbox(chacheRowIndex + 2, checkbox.checked); // 行番号は1ベースなので+2
-		});
-
-		// 2列目の要素をリストアイテムに追加
-		const secondColumnText = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
-		const textNode = document.createElement('span'); // テキストをラップするためのspan要素
-		textNode.classList.add('text-Node'); // クラスを追加してデザインを管理
-		textNode.textContent = secondColumnText; // テキストを設定
-		listItem.appendChild(textNode); // spanをリストアイテムに追加
-		
-		// 削除チェックボックスを作成
-		const deleteCheckbox = document.createElement('input'); // 新しいチェックボックスを作成
-		deleteCheckbox.type = 'checkbox'; // 新しいチェックボックス
-		deleteCheckbox.classList.add('delete-checkbox'); // クラスを追加して後で管理
-		deleteCheckbox.style.display = 'none'; // 初期状態で非表示
-		listItem.appendChild(deleteCheckbox); // 2つめのチェックボックスをリストアイテムに追加
-		
-		// 削除チェックボックスの変更イベント（必要に応じて追加）
-		deleteCheckbox.addEventListener('change', (event) => {
-			// 削除チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
-			event.stopPropagation();
-			deleteSelect();
-		});
-		
-		// 削除ボタンを作成
-		const deleteButton = document.createElement('span');
-		deleteButton.textContent = 'delete_outline';
-		deleteButton.classList.add('material-icons'); // クラスを追加
-		deleteButton.classList.add('single-delete-icons'); // クラスを追加
-		listItem.appendChild(deleteButton); // リストアイテムに追加
-
 		// リストアイテムにデータ属性を追加
 		listItem.dataset.rowIndex = rowIndex + 2; // 行番号をデータ属性に追加
 
@@ -179,6 +121,7 @@ function displayData(data) {
 		const targetValue1 = rowData[0]; // 1列目の値
 		const targetValue2 = rowData[1]; // 2列目の値
 		const targetValue3 = rowData[2]; // 3列目の値
+		const bookmarkValue = rowData[3]; // 4列目の値
 
 		// キャッシュ内での行番号を検索
 		const chacheRowIndex = chacheDate.findIndex(chacheRow => {
@@ -190,6 +133,84 @@ function displayData(data) {
 		
 		// スプレッドシート上の行番号
 		const sheetRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
+
+		// チェックボックスを作成
+		const checkbox = document.createElement('input'); // チェックボックスを作成
+		checkbox.type = 'checkbox';
+		checkbox.checked = row[0] === true; // チェックボックスの状態を設定
+		listItem.appendChild(checkbox); // チェックボックスをリストアイテムに追加
+		
+		// チェックボックスの変更イベント
+		checkbox.addEventListener('change', (event) => {
+			// チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
+			event.stopPropagation();
+			// スプレッドシートを更新する関数（チェックボックス）
+			updateCheckbox(sheetRowIndex, checkbox.checked); // 行番号は1ベースなので+2
+		});
+
+		// 2列目の要素をリストアイテムに追加
+		const secondColumnText = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
+		const textNode = document.createElement('span'); // テキストをラップするためのspan要素
+		textNode.classList.add('text-Node'); // クラスを追加してデザインを管理
+		textNode.textContent = secondColumnText; // テキストを設定
+		listItem.appendChild(textNode); // spanをリストアイテムに追加
+
+		// ブックマーク中アイコンを作成
+		const bookmarkOn = document.createElement('span');
+		bookmarkOn.textContent = 'bookmark';
+		bookmarkOn.classList.add('material-icons', 'bookmark-icon'); // クラスを追加
+		bookmarkOn.id = 'bookmark-on'; // idを追加
+		bookmarkOn.style.display = bookmarkValue ? 'inline' : 'none'; // ブックマーク状態に応じて表示
+		listItem.appendChild(bookmarkOn); // ブックマークオンアイコンをリストアイテムに追加
+
+		// ブックマーク未アイコンを作成
+		const bookmarkOff = document.createElement('span');
+		bookmarkOff.textContent = 'bookmark_border';
+		bookmarkOff.classList.add('material-icons', 'bookmark-icon'); // クラスを追加
+		bookmarkOff.id = 'bookmark-off'; // idを追加
+		bookmarkOff.style.display = bookmarkValue ? 'none' : 'inline'; // ブックマーク状態に応じて表示
+		listItem.appendChild(bookmarkOff); // ブックマークオフアイコンをリストアイテムに追加
+
+		// ブックマークの変更イベント (TRUE→FALSE)
+		bookmarkOn.addEventListener('click', (event) => {
+			// ブックマークの変更時にリストアイテムのクリックイベントをトリガーしない
+			event.stopPropagation();
+			// スプレッドシートを更新する関数（ブックマーク）
+			updateBookmark(sheetRowIndex, false); // 行番号は1ベースなので+2
+			bookmarkOn.style.display = 'none'; // 表示を切り替え
+			bookmarkOff.style.display = 'inline'; // 表示を切り替え
+		});
+
+		// ブックマークの変更イベント (TRUE→FALSE)
+		bookmarkOff.addEventListener('click', (event) => {
+			// ブックマークの変更時にリストアイテムのクリックイベントをトリガーしない
+			event.stopPropagation();
+			// スプレッドシートを更新する関数（ブックマーク）
+			updateBookmark(sheetRowIndex, true); // 行番号は1ベースなので+2
+			bookmarkOn.style.display = 'inline'; // 表示を切り替え
+			bookmarkOff.style.display = 'none'; // 表示を切り替え
+		});
+
+		// 削除チェックボックスを作成
+		const deleteCheckbox = document.createElement('input'); // 新しいチェックボックスを作成
+		deleteCheckbox.type = 'checkbox'; // 新しいチェックボックス
+		deleteCheckbox.classList.add('delete-checkbox'); // クラスを追加して後で管理
+		deleteCheckbox.style.display = 'none'; // 初期状態で非表示
+		listItem.appendChild(deleteCheckbox); // 2つめのチェックボックスをリストアイテムに追加
+
+		// 削除チェックボックスの変更イベント（必要に応じて追加）
+		deleteCheckbox.addEventListener('change', (event) => {
+			// 削除チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
+			event.stopPropagation();
+			deleteSelect();
+		});
+
+		// 削除ボタンを作成
+		const deleteButton = document.createElement('span');
+		deleteButton.textContent = 'delete_outline';
+		deleteButton.classList.add('material-icons'); // クラスを追加
+		deleteButton.classList.add('single-delete-icons'); // クラスを追加
+		listItem.appendChild(deleteButton); // リストアイテムに追加
 
 		// リストアイテムにクリックイベントを追加
 		listItem.addEventListener('click', (event) => {
@@ -282,7 +303,7 @@ function updateSelectedCount() {
 	countElement.textContent = rowsToDelete.length; // 選択された行の数を表示
 }
 
-// スプレッドシートを更新する関数
+// スプレッドシートを更新する関数（チェックボックス）
 function updateCheckbox(row, isChecked) {
 	const action = isChecked ? 'check' : 'uncheck'; // 更新アクションの決定
 	
@@ -310,10 +331,49 @@ function updateCheckbox(row, isChecked) {
 	.then(data => {
 		console.log('Update successful:', data);
 		// キャッシュの更新
+		localStorage.removeItem('spreadsheetData');
+		fetchData(); // 更新後にデータを再取得
+//		alert('成功');
+	})
+	.catch(error => {
+		console.error('Error updating spreadsheet:', error);
+//		alert('失敗');
+	})
+
+}
+
+// スプレッドシートを更新する関数（ブックマーク）
+function updateBookmark(row, isBookmarked) {
+	const action = isBookmarked ? 'bookmark' : 'unbookmark'; // 更新アクションの決定
+
+	// オーバーレイを表示
+	overlaySetBlock();
+	
+	fetch(scriptURL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: new URLSearchParams({
+			action: action,
+			row: row,
+			// ブックマークの列のインデックスを追加
+			bookmark: isBookmarked,
+		}),
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		console.log('Update successful:', data);
+		// キャッシュの更新
 		const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
 		const rowIndex = row - 2; // 1ベースから0ベースに変換
 		if (cachedData && cachedData[rowIndex]) {
-			cachedData[rowIndex][0] = isChecked; // チェックボックスの値を更新
+			cachedData[rowIndex][3] = isBookmarked; // ブックマークの値を更新
 			localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
 		}
 
@@ -628,7 +688,7 @@ function selectedCount(isVisible) {
 let checkFlgTrue = false; // チェックありのレコード用フラグ
 let checkFlgFalse = false; // チェックなしのレコード用フラグ
 let lastSearchValue = ''; // 検索ボックスの最後の値を保持するための変数
-let bookmarkFlg = false; // ブックマークのレコード用フラグ
+let bookmarkSearchFlg = false; // ブックマークのレコード用フラグ
 const filterInput = document.getElementById('filterInput'); // 現在の値を取得
 
 // クリアボタン押下アクション
@@ -645,7 +705,7 @@ function doClear() {
 	checkTrue.classList.remove('searchOptionSelected');
 	checkFlgFalse = false;
 	checkFalse.classList.remove('searchOptionSelected');
-	bookmarkFlg = false;
+	bookmarkSearchFlg = false;
 	bookmark.classList.remove('searchOptionSelected');
 }
 
@@ -654,6 +714,7 @@ function search() {
 	const filterInputSearch = filterInput.value.toLowerCase(); // 小文字に変換して取得
 	const checkTrueSelected = checkFlgTrue; // チェックありのフラグ
 	const checkFalseSelected = checkFlgFalse; // チェックなしのフラグ
+	const bookmarkSelected = bookmarkSearchFlg; // ブックマークのフラグ
 	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData')) || []; // キャッシュからデータを取得
 
 	// フィルタリングされたデータを格納する配列
@@ -661,7 +722,9 @@ function search() {
 		const matchesText = (typeof row[1] === 'string' || typeof row[1] === 'number') && 
 				String(row[1]).toLowerCase().includes(filterInputSearch); // 2列目の値に基づくフィルタリング
 		const matchesCheckbox = (checkTrueSelected && row[0] === true) || (checkFalseSelected && row[0] === false);
-		return matchesText && (checkTrueSelected || checkFalseSelected ? matchesCheckbox : true);
+		const matchesBookmark = bookmarkSelected ? row[3] === true : true; // 4列目（ブックマーク）でフィルタリング
+
+		return matchesText && (checkTrueSelected || checkFalseSelected ? matchesCheckbox : true) && matchesBookmark;
 	});
 
 	displayData(filteredData); // フィルタリングされたデータを表示
@@ -702,10 +765,11 @@ filterInput.addEventListener('blur', function() {
 	}}
 });
 
+// ブックマークのクリックイベント
 const bookmark = document.getElementById('bookmark');
 bookmark.addEventListener('click', function() {
-	bookmarkFlg = !bookmarkFlg; // フラグを切り替え
-	if (bookmarkFlg) {
+	bookmarkSearchFlg = !bookmarkSearchFlg; // フラグを切り替え
+	if (bookmarkSearchFlg) {
 		bookmark.classList.add('searchOptionSelected');
 	} else {
 		bookmark.classList.remove('searchOptionSelected');
@@ -728,7 +792,7 @@ function updateFilterIcon() {
 	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
 	// filter-reset-iconの表示を切り替える
 	const filterResetIcon = document.getElementById('filter-reset-icon');
-	if (checkFlgTrue == true || checkFlgFalse == true || bookmarkFlg == true || filterInput.value != ''){
+	if (checkFlgTrue == true || checkFlgFalse == true || bookmarkSearchFlg == true || filterInput.value != ''){
 		tuneIconText.textContent = '絞り込み中'; // テキストを変更
 		filterResetIcon.style.display = 'flex'; // 絞り込み中の場合、表示する
 	} else {
