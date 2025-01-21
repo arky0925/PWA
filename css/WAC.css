@@ -440,8 +440,6 @@ textarea:focus {
   position: fixed;
   width: 100%;
   height: 100%;
-  left: 0;
-  top: 0;
 }
 
 #loading-text {
@@ -450,12 +448,12 @@ textarea:focus {
   top: 50%;
   left: 50%;
   color: #ffffff;
-  width: 100px;
+  width: 80px; /* サイズを小さく */
   height: 30px;
-  margin: -7px 0 0 -45px;
+  margin: -10px 0 0 -40px; /* 中央揃えのためのマージンを調整 */
   text-align: center;
   font-family: 'PT Sans Narrow', sans-serif;
-  font-size: 20px;
+  font-size: 12px; /* フォントサイズを小さく */
 }
 
 #loading-content {
@@ -463,9 +461,9 @@ textarea:focus {
   position: relative;
   left: 50%;
   top: 50%;
-  width: 170px;
-  height: 170px;
-  margin: -85px 0 0 -85px;
+  width: 100px; /* サイズを小さく */
+  height: 100px; /* サイズを小さく */
+  margin: -50px 0 0 -50px; /* 中央揃えのためのマージンを調整 */
   border: 3px solid #F00;
 }
 
@@ -473,19 +471,19 @@ textarea:focus {
   content: "";
   position: absolute;
   border: 3px solid #0F0;
-  left: 15px;
-  right: 15px;
-  top: 15px;
-  bottom: 15px;
+  left: 10px; /* 内部のサイズを調整 */
+  right: 10px;
+  top: 10px; /* 内部のサイズを調整 */
+  bottom: 10px;
 }
 
 #loading-content:before {
   content: "";
   position: absolute;
   border: 3px solid #00F;
-  left: 5px;
+  left: 5px; /* 内部のサイズを調整 */
   right: 5px;
-  top: 5px;
+  top: 5px; /* 内部のサイズを調整 */
   bottom: 5px;
 }
 
@@ -506,7 +504,7 @@ textarea:focus {
   border-bottom-color: #D4CC6A;
   border-radius: 50%;
   -webkit-animation: loader 3s linear infinite;
-    -moz-animation: loader 2s linear infinite;
+  -moz-animation: loader 2s linear infinite;
   -o-animation: loader 2s linear infinite;
   animation: loader 3s linear infinite;
 }
@@ -518,11 +516,11 @@ textarea:focus {
   border-radius: 50%;
   -webkit-animation: loader 1.5s linear infinite;
   animation: loader 1.5s linear infinite;
-    -moz-animation: loader 2s linear infinite;
+  -moz-animation: loader 2s linear infinite;
   -o-animation: loader 2s linear infinite;
 }
 
-@-webkit-keyframes loaders {
+@-webkit-keyframes loader {
   0% {
     -webkit-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
