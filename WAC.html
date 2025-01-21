@@ -21,7 +21,6 @@
 		<div class="right">
 			<span id="selectedCount" class="selected-count" style="display: none;">0</span> <!-- 選択数を表示する要素 -->
 			<span id="update-icon" class="material-icons update-icon">update</span>
-			<span id="add-icon" class="material-icons add-icon">add</span>
 			<span id="delete-icon-false" class="material-icons delete-icon">delete</span>
 			<span id="delete-icon-true" class="material-icons delete-icon" style="display: none;">delete_forever</span>
 		</div>
@@ -72,7 +71,7 @@
 					<h4>新規追加</h4>
 					<span class="close-button" id="closeModal1">&times;</span>
 				</div>
-				<input type="text" name="料理" placeholder="料理" required>
+				<input type="text" class="modalInput" name="料理" placeholder="料理" required>
 				<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="追加" id="submit1">
 			</form>
@@ -84,12 +83,14 @@
 					<h4>編集</h4>
 					<span class="close-button" id="closeModal2">&times;</span>
 				</div>
-				<input type="text" id="modalInput1" name="料理" placeholder="料理" required>
+				<input type="text" class="modalInput" id="modalInput1" name="料理" placeholder="料理" required>
 				<textarea name="備考欄" id="modalInput2" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="更新" id="submit2">
 			</form>
 		</div>
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
+		<div id="add-icon" class="add-icon">+</div>
+		<div id="help-icon" class="help-icon">?</div>
 	</main>
 	<!-- サイドメニュー -->
 		<div class="side-menu" id="side-menu">

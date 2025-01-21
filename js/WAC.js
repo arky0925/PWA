@@ -601,7 +601,7 @@ function deleteModeChange() {
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
 	
 	// add-icon,update-conの表示を切り替える
-	addIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
+	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	// action-buttonの表示を切り替える
 	const actionbutton = document.getElementById('action-button');
@@ -1005,4 +1005,9 @@ document.addEventListener('click', (event) => {
 	if (!sortIcon.contains(event.target) && !sortDropdown.contains(event.target)) {
 		sortDropdown.style.display = 'none';
 	}
+});
+
+// ヘルプページへ遷移
+document.getElementById('help-icon').addEventListener('click', () => {
+	window.location.href = 'index.html'; // 遷移先のページ
 });

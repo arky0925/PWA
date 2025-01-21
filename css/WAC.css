@@ -25,7 +25,7 @@
 	color: #fff; /* 削除モードの文字色 */
 }
 
-span.add-icon, .delete-icon, .update-icon, button {
+span.delete-icon, .update-icon, button {
 	cursor: pointer;
 }
 
@@ -201,7 +201,7 @@ hr {
 }
 
 .optionButton button {
-	background-color:  #ffffff;
+	background-color: #ffffff;
 	border: 1px solid #ccc; /* 枠線 */
 	color: #000000;
 }
@@ -323,6 +323,8 @@ h4 {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 10px;
+	overflow-x: auto; /* 横方向のオーバーフローを許可 */
+	white-space: nowrap; /* テキストを折り返さない */
 }
 
 textarea {
@@ -436,121 +438,159 @@ textarea:focus {
 	background-color: #e0e0e0 !important; /* 選択状態の背景色 */
 }
 
+/* 新規追加ボタンのスタイル */
+.add-icon {
+	position: fixed; /* スクロールしても位置を固定 */
+	bottom: 100px; /* 下からの距離 */
+	right: 20px; /* 右からの距離 */
+	width: 60px; /* ボタンの幅 */
+	height: 60px; /* ボタンの高さ */
+	background-color: #FFC4C4; /* ボタンの背景色 */
+	color: #000000; /* テキストの色 */
+	border-radius: 50%; /* 丸い形にする */
+	display: flex; /* 中央揃え */
+	justify-content: center; /* 中央揃え */
+	align-items: center; /* 中央揃え */
+	font-size: 30px; /* アイコンのサイズ */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
+	cursor: pointer; /* カーソルをポインターに */
+	transition: background-color 0.3s; /* ホバー時の色変更アニメーション */
+}
+
+/* 新規追加ボタンのスタイル */
+.help-icon {
+	position: fixed; /* スクロールしても位置を固定 */
+	bottom: 100px; /* 下からの距離 */
+	left: 20px; /* 右からの距離 */
+	width: 30px; /* ボタンの幅 */
+	height: 30px; /* ボタンの高さ */
+	background-color: #87cefa; /* ボタンの背景色 */
+	color: #000000; /* テキストの色 */
+	border-radius: 50%; /* 丸い形にする */
+	display: flex; /* 中央揃え */
+	justify-content: center; /* 中央揃え */
+	align-items: center; /* 中央揃え */
+	font-size: 15px; /* アイコンのサイズ */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
+	cursor: pointer; /* カーソルをポインターに */
+	transition: background-color 0.3s; /* ホバー時の色変更アニメーション */
+}
+
 #reloadOverlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+	position: fixed;
+	width: 100%;
+	height: 100%;
 }
 
 #loading-text {
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: #ffffff;
-  width: 80px; /* サイズを小さく */
-  height: 30px;
-  margin: -10px 0 0 -40px; /* 中央揃えのためのマージンを調整 */
-  text-align: center;
-  font-family: 'PT Sans Narrow', sans-serif;
-  font-size: 12px; /* フォントサイズを小さく */
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	color: #ffffff;
+	width: 80px; /* サイズを小さく */
+	height: 30px;
+	margin: -10px 0 0 -40px; /* 中央揃えのためのマージンを調整 */
+	text-align: center;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-size: 12px; /* フォントサイズを小さく */
 }
 
 #loading-content {
-  display: block;
-  position: relative;
-  left: 50%;
-  top: 50%;
-  width: 100px; /* サイズを小さく */
-  height: 100px; /* サイズを小さく */
-  margin: -50px 0 0 -50px; /* 中央揃えのためのマージンを調整 */
-  border: 3px solid #F00;
+	display: block;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 100px; /* サイズを小さく */
+	height: 100px; /* サイズを小さく */
+	margin: -50px 0 0 -50px; /* 中央揃えのためのマージンを調整 */
+	border: 3px solid #F00;
 }
 
 #loading-content:after {
-  content: "";
-  position: absolute;
-  border: 3px solid #0F0;
-  left: 10px; /* 内部のサイズを調整 */
-  right: 10px;
-  top: 10px; /* 内部のサイズを調整 */
-  bottom: 10px;
+	content: "";
+	position: absolute;
+	border: 3px solid #0F0;
+	left: 10px; /* 内部のサイズを調整 */
+	right: 10px;
+	top: 10px; /* 内部のサイズを調整 */
+	bottom: 10px;
 }
 
 #loading-content:before {
-  content: "";
-  position: absolute;
-  border: 3px solid #00F;
-  left: 5px; /* 内部のサイズを調整 */
-  right: 5px;
-  top: 5px; /* 内部のサイズを調整 */
-  bottom: 5px;
+	content: "";
+	position: absolute;
+	border: 3px solid #00F;
+	left: 5px; /* 内部のサイズを調整 */
+	right: 5px;
+	top: 5px; /* 内部のサイズを調整 */
+	bottom: 5px;
 }
 
 #loading-content {
-  border: 3px solid transparent;
-  border-top-color: #4D658D;
-  border-bottom-color: #4D658D;
-  border-radius: 50%;
-  -webkit-animation: loader 2s linear infinite;
-  -moz-animation: loader 2s linear infinite;
-  -o-animation: loader 2s linear infinite;
-  animation: loader 2s linear infinite;
+	border: 3px solid transparent;
+	border-top-color: #4D658D;
+	border-bottom-color: #4D658D;
+	border-radius: 50%;
+	-webkit-animation: loader 2s linear infinite;
+	-moz-animation: loader 2s linear infinite;
+	-o-animation: loader 2s linear infinite;
+	animation: loader 2s linear infinite;
 }
 
 #loading-content:before {
-  border: 3px solid transparent;
-  border-top-color: #D4CC6A;
-  border-bottom-color: #D4CC6A;
-  border-radius: 50%;
-  -webkit-animation: loader 3s linear infinite;
-  -moz-animation: loader 2s linear infinite;
-  -o-animation: loader 2s linear infinite;
-  animation: loader 3s linear infinite;
+	border: 3px solid transparent;
+	border-top-color: #D4CC6A;
+	border-bottom-color: #D4CC6A;
+	border-radius: 50%;
+	-webkit-animation: loader 3s linear infinite;
+	-moz-animation: loader 2s linear infinite;
+	-o-animation: loader 2s linear infinite;
+	animation: loader 3s linear infinite;
 }
 
 #loading-content:after {
-  border: 3px solid transparent;
-  border-top-color: #84417C;
-  border-bottom-color: #84417C;
-  border-radius: 50%;
-  -webkit-animation: loader 1.5s linear infinite;
-  animation: loader 1.5s linear infinite;
-  -moz-animation: loader 2s linear infinite;
-  -o-animation: loader 2s linear infinite;
+	border: 3px solid transparent;
+	border-top-color: #84417C;
+	border-bottom-color: #84417C;
+	border-radius: 50%;
+	-webkit-animation: loader 1.5s linear infinite;
+	animation: loader 1.5s linear infinite;
+	-moz-animation: loader 2s linear infinite;
+	-o-animation: loader 2s linear infinite;
 }
 
 @-webkit-keyframes loader {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }
 
 @keyframes loader {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }
 
 #content-wrapper {
-  color: #FFF;
-  position: fixed;
-  left: 0;
-  top: 20px;
-  width: 100%;
-  height: 100%;
+	color: #FFF;
+	position: fixed;
+	left: 0;
+	top: 20px;
+	width: 100%;
+	height: 100%;
 }
