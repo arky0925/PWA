@@ -71,7 +71,10 @@
 					<h4>新規追加</h4>
 					<span class="close-button" id="closeModal1">&times;</span>
 				</div>
-				<input type="text" class="modalInput" name="料理" placeholder="料理" required>
+				<div class="input-container">
+					<input type="text" id="modalInput" name="料理" placeholder="料理" required>
+					<span id="insertBackspace" class="material-icons backspace-icon">backspace</span>
+				</div>
 				<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="追加" id="submit1">
 			</form>
@@ -83,7 +86,10 @@
 					<h4>編集</h4>
 					<span class="close-button" id="closeModal2">&times;</span>
 				</div>
-				<input type="text" class="modalInput" id="modalInput1" name="料理" placeholder="料理" required>
+				<div class="input-container">
+					<input type="text" id="modalInput1" name="料理" placeholder="料理" required>
+					<span id="updateBackspace" class="material-icons backspace-icon">backspace</span>
+				</div>
 				<textarea name="備考欄" id="modalInput2" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="更新" id="submit2">
 			</form>
@@ -91,6 +97,14 @@
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 		<div id="add-icon" class="add-icon">+</div>
 		<div id="help-icon" class="help-icon">?</div>
+		<!-- 検索結果なし画面 -->
+		<div id="searchNoneScreen" class="searchNoneScreen">
+			<p>該当するデータが見つかりませんでした</p>
+			<p>絞り込みの条件を変えてください</p>
+			<button>
+				aaa
+			</button>
+		</div>
 	</main>
 	<!-- サイドメニュー -->
 		<div class="side-menu" id="side-menu">

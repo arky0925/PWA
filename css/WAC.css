@@ -117,7 +117,7 @@ span.delete-icon, .update-icon, button {
 	height: 100%;
 	background-color: #fff2f2;
 	color: #000000;
-	transition: right 0.1s ease-in-out;
+	transition: right 0.2s ease-in-out;
 	z-index: 2000;
 }
 
@@ -142,18 +142,6 @@ hr {
 /* サイドメニューが表示される状態 */
 .side-menu.open {
 	right: 0;
-}
-
-.close-button {
-	color: #aaa;
-	font-size: 28px;
-	font-weight: bold;
-}
-
-.close-button:hover, .close-button:focus {
-	color: black;
-	text-decoration: none;
-	cursor: pointer;
 }
 
 .sideMenuBlock {
@@ -248,6 +236,10 @@ hr {
 	transform: translateY(0); /* アクティブ時に元の位置に戻す */
 }
 
+.searchNoneScreen {
+	font-size: 30px;
+}
+
 .modal {
 	display: none; /* 初期状態で非表示 */
 	padding: 30px;
@@ -314,19 +306,46 @@ hr {
 h4 {
 	font-size: 24px;
 	color: white;
-	flex-grow: 1; /* h4が利用可能なスペースをすべて占有 */
+	position: absolute; /* 中央揃えのため絶対配置 */
+	left: 50%; /* 左から50% */
+	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
 	text-align: center; /* 中央揃え */
-	margin: 0; /* デフォルトのマージンをリセット */
+
 }
 
-.modal input {
+.close-button {
+	color: #aaa;
+	font-size: 28px;
+	font-weight: bold;
+	position: relative; /* 絶対位置を設定 */
+	left: 300px; /* 右からの距離 */
+	cursor: pointer; /* カーソルをポインターに変更 */
+}
+
+.close-button:hover, .close-button:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.modal input[type="text"] {
+	width: 100%;
+	padding: 10px 45px 10px 10px;
+	margin-bottom: 10px;
+}
+
+.modal input[type="submit"] {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 10px;
 }
 
-input .modalInput {
-	overflow-x : scroll;
+.backspace-icon {
+	position: absolute;
+	top: 93px;
+	right: 40px;
+	color: #ccc;
+	cursor: pointer;
 }
 
 textarea {
@@ -335,7 +354,7 @@ textarea {
 }
 
 /* フォントの統一 */
-input[type="text"], textarea {
+.side-menu input[type="text"], textarea {
 	font-family: 'Arial', sans-serif; /* 使用したいフォントを指定 */
 	font-size: 14px; /* フォントサイズを指定 */
 	line-height: 1.5; /* 行間を指定 */

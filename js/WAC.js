@@ -338,7 +338,6 @@ function updateCheckbox(row, isChecked) {
 		console.error('Error updating spreadsheet:', error);
 //		alert('失敗');
 	})
-
 }
 
 // スプレッドシートを更新する関数（ブックマーク）
@@ -431,6 +430,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		sideMenuClose(); // フッターとモーダルのオーバーレイ非表示を含む
 	});
 
+});
+
+document.getElementById('insertBackspace').addEventListener('click', () => {
+	document.getElementById('modalInput').value = ''; // 入力フィールドの値を空にする
+});
+
+document.getElementById('updateBackspace').addEventListener('click', () => {
+	document.getElementById('modalInput1').value = ''; // 入力フィールドの値を空にする
 });
 
 // 新規追加フォーム送信
@@ -740,6 +747,7 @@ function search() {
 
 	displayData(filteredData); // フィルタリングされたデータを表示
 	sortList(sortMode);
+	searchNone(); // 検索結果が0件の場合の表示制御
 }
 
 // チェックボタンのクリックイベント
@@ -812,6 +820,14 @@ function updateFilterIcon() {
 	}
 }
 
+// 検索結果が0件の場合の表示制御
+function searchNone() {
+	const isSearchNoneScreen = currentData.length === 0;
+	const searchNoneScreen = document.getElementById('searchNoneScreen');
+	searchNoneScreen.style.display = isSearchNoneScreen ? 'block' : 'none';
+}
+
+// 絞り込み条件リセットアクション
 document.getElementById('filter-reset-icon').addEventListener('click', () => {
 	doClear();
 	search();
