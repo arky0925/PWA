@@ -237,6 +237,7 @@ hr {
 }
 
 .searchNoneScreen {
+	display: hidden;
 	font-size: 30px;
 }
 
@@ -314,6 +315,7 @@ h4 {
 }
 
 .close-button {
+	display: hidden;
 	color: #aaa;
 	font-size: 28px;
 	font-weight: bold;

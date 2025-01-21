@@ -221,7 +221,6 @@ function displayData(data) {
 				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
 				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
 				console.log(`Filtered Row Index: ${rowIndex}, Original Row Index: ${sheetRowIndex}`); // デバッグ用
-
 				// 行番号をデータ属性に設定
 				updateModal.dataset.rowIndex = rowIndex; // 検索結果内の行番号を設定
 				updateModal.dataset.chacheRowIndex = chacheRowIndex + 2; // キャッシュデータ内の行番号を設定
@@ -231,6 +230,7 @@ function displayData(data) {
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
 				headerOverlay.style.display = 'block';
 				footerOverlay.style.display = 'block';
+				textDeleteButton(); // モーダルのテキスト削除ボタン制御
 			}
 		});
 		
@@ -402,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
 		headerOverlay.style.display = 'block';
 		footerOverlay.style.display = 'block';
+		textDeleteButton(); // モーダルのテキスト削除ボタン制御
 	});
 
 	// モーダルを閉じる
@@ -432,12 +433,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-document.getElementById('insertBackspace').addEventListener('click', () => {
-	document.getElementById('modalInput').value = ''; // 入力フィールドの値を空にする
+// モーダルのテキスト削除ボタン制御
+const modalInput = document.getElementById('modalInput');
+const modalInput1 = document.getElementById('modalInput1');
+const insertBackspace = document.getElementById('insertBackspace');
+const updateBackspace = document.getElementById('updateBackspace');
+
+function textDeleteButton() {
+	if (modalInput.value != "") {
+		insertBackspace.style.display = 'inline'; // ボタンを表示
+	} else {
+		insertBackspace.style.display = 'none'; // ボタンを非表示
+	}
+	if (modalInput1.value != "") {
+		updateBackspace.style.display = 'inline'; // ボタンを表示
+	} else {
+		updateBackspace.style.display = 'none'; // ボタンを非表示
+	}
+}
+
+insertBackspace.addEventListener('click', () => {
+	modalInput.value = ''; // 入力フィールドの値を空にする
+	textDeleteButton();
 });
 
-document.getElementById('updateBackspace').addEventListener('click', () => {
-	document.getElementById('modalInput1').value = ''; // 入力フィールドの値を空にする
+updateBackspace.addEventListener('click', () => {
+	modalInput1.value = ''; // 入力フィールドの値を空にする
+	textDeleteButton();
+});
+
+modalInput.addEventListener('blur', function() {
+	textDeleteButton();
+});
+
+modalInput1.addEventListener('blur', function() {
+	textDeleteButton();
 });
 
 // 新規追加フォーム送信
@@ -627,7 +657,7 @@ function deleteModeChange() {
 	const bookmarkOffIcons = document.querySelectorAll('#bookmark-off');
 	bookmarkOnIcons.forEach(icon => {
 		icon.style.pointerEvents = deleteMode ? 'none' : 'auto'; // クリックイベントを無効化
-	icon.style.opacity = deleteMode ? '0.5' : '1'; // 見た目を変えるために透明度を変更
+		icon.style.opacity = deleteMode ? '0.5' : '1'; // 見た目を変えるために透明度を変更
 	});
 	bookmarkOffIcons.forEach(icon => {
 		icon.style.pointerEvents = deleteMode ? 'none' : 'auto'; // クリックイベントを無効化
@@ -823,6 +853,8 @@ function updateFilterIcon() {
 // 検索結果が0件の場合の表示制御
 function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
+	console.log(currentData);
+	console.log(isSearchNoneScreen);
 	const searchNoneScreen = document.getElementById('searchNoneScreen');
 	searchNoneScreen.style.display = isSearchNoneScreen ? 'block' : 'none';
 }
@@ -839,7 +871,6 @@ const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
 let sortMode = "insert";
 let sort = "asc";
-
 
 const ascIcon = document.getElementById('asc-icon');
 const descIcon = document.getElementById('desc-icon');
