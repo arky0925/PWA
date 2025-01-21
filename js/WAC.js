@@ -457,7 +457,7 @@ insertForm.addEventListener('submit', e => {
 			return response.json(); // レスポンスをJSON形式で取得
 		})
 		.then(data => {
-			alert("登録しました。");
+//			alert("登録しました。");
 			console.log(data); // レスポンスデータをログに出力（デバッグ用）
 			localStorage.removeItem('spreadsheetData');
 			fetchData(); // データを再取得してリストを更新
@@ -514,7 +514,7 @@ updateForm.addEventListener('submit', function(event) {
 		.then(data => {
 			console.log(data); // レスポンスの内容を確認
 			if (data.result === 'success') {
-				alert("データが更新されました。");
+//				alert("データが更新されました。");
 				localStorage.removeItem('spreadsheetData');
 				fetchData(); // データを再取得してリストを更新
 			} else {
@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 削除するレコードを選択する関数
 function deleteSelectedRecords() {
 	if (rowsToDelete.length === 0) {
-		alert('削除するレコードが選択されていません。');
+		alert('削除するデータが選択されていません。');
 		overlaySetNone();
 		return;
 	}
