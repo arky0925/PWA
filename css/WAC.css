@@ -315,12 +315,11 @@ h4 {
 }
 
 .close-button {
-	display: hidden;
 	color: #aaa;
 	font-size: 28px;
 	font-weight: bold;
 	position: relative; /* 絶対位置を設定 */
-	left: 300px; /* 右からの距離 */
+	left: 95%; /* 右からの距離 */
 	cursor: pointer; /* カーソルをポインターに変更 */
 }
 
@@ -330,30 +329,17 @@ h4 {
 	cursor: pointer;
 }
 
-.modal input[type="text"] {
+.modal input {
 	width: 100%;
+	padding: 10px;
 	margin-bottom: 10px;
-	font-family: 'Arial', sans-serif; /* 使用したいフォントを指定 */
-	font-size: 14px; /* フォントサイズを指定 */
-	line-height: 1.5; /* 行間を指定 */
-	padding: 10px 45px 10px 10px; /* 内側の余白を指定 */
-	border: 1px solid #ccc; /* ボーダーを指定 */
-	border-radius: 5px; /* 角を丸くする */
-	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
 }
 
 .modal input[type="submit"] {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 10px;
-}
-
-.backspace-icon {
-	position: absolute;
-	top: 92px;
-	right: 40px;
-	color: #ccc;
-	cursor: pointer;
+	font-size: 14px; /* フォントサイズを指定 */
 }
 
 textarea {
@@ -362,7 +348,7 @@ textarea {
 }
 
 /* フォントの統一 */
-.side-menu input[type="text"], textarea {
+input[type="search"], textarea {
 	font-family: 'Arial', sans-serif; /* 使用したいフォントを指定 */
 	font-size: 14px; /* フォントサイズを指定 */
 	line-height: 1.5; /* 行間を指定 */
@@ -373,7 +359,7 @@ textarea {
 }
 
 /* フォーカス時のスタイルを追加 */
-input[type="text"]:focus,
+input[type="search"]:focus,
 textarea:focus {
 	border-color: #007BFF; /* フォーカス時のボーダー色 */
 	outline: none; /* デフォルトのアウトラインを消す */
@@ -414,7 +400,6 @@ textarea:focus {
 	background-color: #f9f9f9; /* 背景色 */
 	cursor: pointer;
 	position: relative;
-	transition: transform 0.3s ease; /* スライドのアニメーション */
 	z-index: 0;
 	overflow: hidden; /* はみ出した部分を隠す */
 	text-align: center;

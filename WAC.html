@@ -71,10 +71,7 @@
 					<h4>新規追加</h4>
 					<span class="close-button" id="closeModal1">&times;</span>
 				</div>
-				<div class="input-container">
-					<input type="text" id="modalInput" name="料理" placeholder="料理" required>
-					<span id="insertBackspace" class="material-icons backspace-icon">backspace</span>
-				</div>
+				<input type="search" name="料理" placeholder="料理" required>
 				<textarea name="備考欄" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="追加" id="submit1">
 			</form>
@@ -86,10 +83,7 @@
 					<h4>編集</h4>
 					<span class="close-button" id="closeModal2">&times;</span>
 				</div>
-				<div class="input-container">
-					<input type="text" id="modalInput1" name="料理" placeholder="料理" required>
-					<span id="updateBackspace" class="material-icons backspace-icon">backspace</span>
-				</div>
+				<input type="search" id="modalInput1" name="料理" placeholder="料理" required>
 				<textarea name="備考欄" id="modalInput2" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="更新" id="submit2">
 			</form>
@@ -111,11 +105,11 @@
 			<div class="side-menu-header">
 				<span id="close-menu" class="material-icons">highlight_off</span>
 				<div class="center">絞り込み</div>
-				<div id="clear" class="left">クリア</div>
+				<div id="clear">クリア</div>
 			</div>
 			<div class="sideMenuBlock">
 				<span class="blockName">料理名</span>
-				<input type="text" id="filterInput" placeholder="名前で絞り込み">
+				<input type="search" id="filterInput" placeholder="名前で絞り込み">
 			</div>
 			<hr>
 			<div class="sideMenuBlock">

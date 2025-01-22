@@ -230,7 +230,6 @@ function displayData(data) {
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
 				headerOverlay.style.display = 'block';
 				footerOverlay.style.display = 'block';
-				textDeleteButton(); // モーダルのテキスト削除ボタン制御
 			}
 		});
 		
@@ -402,7 +401,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
 		headerOverlay.style.display = 'block';
 		footerOverlay.style.display = 'block';
-		textDeleteButton(); // モーダルのテキスト削除ボタン制御
 	});
 
 	// モーダルを閉じる
@@ -431,43 +429,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		sideMenuClose(); // フッターとモーダルのオーバーレイ非表示を含む
 	});
 
-});
-
-// モーダルのテキスト削除ボタン制御
-const modalInput = document.getElementById('modalInput');
-const modalInput1 = document.getElementById('modalInput1');
-const insertBackspace = document.getElementById('insertBackspace');
-const updateBackspace = document.getElementById('updateBackspace');
-
-function textDeleteButton() {
-	if (modalInput.value != "") {
-		insertBackspace.style.display = 'inline'; // ボタンを表示
-	} else {
-		insertBackspace.style.display = 'none'; // ボタンを非表示
-	}
-	if (modalInput1.value != "") {
-		updateBackspace.style.display = 'inline'; // ボタンを表示
-	} else {
-		updateBackspace.style.display = 'none'; // ボタンを非表示
-	}
-}
-
-insertBackspace.addEventListener('click', () => {
-	modalInput.value = ''; // 入力フィールドの値を空にする
-	textDeleteButton();
-});
-
-updateBackspace.addEventListener('click', () => {
-	modalInput1.value = ''; // 入力フィールドの値を空にする
-	textDeleteButton();
-});
-
-modalInput.addEventListener('blur', function() {
-	textDeleteButton();
-});
-
-modalInput1.addEventListener('blur', function() {
-	textDeleteButton();
 });
 
 // 新規追加フォーム送信
@@ -853,8 +814,6 @@ function updateFilterIcon() {
 // 検索結果が0件の場合の表示制御
 function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
-	console.log(currentData);
-	console.log(isSearchNoneScreen);
 	const searchNoneScreen = document.getElementById('searchNoneScreen');
 	searchNoneScreen.style.display = isSearchNoneScreen ? 'block' : 'none';
 }
