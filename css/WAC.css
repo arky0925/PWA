@@ -356,6 +356,8 @@ input[type="search"], textarea {
 	border: 1px solid #ccc; /* ボーダーを指定 */
 	border-radius: 5px; /* 角を丸くする */
 	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
+	-webkit-appearance: searchfield; /* Safari用 */
+	appearance: searchfield; /* 標準の設定 */
 }
 
 /* フォーカス時のスタイルを追加 */
