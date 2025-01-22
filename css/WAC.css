@@ -348,7 +348,7 @@ textarea {
 }
 
 /* フォントの統一 */
-input[type="search"], textarea {
+input[type="text"], textarea {
 	font-family: 'Arial', sans-serif; /* 使用したいフォントを指定 */
 	font-size: 14px; /* フォントサイズを指定 */
 	line-height: 1.5; /* 行間を指定 */
@@ -356,12 +356,10 @@ input[type="search"], textarea {
 	border: 1px solid #ccc; /* ボーダーを指定 */
 	border-radius: 5px; /* 角を丸くする */
 	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
-	-webkit-appearance: searchfield; /* Safari用 */
-	appearance: searchfield; /* 標準の設定 */
 }
 
 /* フォーカス時のスタイルを追加 */
-input[type="search"]:focus,
+input[type="text"]:focus,
 textarea:focus {
 	border-color: #007BFF; /* フォーカス時のボーダー色 */
 	outline: none; /* デフォルトのアウトラインを消す */

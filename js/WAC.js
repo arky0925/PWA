@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbygacAQ1VWMnDmjKjrsV1s0bimgIOgu4JrHlbfzz0-M6JI-GYMEAru-fZ_yRlXq7JYj/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzzJU9dsgcoSCy0L1Ci9Cx8NhGR--DqzfI6DVKn5YuBjfg4iOhi_cGccIfHj5OGGK-N/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -117,17 +117,22 @@ function displayData(data) {
 		const rowData = currentData[rowIndex]; // フィルタリングされたデータから正しい行データを取得
 
 		// 更新対象の値を取得
-		const targetValue1 = rowData[0]; // 1列目の値
-		const targetValue2 = rowData[1]; // 2列目の値
-		const targetValue3 = rowData[2]; // 3列目の値
+		const checkboxValue = rowData[0]; // 1列目の値
+		const cookValue = rowData[1]; // 2列目の値
+		const memoValue = rowData[2]; // 3列目の値
 		const bookmarkValue = rowData[3]; // 4列目の値
+		const insertTimeValue = rowData[4]; // 5列目の値
+		const updateTimeValue = rowData[5]; // 6列目の値
 
 		// キャッシュ内での行番号を検索
 		const chacheRowIndex = chacheDate.findIndex(chacheRow => {
 		// 比較するプロパティを指定
-			return chacheRow[0] === targetValue1 && // 1列目で比較
-				   chacheRow[1] === targetValue2 && // 2列目で比較
-				   chacheRow[2] === targetValue3; // 3列目で比較
+			return chacheRow[0] === checkboxValue && // 1列目で比較
+				   chacheRow[1] === cookValue && // 2列目で比較
+				   chacheRow[2] === memoValue && // 3列目で比較
+				   chacheRow[3] === bookmarkValue && // 4列目で比較
+				   chacheRow[4] === insertTimeValue && // 5列目で比較
+				   chacheRow[5] === updateTimeValue; // 6列目で比較
 		});
 		
 		// スプレッドシート上の行番号
