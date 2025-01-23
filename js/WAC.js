@@ -99,6 +99,7 @@ function fetchData() {
 
 let currentData = []; // 現在表示されているデータを保持する
 let chacheDate = []; // キャッシュデータを保持する
+let filteredRows = []; // 絞り込み結果の行番号を格納
 
 // データをリストに表示する関数
 function displayData(data) {
@@ -258,6 +259,11 @@ function displayData(data) {
 			// ヘッダーの削除レコード数を更新
 			updateSelectedCount();
 		}
+
+		// 削除全選択
+		document.getElementById('doneall-icon').addEventListener('click', function() {
+			console.log(currentData);
+		})
 
 		// 削除対象の1行を送信
 		deleteButton.addEventListener('click', (event) => {
@@ -607,9 +613,11 @@ function deleteModeChange() {
 	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	// action-buttonの表示を切り替える
-	const actionbutton = document.getElementById('action-button');
-	actionbutton.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
-	
+	const actionButtonSearch = document.getElementById('action-button-search');
+	const actionButtonDelete = document.getElementById('action-button-delete');
+	actionButtonSearch.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
+	actionButtonDelete.style.display = deleteMode ? 'flow-root' : 'none'; // 削除モードがTRUEの場合、非表示にする
+
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
 	checkboxes.forEach(cb => {
@@ -1022,22 +1030,3 @@ document.addEventListener('click', (event) => {
 document.getElementById('help-icon').addEventListener('click', () => {
 	window.location.href = 'index.html'; // 遷移先のページ
 });
-
-        let lastScrollTop = 0; // 最後のスクロール位置
-        const test = document.getElementById('action-button');
-        const test2 = document.getElementById('sort-dropdown');
-
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            if (scrollTop > lastScrollTop) {
-                // スクロールダウン
-                test.style.top = '-50px'; // ヘッダーを隠す
-                sortDropdown.style.display = 'none';
-            } else {
-                // スクロールアップ
-                test.style.top = '46px'; // ヘッダーを表示
-                sortDropdown.style.display = 'none';
-            }
-            lastScrollTop = scrollTop; // 現在のスクロール位置を更新
-        });
