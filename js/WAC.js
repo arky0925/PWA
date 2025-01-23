@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxt87OsWSg8KMwPc332h2DuIqW83ZFq8YIDjNusJHCT4og4Ps33Yfo8wcPdBRKz_Tt5/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyHoYVZkbuF8zxX66T81gsflagBb3G79eXvZm41rrMsaeLMyijCSaid7XuulQR5kfZi/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -1022,3 +1022,22 @@ document.addEventListener('click', (event) => {
 document.getElementById('help-icon').addEventListener('click', () => {
 	window.location.href = 'index.html'; // 遷移先のページ
 });
+
+        let lastScrollTop = 0; // 最後のスクロール位置
+        const test = document.getElementById('action-button');
+        const test2 = document.getElementById('sort-dropdown');
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop) {
+                // スクロールダウン
+                test.style.top = '-50px'; // ヘッダーを隠す
+                sortDropdown.style.display = 'none';
+            } else {
+                // スクロールアップ
+                test.style.top = '46px'; // ヘッダーを表示
+                sortDropdown.style.display = 'none';
+            }
+            lastScrollTop = scrollTop; // 現在のスクロール位置を更新
+        });
