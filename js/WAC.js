@@ -35,28 +35,59 @@ updateIcon.addEventListener('click', () => {
 const sideMenu = document.getElementById("side-menu");
 document.addEventListener("DOMContentLoaded", () => {
 	const tuneIcon = document.getElementById("tune-icon");
-	
 
 	// メニューを開く
 	tuneIcon.addEventListener("click", () => {
-		sideMenu.classList.add("open");
-		modalOverlay.style.display = 'block';
-		footerOverlay.style.display = 'block';
+		sideMenuOpen();
 	});
-	
+
 	// メニューを閉じる
 	const closeMenu = document.getElementById("close-menu");
 	closeMenu.addEventListener("click", () => {
 		sideMenuClose();
 	});
 });
-	
+
+let startX; // タッチ開始位置
+let isMenuOpen = false; // メニューが開いているかどうか
+
+// タッチ開始イベント
+document.addEventListener('touchstart', function(event) {
+	startX = event.touches[0].clientX; // タッチ位置を取得
+});
+
+// タッチ移動イベント
+document.addEventListener('touchmove', function(event) {
+	const moveX = event.touches[0].clientX; // 現在のタッチ位置
+	const diffX = moveX - startX; // 移動距離を計算
+
+	// フリックの判定
+	if (diffX < 50 && !isMenuOpen) { // 右にフリック
+		sideMenuOpen();
+		isMenuOpen = true; // メニューが開いている状態に
+	} else if (diffX > -50 && isMenuOpen) { // 左にフリック
+		sideMenuClose();
+		isMenuOpen = false; // メニューが閉じている状態に
+	}
+});
+
+// サイドメニューを閉じる
+function sideMenuOpen() {
+	sideMenu.classList.add("open");
+	modalOverlay.style.display = 'block';
+	footerOverlay.style.display = 'block';
+}
+
 // サイドメニューを閉じる
 function sideMenuClose() {
 	sideMenu.classList.remove("open");
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 	updateFilterIcon(); // 絞り込み条件の有無
+}
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function fetchData() {
@@ -261,8 +292,16 @@ function displayData(data) {
 		}
 
 		// 削除全選択
-		document.getElementById('doneall-icon').addEventListener('click', function() {
-			console.log(currentData);
+		document.getElementById('remove-done-icon').addEventListener('click', function() {
+			deleteCheckbox.checked = false; // チェックボックスの状態を切り替え
+			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
+			listItem.classList.remove('selected'); // 選択状態のクラスを削除
+			const index = rowsToDelete.indexOf(sheetRowIndex);
+			if (index > -1) {
+				rowsToDelete.splice(index, 1); // 行番号を削除
+			}
+			// ヘッダーの削除レコード数を更新
+			updateSelectedCount();
 		})
 
 		// 削除対象の1行を送信
@@ -1024,6 +1063,19 @@ document.addEventListener('click', (event) => {
 	if (!sortIcon.contains(event.target) && !sortDropdown.contains(event.target)) {
 		sortDropdown.style.display = 'none';
 	}
+});
+
+let lastScrollTop = 0; // 最後のスクロール位置
+window.addEventListener('scroll', function() {
+	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	if (scrollTop > lastScrollTop) {
+		// スクロールダウン
+		sortDropdown.style.display = 'none';
+	} else {
+		// スクロールアップ
+		sortDropdown.style.display = 'none';
+	}
+	lastScrollTop = scrollTop; // 現在のスクロール位置を更新
 });
 
 // ヘルプページへ遷移
