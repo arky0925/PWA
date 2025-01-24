@@ -33,11 +33,15 @@ updateIcon.addEventListener('click', () => {
 
 // サイドメニュー開閉
 const sideMenu = document.getElementById("side-menu");
+const tuneIcon = document.getElementById("tune-icon");
+const reSearchButton = document.getElementById("reSearchButton");
 document.addEventListener("DOMContentLoaded", () => {
-	const tuneIcon = document.getElementById("tune-icon");
 
 	// メニューを開く
 	tuneIcon.addEventListener("click", () => {
+		sideMenuOpen();
+	});
+	reSearchButton.addEventListener("click", () => {
 		sideMenuOpen();
 	});
 
@@ -836,15 +840,23 @@ function updateFilterIcon() {
 	}
 }
 
+// 絞り込み条件リセットアクション
+const filterResetIcon = document.getElementById('filter-reset-icon');
+filterResetIcon.addEventListener('click', () => {
+	doClear();
+	search();
+	updateFilterIcon();
+});
+
 // 検索結果が0件の場合の表示制御
+const searchNoneScreen = document.getElementById('searchNoneScreen');
 function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
-	const searchNoneScreen = document.getElementById('searchNoneScreen');
-	searchNoneScreen.style.display = isSearchNoneScreen ? 'block' : 'none';
+	searchNoneScreen.style.display = isSearchNoneScreen ? 'inline' : 'none';
 }
 
-// 絞り込み条件リセットアクション
-document.getElementById('filter-reset-icon').addEventListener('click', () => {
+const resetSerch = document.getElementById('resetSerch');
+resetSerch.addEventListener('click', () => {
 	doClear();
 	search();
 	updateFilterIcon();

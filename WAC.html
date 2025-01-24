@@ -99,12 +99,19 @@
 		<div id="add-icon" class="add-icon">+</div>
 		<div id="help-icon" class="help-icon">?</div>
 		<!-- 検索結果なし画面 -->
-		<div id="searchNoneScreen" class="searchNoneScreen">
-			<p>該当するデータが見つかりませんでした。</p>
-			<p>検索条件を変更して再度お試しください。</p>
-			<button>
-				検索条件を変更する
-			</button>
+		<div id ="searchNoneScreen" class="search-none-screen">
+			<div class="search-none-message">
+				<h3>該当するデータが見つかりませんでした</h3>
+				<p>絞り込み条件を変更して再度お試しください</p>
+			</div>
+			<div class="search-none-button">
+				<button id="reSearchButton" class="search-none">
+					絞り込み条件を変更する
+				</button >
+				<button id="resetSerch" class="search-none">
+					絞り込み条件を解除する
+				</button >
+			</div>
 		</div>
 	</main>
 	<!-- サイドメニュー -->
