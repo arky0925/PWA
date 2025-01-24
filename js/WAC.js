@@ -48,30 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
-let startX; // タッチ開始位置
-let isMenuOpen = false; // メニューが開いているかどうか
-
-// タッチ開始イベント
-document.addEventListener('touchstart', function(event) {
-	startX = event.touches[0].clientX; // タッチ位置を取得
-});
-
-// タッチ移動イベント
-document.addEventListener('touchmove', function(event) {
-	const moveX = event.touches[0].clientX; // 現在のタッチ位置
-	const diffX = moveX - startX; // 移動距離を計算
-
-	// フリックの判定
-	if (diffX < 50 && !isMenuOpen) { // 右にフリック
-		sideMenuOpen();
-		isMenuOpen = true; // メニューが開いている状態に
-	} else if (diffX > -50 && isMenuOpen) { // 左にフリック
-		sideMenuClose();
-		isMenuOpen = false; // メニューが閉じている状態に
-	}
-});
-
-// サイドメニューを閉じる
+// サイドメニューを開く
 function sideMenuOpen() {
 	sideMenu.classList.add("open");
 	modalOverlay.style.display = 'block';
@@ -84,10 +61,6 @@ function sideMenuClose() {
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 	updateFilterIcon(); // 絞り込み条件の有無
-}
-
-function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function fetchData() {

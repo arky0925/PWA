@@ -32,12 +32,11 @@ span.delete-icon, .update-icon, button {
 .action-button {
 	background-color: #fff2f2;
 	position: fixed;
-	/* 位置調整 */
-	top: 47px; /* ボタンの下に表示（必要に応じて調整） */
+	top: 47px;
 	right: 0;
 	z-index: 1;
 	width: 100%;
-	padding: 5px 4% 5px 4%;
+	padding: 5px 10px 5px 10px;
 }
 
 .action-button-delete {
@@ -123,7 +122,7 @@ span.delete-icon, .update-icon, button {
 	margin: 0 auto;
 	color: #ccc;
 	position: fixed;
-	top: 116px;
+	top: 114px;
 	right: 0;
 	z-index: 1;
 }
