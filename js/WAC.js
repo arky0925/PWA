@@ -297,6 +297,7 @@ function displayData(data) {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
 			if (handOver) {
 				deleteModalHidden();
+				overlaySetBlock();
 				// スプレッドシートへの削除リクエストを送信
 				fetch(scriptURL, {
 					method: 'POST',
