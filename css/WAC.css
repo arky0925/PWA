@@ -37,7 +37,7 @@ span.delete-icon, .update-icon, button {
 	z-index: 1;
 	width: 100%;
 	padding: 0 15px;
-	border-bottom: 2px solid #ccc; /* 各項目の下に境目の線を追加 */
+	border-bottom: 1px solid #ccc; /* 各項目の下に境目の線を追加 */
 }
 
 .action-button-delete {
@@ -314,7 +314,7 @@ span.delete-icon, .update-icon, button {
 .delete-check-do {
 	background-color: #fff2f2; /* 背景の色 */
 	color: #ff4d4d; /* テキストの色 */
-	font-weight: 900; /* 文字の太さ */
+	font-weight: 700; /* 文字の太さ */
 	border: 2px solid #ff4d4d;
 	border-radius: 5px; /* 角を丸くする */
 	padding: 12px 20px; /* 上下と左右のパディング */
@@ -328,7 +328,7 @@ span.delete-icon, .update-icon, button {
 .delete-check-cancel {
 	background-color: #fff2f2; /* 背景の色 */
 	color: #0000ff; /* テキストの色 */
-	font-weight: 900; /* 文字の太さ */
+	font-weight: 700; /* 文字の太さ */
 	border: 2px solid #0000ff;
 	border-radius: 5px; /* 角を丸くする */
 	padding: 12px 20px; /* 上下と左右のパディング */
