@@ -628,7 +628,7 @@ function deleteSelectedRecords() {
 	})
 	.then(data => {
 		console.log('Delete successful:', data);
-		alert("データを削除しました。");
+//		alert("データを削除しました。");
 		localStorage.removeItem('spreadsheetData');
 		fetchData(); // データを再取得してリストを更新
 		// rowsToDeleteを初期化
@@ -915,11 +915,11 @@ resetSerch.addEventListener('click', () => {
 const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
 let sortMode = 'insert';
-let sort = 'asc';
+let sort = 'desc';
 
 const ascIcon = document.getElementById('asc-icon');
 const descIcon = document.getElementById('desc-icon');
-ascIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
+descIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
 
 // 昇順、降順ボタンのクリックイベント
 ascIcon.addEventListener('click', function() {

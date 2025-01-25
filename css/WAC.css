@@ -250,7 +250,8 @@ span.delete-icon, .update-icon, button {
 	text-align: center;
 	position: absolute;
 	top: 180px;
-	right: 0;
+	left: 50%; /* 横の中央 */
+	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
 	color: #696969;
 }
 
