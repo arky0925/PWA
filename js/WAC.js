@@ -900,6 +900,8 @@ const searchNoneScreen = document.getElementById('searchNoneScreen');
 function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
 	searchNoneScreen.style.display = isSearchNoneScreen ? 'inline' : 'none';
+	const deleteIconFalse = document.getElementById('delete-icon-false'); // ゴミ箱アイコンを取得
+	deleteIconFalse.style.display = isSearchNoneScreen ? 'none' : 'inline'; // 表示/非表示を切り替え
 }
 
 const resetSerch = document.getElementById('resetSerch');
