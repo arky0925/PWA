@@ -56,7 +56,6 @@
 				<span>全解除</span>
 			</button>
 		</div>
-		<hr class ="action-button-line">
 		<!-- モーダルウィンドウ(新規追加) -->
 		<div id="sort-dropdown" class="dropdown">
 			<ul>
@@ -94,6 +93,20 @@
 				<textarea name="備考欄" id="modalInput2" rows="7" placeholder="メモ"></textarea>
 				<input type="submit" value="更新" id="submit2">
 			</form>
+		</div>
+		<!-- モーダルウィンドウ(削除確認) -->
+		<div id="deleteModal" class="delete-modal">
+			<p>本当に削除しますか？</p>
+			<p>この操作は元に戻せません</p>
+			<button id="doDeleteSingle" class="delete-check-do">
+				データを削除
+			</button >
+			<button id="doDeleteAll" class="delete-check-do">
+				選択されたデータをすべて削除
+			</button >
+			<button id="deleteCancel" class="delete-check-cancel">
+				キャンセル
+			</button >
 		</div>
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 		<div id="add-icon" class="add-icon">+</div>
