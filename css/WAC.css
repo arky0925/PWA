@@ -123,7 +123,7 @@ span.delete-icon, .update-icon, button {
 	position: fixed;
 	top: 0;
 	right: -100%; /* 初期状態では画面外 */
-	width: 80%;
+	width: 330px;
 	height: 100%;
 	background-color: #fff2f2;
 	color: #000000;

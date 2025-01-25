@@ -32,36 +32,36 @@ updateIcon.addEventListener('click', () => {
 });
 
 // サイドメニュー開閉
-const sideMenu = document.getElementById("side-menu");
-const tuneIcon = document.getElementById("tune-icon");
-const reSearchButton = document.getElementById("reSearchButton");
-document.addEventListener("DOMContentLoaded", () => {
+const sideMenu = document.getElementById('side-menu');
+const tuneIcon = document.getElementById('tune-icon');
+const reSearchButton = document.getElementById('reSearchButton');
+document.addEventListener('DOMContentLoaded', () => {
 
 	// メニューを開く
-	tuneIcon.addEventListener("click", () => {
+	tuneIcon.addEventListener('click', () => {
 		sideMenuOpen();
 	});
-	reSearchButton.addEventListener("click", () => {
+	reSearchButton.addEventListener('click', () => {
 		sideMenuOpen();
 	});
 
 	// メニューを閉じる
-	const closeMenu = document.getElementById("close-menu");
-	closeMenu.addEventListener("click", () => {
+	const closeMenu = document.getElementById('close-menu');
+	closeMenu.addEventListener('click', () => {
 		sideMenuClose();
 	});
 });
 
 // サイドメニューを開く
 function sideMenuOpen() {
-	sideMenu.classList.add("open");
+	sideMenu.classList.add('open');
 	modalOverlay.style.display = 'block';
 	footerOverlay.style.display = 'block';
 }
 
 // サイドメニューを閉じる
 function sideMenuClose() {
-	sideMenu.classList.remove("open");
+	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 	updateFilterIcon(); // 絞り込み条件の有無
@@ -868,7 +868,7 @@ document.getElementById('searchButton').addEventListener('click', () => {
 	lastSearchValue = filterInput.value; // 値を保持
 	search();
 	updateFilterIcon();
-	sideMenu.classList.remove("open");
+	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 });
@@ -914,8 +914,8 @@ resetSerch.addEventListener('click', () => {
 // プルダウン表示
 const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
-let sortMode = "insert";
-let sort = "asc";
+let sortMode = 'insert';
+let sort = 'asc';
 
 const ascIcon = document.getElementById('asc-icon');
 const descIcon = document.getElementById('desc-icon');
@@ -954,7 +954,7 @@ sortIcon.addEventListener('click', () => {
 const sortInsert = document.getElementById('sort-insert');
 sortInsert.addEventListener('click', () => {
 	// 追加日時の処理をここに追加
-	sortMode = "insert";
+	sortMode = 'insert';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
@@ -962,7 +962,7 @@ sortInsert.addEventListener('click', () => {
 const sortUpdate = document.getElementById('sort-update');
 sortUpdate.addEventListener('click', () => {
 	// 更新日時の処理をここに追加
-	sortMode = "update";
+	sortMode = 'update';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
@@ -970,7 +970,7 @@ sortUpdate.addEventListener('click', () => {
 const sortCook = document.getElementById('sort-cook');
 sortCook.addEventListener('click', () => {
 	// 料理名の処理をここに追加
-	sortMode = "cook";
+	sortMode = 'cook';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
@@ -978,7 +978,7 @@ sortCook.addEventListener('click', () => {
 const sortCheckbox = document.getElementById('sort-checkbox');
 sortCheckbox.addEventListener('click', () => {
 	// チェックボックスの処理をここに追加
-	sortMode = "checkbox";
+	sortMode = 'checkbox';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
@@ -1081,13 +1081,13 @@ function dropdownColor(order) {
 // 並び替え条件のテキスト
 function updateDropdownIcon() {
 	const sortIconText = document.querySelector('#sort-icon span:last-child'); // <span>要素を取得
-	if (sortMode == "insert"){
+	if (sortMode == 'insert'){
 		sortIconText.textContent = '追加日時順'; // テキストを変更
-	} else if (sortMode == "update") {
+	} else if (sortMode == 'update') {
 		sortIconText.textContent = '更新日時順'; // テキストを変更
-	} else if (sortMode == "cook") {
+	} else if (sortMode == 'cook') {
 		sortIconText.textContent = '料理名順'; // テキストを変更
-	} else if (sortMode == "checkbox") {
+	} else if (sortMode == 'checkbox') {
 		sortIconText.textContent = 'チェック順'; // テキストを変更
 	}
 }
