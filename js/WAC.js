@@ -295,7 +295,9 @@ function displayData(data) {
 		// 削除対象の1行を送信
 		doDeleteSingle.addEventListener('click', (event) => {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
+			console.log(handOver);
 			if (handOver) {
+				handOver = null;
 				deleteModalHidden();
 				overlaySetBlock();
 				// スプレッドシートへの削除リクエストを送信
@@ -318,7 +320,7 @@ function displayData(data) {
 				.then(data => {
 					console.log('Delete successful:', data);
 					if (data.result === 'success') {
-						alert("データを削除しました。");
+//						alert("データを削除しました。");
 						listItem.remove(); // リストアイテムを削除
 						localStorage.removeItem('spreadsheetData');
 						fetchData(); // データを再取得してリストを更新
