@@ -228,6 +228,7 @@ function displayData(data) {
 		// リストアイテムにクリックイベントを追加
 		listItem.addEventListener('click', (event) => {
 			if (deleteMode) {
+				deleteCheckbox.checked = !deleteCheckbox.checked;
 				deleteSelect();
 			}
 			if (event.target !== checkbox && deleteMode == false) { // クリックがチェックボックスでない場合のみ遷移
@@ -249,82 +250,87 @@ function displayData(data) {
 		
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
-			deleteCheckbox.checked = !deleteCheckbox.checked; // チェックボックスの状態を切り替え
-			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
-			if (deleteCheckbox.checked) {
-				listItem.classList.add('selected'); // 選択状態のクラスを追加
-				// 削除対象の行を追加する					
-				if (!rowsToDelete.includes(sheetRowIndex)) {
-					rowsToDelete.push(sheetRowIndex); // 行番号を追加
-				}
-			} else {
-				listItem.classList.remove('selected'); // 選択状態のクラスを削除
-				const index = rowsToDelete.indexOf(sheetRowIndex);
-				if (index > -1) {
-					rowsToDelete.splice(index, 1); // 行番号を削除
+			const currentDataDelete = currentData.some(value => value === rowData);
+			if (currentDataDelete) {
+				// チェックボックスの状態に応じてリストアイテムのスタイルを変更
+				if (deleteCheckbox.checked) {
+					listItem.classList.add('selected'); // 選択状態のクラスを追加
+					// 削除対象の行を追加する					
+					if (!rowsToDelete.includes(sheetRowIndex)) {
+						rowsToDelete.push(sheetRowIndex); // 行番号を追加
+					}
+				} else {
+					listItem.classList.remove('selected'); // 選択状態のクラスを削除
+					const index = rowsToDelete.indexOf(sheetRowIndex);
+					if (index > -1) {
+						rowsToDelete.splice(index, 1); // 行番号を削除
+					}
 				}
 			}
 			// ヘッダーの削除レコード数を更新
 			updateSelectedCount();
 		}
 
+		// 削除全選択
+		document.getElementById('done-icon').addEventListener('click', function() {
+			deleteCheckbox.checked = true; // チェックボックスの状態を切り替え
+			deleteSelect();
+		});
+
 		// 削除全解除
 		document.getElementById('remove-done-icon').addEventListener('click', function() {
 			deleteCheckbox.checked = false; // チェックボックスの状態を切り替え
-			// チェックボックスの状態に応じてリストアイテムのスタイルを変更
-			listItem.classList.remove('selected'); // 選択状態のクラスを削除
-			const index = rowsToDelete.indexOf(sheetRowIndex);
-			if (index > -1) {
-				rowsToDelete.splice(index, 1); // 行番号を削除
-			}
-			// ヘッダーの削除レコード数を更新
-			updateSelectedCount();
-		})
+			deleteSelect();
+		});
 
-/*		deleteButton.addEventListener('click', (event) => {
+		let handOver;
+		deleteButton.addEventListener('click', (event) => {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
 			deleteModalShow();
 			doDeleteSingle.style.display = 'block';
 			doDeleteAll.style.display = 'none';
-		});*/
+			handOver = rowData;
+		});
 
 		// 削除対象の1行を送信
-		deleteButton.addEventListener('click', (event) => {
-		event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
-		deleteModalHidden();
-		// スプレッドシートへの削除リクエストを送信
-		fetch(scriptURL, {
-			method: 'POST',
-			headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: new URLSearchParams({
-				action: 'singleDelete', // 削除アクション
-				row: sheetRowIndex // 行番号を送信
-			}),
-		})
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
+		doDeleteSingle.addEventListener('click', (event) => {
+			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
+			if (handOver) {
+				deleteModalHidden();
+				// スプレッドシートへの削除リクエストを送信
+				fetch(scriptURL, {
+					method: 'POST',
+					headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: new URLSearchParams({
+						action: 'singleDelete', // 削除アクション
+						row: sheetRowIndex // 行番号を送信
+					}),
+				})
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
+				.then(data => {
+					console.log('Delete successful:', data);
+					if (data.result === 'success') {
+						alert("データを削除しました。");
+						listItem.remove(); // リストアイテムを削除
+						localStorage.removeItem('spreadsheetData');
+						fetchData(); // データを再取得してリストを更新
+					} else {
+						alert("削除に失敗しました。該当データが見つかりませんでした。");
+					}
+				})
+				.catch(error => {
+					console.error('Error deleting record:', error);
+					alert("エラーが発生しました。");
+				});
 			}
-			return response.json();
-		})
-		.then(data => {
-			console.log('Delete successful:', data);
-			if (data.result === 'success') {
-				alert("データを削除しました。");
-				listItem.remove(); // リストアイテムを削除
-				localStorage.removeItem('spreadsheetData');
-				fetchData(); // データを再取得してリストを更新
-			} else {
-				alert("削除に失敗しました。該当データが見つかりませんでした。");
-			}
-		})
-		.catch(error => {
-			console.error('Error deleting record:', error);
-			alert("エラーが発生しました。");
 		});
-	});
 
 		display.appendChild(listItem); // リストに追加
 	});
