@@ -248,6 +248,7 @@ span.delete-icon, .update-icon, button {
 
 .search-none-screen {
 	text-align: center;
+	width: 400px;
 	position: absolute;
 	top: 180px;
 	left: 50%; /* 横の中央 */
