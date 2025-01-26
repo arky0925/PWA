@@ -2,6 +2,7 @@ const card = document.getElementById('card');
 
 let startX;
 let currentX = 0;
+let isFlicked = false; // フリック状態を追跡するフラグ
 
 card.addEventListener('touchstart', (event) => {
     startX = event.touches[0].clientX;
@@ -14,14 +15,24 @@ card.addEventListener('touchmove', (event) => {
 });
 
 document.addEventListener('touchend', () => {
+    if (isFlicked) return; // すでにフリックされている場合は何もしない
+
     if (currentX > 100) {
         // 右にフリック
         card.style.transform = 'translateX(120%)';
         console.log('右に仕訳けました');
+        isFlicked = true; // フリック状態を更新
+        setTimeout(() => {
+        resetCardState();
+    }, 1000);
     } else if (currentX < -100) {
         // 左にフリック
         card.style.transform = 'translateX(-120%)';
         console.log('左に仕訳けました');
+        isFlicked = true; // フリック状態を更新
+        setTimeout(() => {
+        resetCardState();
+    }, 1000);
     } else {
         // 元の位置に戻す
         card.style.transform = 'translateX(0)';
@@ -29,31 +40,38 @@ document.addEventListener('touchend', () => {
     currentX = 0; // リセット
 });
 
+// サムアップアイコンのクリックイベント
 const thumbUpIcon = document.getElementById('thumb-up-icon');
 
 thumbUpIcon.addEventListener('click', () => {
-    const computedStyle = window.getComputedStyle(card);
-    const transformValue = computedStyle.transform;
+    if (isFlicked) return; // すでにフリックされている場合は何もしない
 
-    if (!transformValue.includes('matrix') || !transformValue.includes('1.2')) {
-        card.style.transform = 'translateX(120%)';
-        console.log('右に仕訳けました');
-    } else {
-        console.log('すでに右に仕訳けました');
-    }
+    card.style.transform = 'translateX(120%)';
+    console.log('右に仕訳けました');
+    isFlicked = true; // フリック状態を更新
+
+    setTimeout(() => {
+        resetCardState();
+    }, 1000);
 });
+
+// ハートボタンのクリックイベント
 const heartBroken = document.getElementById('heart-broken');
 
 heartBroken.addEventListener('click', () => {
-    // 現在のtransformの値をチェック
-    const computedStyle = window.getComputedStyle(card);
-    const transformValue = computedStyle.transform;
+    if (isFlicked) return; // すでにフリックされている場合は何もしない
 
-    // translateX(-120%) の状態ではない場合のみ実行
-    if (!transformValue.includes('matrix') || !transformValue.includes('-1.2')) {
-        card.style.transform = 'translateX(-120%)';
-        console.log('左に仕訳けました');
-    } else {
-        console.log('すでに左に仕訳けました');
-    }
+    card.style.transform = 'translateX(-120%)';
+    console.log('左に仕訳けました');
+    isFlicked = true; // フリック状態を更新
+
+    setTimeout(() => {
+        resetCardState();
+    }, 1000);
 });
+
+// フリックが完了した後に元の状態に戻す処理を追加
+function resetCardState() {
+    isFlicked = false; // フリック状態をリセット
+    card.style.transform = 'translateX(0)'; // 元の位置に戻す
+}
