@@ -283,7 +283,7 @@ span.delete-icon, .update-icon, button {
 	padding: 30px;
 	margin: 0; /* マージンをリセット */
 	border-radius: 10px;
-	background-color: #003b5b;
+	background-color: #C9A7A3;
 	position: fixed; /* 固定位置に設定 */
 	top: 40%; /* 縦の位置を上に移動（例: 40%） */
 	left: 50%; /* 横中央に配置 */
@@ -404,7 +404,7 @@ h4 {
 }
 
 .close-button {
-	color: #aaa;
+	color: #ffffff;
 	font-size: 28px;
 	font-weight: bold;
 	position: relative; /* 絶対位置を設定 */
@@ -456,7 +456,7 @@ textarea:focus {
 
 #submit1, #submit2 {
 	border: none;
-	background-color: orangered;
+	background-color: #ff4d4d;
 	color: white;
 	width: 100%;
 	margin-top: 20px;
