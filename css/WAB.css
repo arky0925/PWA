@@ -1,5 +1,5 @@
-main{
-    overflow: hidden;
+body {
+    overflow: hidden; /* スクロールを禁止 */
 }
 
 .container {
