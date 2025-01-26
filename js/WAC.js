@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyHoYVZkbuF8zxX66T81gsflagBb3G79eXvZm41rrMsaeLMyijCSaid7XuulQR5kfZi/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyrEgc8kGRqF6wXO6m_qDnFerYkeIhoTqkeALbDBi6MtpzKZ-K4rttVKxJpNbv3NbSr/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -143,7 +143,7 @@ function displayData(data) {
 				   chacheRow[4] === insertTimeValue && // 5列目で比較
 				   chacheRow[5] === updateTimeValue; // 6列目で比較
 		});
-		
+
 		// スプレッドシート上の行番号
 		const sheetRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
 
@@ -247,7 +247,7 @@ function displayData(data) {
 				footerOverlay.style.display = 'block';
 			}
 		});
-		
+
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
 			const currentDataDelete = currentData.some(value => value === rowData);
@@ -348,10 +348,10 @@ function updateSelectedCount() {
 // スプレッドシートを更新する関数（チェックボックス）
 function updateCheckbox(row, isChecked) {
 	const action = isChecked ? 'check' : 'uncheck'; // 更新アクションの決定
-	
+
 	// オーバーレイを表示
 	overlaySetBlock();
-	
+
 	fetch(scriptURL, {
 		method: 'POST',
 		headers: {
@@ -389,7 +389,7 @@ function updateBookmark(row, isBookmarked) {
 
 	// オーバーレイを表示
 	overlaySetBlock();
-	
+
 	fetch(scriptURL, {
 		method: 'POST',
 		headers: {
@@ -481,7 +481,7 @@ const insertForm = document.forms['insert-form'];
 
 insertForm.addEventListener('submit', e => {
 	e.preventDefault();
-	
+
 	const insertFormData = new FormData(insertForm);
 
 	insertModal.style.display = 'none'; // モーダルを非表示
@@ -531,14 +531,14 @@ updateForm.addEventListener('submit', function(event) {
 		// localStorageを更新
 		localStorage.setItem('spreadsheetData', JSON.stringify(currentData));
 		displayData(currentData); // 更新されたデータを表示
-	} 
+	}
 
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	updateModal.style.display = 'none'; // モーダルを非表示
 	overlaySetBlock();
 
 	const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
-	
+
 	// 更新アクションと行番号を追加
 	updateFormData.append('action', 'update'); // actionを'update'に設定
 	updateFormData.append('row', chacheRowIndex); // 更新する行番号を追加
@@ -671,7 +671,7 @@ function deleteModeChange() {
 	deleteButton(deleteMode); // 単体削除ボタンの表示を切り替える関数
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
-	
+
 	// add-icon,update-conの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
@@ -719,24 +719,24 @@ function deleteModeChange() {
 // ヘッダーの色を切り替える関数
 function headerColor(isVisible) {
 	const header = document.getElementById('header');
-		if (isVisible) {
-			header.classList.add('header-delete-mode');
-		} else {
-			header.classList.remove('header-delete-mode');
-		} 
+	if (isVisible) {
+		header.classList.add('header-delete-mode');
+	} else {
+		header.classList.remove('header-delete-mode');
+	}
 }
 
 // ヘッダーの文字を切り替える関数
 function headerChar(isVisible) {
 	const cancelButton = document.querySelector('.left');
 	const title = document.querySelector('.center');
-		if (isVisible) {
-			cancelButton.classList.remove('hidden'); // キャンセルボタンを非表示
-			title.classList.remove('hidden'); // タイトルを非表示
-		} else {
-			cancelButton.classList.add('hidden'); // キャンセルボタンを非表示
-			title.classList.add('hidden'); // タイトルを非表示
-		} 
+	if (isVisible) {
+		cancelButton.classList.remove('hidden'); // キャンセルボタンを非表示
+		title.classList.remove('hidden'); // タイトルを非表示
+	} else {
+		cancelButton.classList.add('hidden'); // キャンセルボタンを非表示
+		title.classList.add('hidden'); // タイトルを非表示
+	}
 }
 
 // チェックボックスの表示を切り替える関数
