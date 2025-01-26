@@ -152,7 +152,7 @@ function displayData(data) {
 		checkbox.type = 'checkbox';
 		checkbox.checked = row[0] === true; // チェックボックスの状態を設定
 		listItem.appendChild(checkbox); // チェックボックスをリストアイテムに追加
-		
+
 		// チェックボックスの変更イベント
 		checkbox.addEventListener('change', (event) => {
 			// チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない

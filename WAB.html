@@ -10,15 +10,20 @@
 	<link rel="stylesheet" href="css/WAB.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="ServiceWorker.js" defer></script>
-	<script src="master/master.js"></script>
+	<script src="master/master.js" defer></script>
 	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
-	<script src="js/WAB.js"></script>
+	<script src="js/WAB.js" defer></script>
 </head>
 <body>
 	<header>
 		PWA
 	</header>
 	<main>
+		<div class="container">
+			<div class="card" id="card">フリックして仕訳け</div>
+		</div>
+		<span id="thumb-up-icon" class="material-icons-local judgeIcon thumb-up-icon">thumb_up_alt</span>
+		<span id="heart-broken" class="material-icons-local judgeIcon heart-broken">heart_broken</span>
 	</main>
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </body>
