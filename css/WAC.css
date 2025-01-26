@@ -77,7 +77,7 @@ span.delete-icon, .update-icon, button {
 	width: 230px; /* 幅 */
 	/* 位置調整 */
 	top: 120px; /* ボタンの下に表示（必要に応じて調整） */
-	left: 90px; /* 左からの距離（必要に応じて調整） */
+	right: 70px; /* 右からの距離（必要に応じて調整） */
 }
 
 .dropdown ul {

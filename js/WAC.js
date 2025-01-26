@@ -212,9 +212,8 @@ function displayData(data) {
 		listItem.appendChild(deleteCheckbox); // 2つめのチェックボックスをリストアイテムに追加
 
 		// 削除チェックボックスの変更イベント（必要に応じて追加）
-		deleteCheckbox.addEventListener('change', (event) => {
-			// 削除チェックボックスの変更時にリストアイテムのクリックイベントをトリガーしない
-			event.stopPropagation();
+		deleteCheckbox.addEventListener('change', function() {
+			deleteCheckbox.checked = !deleteCheckbox.checked;
 			deleteSelect();
 		});
 
@@ -295,7 +294,6 @@ function displayData(data) {
 		// 削除対象の1行を送信
 		doDeleteSingle.addEventListener('click', (event) => {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
-			console.log(handOver);
 			if (handOver) {
 				handOver = null;
 				deleteModalHidden();
@@ -473,7 +471,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		sideMenuClose(); // フッターとモーダルのオーバーレイ非表示を含む
 		deleteModal.style.display = 'none';
 	});
-
 });
 
 // 新規追加フォーム送信
