@@ -64,14 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function sideMenuOpen() {
 	sideMenu.classList.add('open');
 	modalOverlay.style.display = 'block';
-	footerOverlay.style.display = 'block';
+	HFOverlaySetBlock();
 }
 
 // サイドメニューを閉じる
 function sideMenuClose() {
 	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
-	footerOverlay.style.display = 'none';
+	HFOverlaySetNone();
 	updateFilterIcon(); // 絞り込み条件の有無
 }
 
@@ -176,6 +176,11 @@ function displayData(data) {
 		textNode.textContent = secondColumnText; // テキストを設定
 		listItem.appendChild(textNode); // spanをリストアイテムに追加
 
+		// チェックボックスの状態に応じて取り消し線を設定
+		if (checkbox.checked) {
+			textNode.style.textDecoration = 'line-through'; // チェックされている場合は取り消し線を追加
+		}
+
 		// ブックマーク中アイコンを作成
 		const bookmarkOn = document.createElement('span');
 		bookmarkOn.textContent = 'bookmark';
@@ -250,8 +255,7 @@ function displayData(data) {
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
-				headerOverlay.style.display = 'block';
-				footerOverlay.style.display = 'block';
+				HFOverlaySetBlock();
 			}
 		});
 
@@ -467,9 +471,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	modalOverlay.addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		updateModal.style.display = 'none'; // モーダルを非表示
-		headerOverlay.style.display = 'none';
 		insertForm.reset(); // フォームの内容をクリア
-		sideMenuClose(); // フッターとモーダルのオーバーレイ非表示を含む
+		sideMenuClose(); // ヘッダー、フッター、モーダルのオーバーレイ非表示を含む
 		deleteModal.style.display = 'none';
 	});
 });
@@ -522,7 +525,7 @@ insertForm.addEventListener('submit', function(event) {
 			return response.json(); // レスポンスをJSON形式で取得
 		})
 		.then(data => {
-			console.log(data); // レスポンスの内容を確認
+			console.log('Insert successful:', data); // レスポンスの内容を確認
 		})
 		.catch(error => {
 			console.error('Error!', error.message);
@@ -569,7 +572,7 @@ updateForm.addEventListener('submit', function(event) {
 			return response.json(); // レスポンスをJSON形式で取得
 		})
 		.then(data => {
-			console.log(data); // レスポンスの内容を確認
+			console.log('Update successful:', data); // レスポンスの内容を確認
 		})
 		.catch(error => {
 			console.error('Error!', error.message);
@@ -661,15 +664,13 @@ const doDeleteAll = document.getElementById('doDeleteAll');
 function deleteModalShow() {
 	deleteModal.style.display = 'block'; // モーダルを表示
 	modalOverlay.style.display = 'block'; // オーバーレイを表示
-	headerOverlay.style.display = 'block';
-	footerOverlay.style.display = 'block';
+	HFOverlaySetBlock();
 }
 
 function deleteModalHidden() {
 	deleteModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
-	headerOverlay.style.display = 'none';
-	footerOverlay.style.display = 'none';
+	HFOverlaySetNone();
 }
 
 document.getElementById('deleteCancel').addEventListener('click', () => {
