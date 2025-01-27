@@ -14,12 +14,20 @@ window.onload = function() {
 
 function overlaySetBlock() {
 	reloadOverlay.style.display = 'block';
-	headerOverlay.style.display = 'block';
-	footerOverlay.style.display = 'block';
+	HFOverlaySetBlock();
 }
 
 function overlaySetNone() {
 	reloadOverlay.style.display = 'none';
+	HFOverlaySetNone();
+}
+
+function HFOverlaySetBlock() {
+	headerOverlay.style.display = 'block';
+	footerOverlay.style.display = 'block';
+}
+
+function HFOverlaySetNone() {
 	headerOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 }
@@ -326,7 +334,7 @@ function displayData(data) {
 				})
 				.catch(error => {
 					console.error('Error deleting record:', error);
-					alert("エラーが発生しました。");
+					// alert("エラーが発生しました。");
 				});
 			}
 		});
@@ -381,7 +389,7 @@ function updateCheckbox(row, isChecked) {
 	})
 	.catch(error => {
 		console.error('Error updating spreadsheet:', error);
-		alert("エラーが発生しました。");
+		// alert("エラーが発生しました。");
 	})
 }
 
@@ -421,7 +429,7 @@ function updateBookmark(row, isBookmarked) {
 	})
 	.catch(error => {
 		console.error('Error updating spreadsheet:', error);
-		alert("エラーが発生しました。");
+		// alert("エラーが発生しました。");
 	})
 }
 
@@ -437,16 +445,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	addIcon.addEventListener('click', function() {
 		insertModal.style.display = 'block'; // モーダルを表示
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
-		headerOverlay.style.display = 'block';
-		footerOverlay.style.display = 'block';
+		HFOverlaySetBlock();
 	});
 
 	// モーダルを閉じる
 	closeModal1.addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
-		headerOverlay.style.display = 'none';
-		footerOverlay.style.display = 'none';
+		HFOverlaySetNone();
 		insertForm.reset(); // フォームの内容をクリア
 	});
 
@@ -454,8 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	closeModal2.addEventListener('click', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
-		headerOverlay.style.display = 'none';
-		footerOverlay.style.display = 'none';
+		HFOverlaySetNone();
 	});
 
 	// モーダルの外側（オーバーレイ）をクリックしたときに閉じる
@@ -476,6 +481,7 @@ insertForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 	insertModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
+	HFOverlaySetNone();
 
 	const insertModal1 = document.getElementById('insertModal1').value;
 	const insertModal2 = document.getElementById('insertModal2').value;
@@ -520,7 +526,7 @@ insertForm.addEventListener('submit', function(event) {
 		})
 		.catch(error => {
 			console.error('Error!', error.message);
-			alert("エラーが発生しました。");
+			// alert("エラーが発生しました。");
 		})
 });
 
@@ -531,6 +537,7 @@ updateForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 	updateModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
+	HFOverlaySetNone();
 
 	const sheetRowIndex = parseInt(updateModal.dataset.sheetRowIndex) - 2; // キャッシュデータ内の行番号を取得
 	const updateModal1 = document.getElementById('updateModal1').value;
@@ -566,7 +573,7 @@ updateForm.addEventListener('submit', function(event) {
 		})
 		.catch(error => {
 			console.error('Error!', error.message);
-			alert("エラーが発生しました。");
+			// alert("エラーが発生しました。");
 		})
 });
 
@@ -611,7 +618,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // 削除するレコードを選択する関数
 function deleteSelectedRecords() {
 	deleteModalHidden();
-console.log(rowsToDelete);
 	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
 	for (let i = rowsToDelete.length - 1; i >= 0; i--) {
 		cachedData.splice(rowsToDelete[i] - 2, 1); // 1は削除する要素の数
@@ -643,7 +649,7 @@ console.log(rowsToDelete);
 	})
 	.catch(error => {
 		console.error('Error deleting records:', error);
-		alert("エラーが発生しました。");
+		// alert("エラーが発生しました。");
 	});
 }
 

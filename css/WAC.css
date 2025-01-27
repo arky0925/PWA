@@ -463,14 +463,6 @@ textarea:focus {
 	border-radius: 5px;
 }
 
-#submit1:hover{
-	background-color: #333333;
-}
-
-#submit2:hover{
-	background-color: #333333;
-}
-
 /* リストのスタイル */
 #dataDisplay {
 	list-style-type: none; /* 点を非表示にする */
