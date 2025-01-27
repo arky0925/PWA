@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyrEgc8kGRqF6wXO6m_qDnFerYkeIhoTqkeALbDBi6MtpzKZ-K4rttVKxJpNbv3NbSr/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyoh3tqzxwFgc4qXpJevTTYXnCA-hL-LccJ8tdFNWi6TT6XpeMCMV3URVAFDjsS5Cp5/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -232,12 +232,12 @@ function displayData(data) {
 			}
 			if (event.target !== checkbox && deleteMode == false) { // クリックがチェックボックスでない場合のみ遷移
 				// モーダルにデータを渡す
-				document.getElementById('modalInput1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
-				document.getElementById('modalInput2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
+				document.getElementById('updateModal1').value = (rowData[1] !== undefined && rowData[1] !== null) ? rowData[1] : ''; // データ1を設定
+				document.getElementById('updateModal2').value = (rowData[2] !== undefined && rowData[2] !== null) ? rowData[2] : ''; // データ2を設定
 				console.log(`Filtered Row Index: ${rowIndex}, Original Row Index: ${sheetRowIndex}`); // デバッグ用
 				// 行番号をデータ属性に設定
 				updateModal.dataset.rowIndex = rowIndex; // 検索結果内の行番号を設定
-				updateModal.dataset.chacheRowIndex = sheetRowIndex; // キャッシュデータ内の行番号を設定
+				updateModal.dataset.sheetRowIndex = sheetRowIndex; // キャッシュデータ内の行番号を設定
 
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
@@ -297,7 +297,14 @@ function displayData(data) {
 			if (handOver) {
 				handOver = null;
 				deleteModalHidden();
-				overlaySetBlock();
+//				overlaySetBlock();
+
+				const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+				cachedData.splice(sheetRowIndex - 2, 1); // 1は削除する要素の数
+				localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+
+				search();
+				
 				// スプレッドシートへの削除リクエストを送信
 				fetch(scriptURL, {
 					method: 'POST',
@@ -319,9 +326,8 @@ function displayData(data) {
 					console.log('Delete successful:', data);
 					if (data.result === 'success') {
 //						alert("データを削除しました。");
-						listItem.remove(); // リストアイテムを削除
-						localStorage.removeItem('spreadsheetData');
-						fetchData(); // データを再取得してリストを更新
+//						localStorage.removeItem('spreadsheetData');
+//						fetchData(); // データを再取得してリストを更新
 					} else {
 						alert("削除に失敗しました。該当データが見つかりませんでした。");
 					}
@@ -346,9 +352,22 @@ function updateSelectedCount() {
 // スプレッドシートを更新する関数（チェックボックス）
 function updateCheckbox(row, isChecked) {
 	const action = isChecked ? 'check' : 'uncheck'; // 更新アクションの決定
+	const now = new Date();
+	const formattedDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
 	// オーバーレイを表示
-	overlaySetBlock();
+//	overlaySetBlock();
+
+	// キャッシュの更新
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+	const rowIndex = row - 2; // 1ベースから0ベースに変換
+	if (cachedData && cachedData[rowIndex]) {
+		cachedData[rowIndex][0] = isChecked; // ブックマークの値を更新
+		cachedData[rowIndex][5] = formattedDate; // 更新日時の値を更新
+		localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+	}
+
+	search();
 
 	fetch(scriptURL, {
 		method: 'POST',
@@ -360,6 +379,7 @@ function updateCheckbox(row, isChecked) {
 			row: row,
 			// チェックボックスの列のインデックスを追加
 			checkbox: isChecked,
+			updateTime: formattedDate,
 		}),
 	})
 	.then(response => {
@@ -370,9 +390,7 @@ function updateCheckbox(row, isChecked) {
 	})
 	.then(data => {
 		console.log('Update successful:', data);
-		// キャッシュの更新
-		localStorage.removeItem('spreadsheetData');
-		fetchData(); // 更新後にデータを再取得
+//		fetchData(); // 更新後にデータを再取得
 //		alert('成功');
 	})
 	.catch(error => {
@@ -386,7 +404,17 @@ function updateBookmark(row, isBookmarked) {
 	const action = isBookmarked ? 'bookmark' : 'unbookmark'; // 更新アクションの決定
 
 	// オーバーレイを表示
-	overlaySetBlock();
+//	overlaySetBlock();
+
+	// キャッシュの更新
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+	const rowIndex = row - 2; // 1ベースから0ベースに変換
+	if (cachedData && cachedData[rowIndex]) {
+		cachedData[rowIndex][3] = isBookmarked; // ブックマークの値を更新
+		localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+	}
+
+	search();
 
 	fetch(scriptURL, {
 		method: 'POST',
@@ -408,25 +436,13 @@ function updateBookmark(row, isBookmarked) {
 	})
 	.then(data => {
 		console.log('Update successful:', data);
-		// キャッシュの更新
-		const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
-		const rowIndex = row - 2; // 1ベースから0ベースに変換
-		if (cachedData && cachedData[rowIndex]) {
-			cachedData[rowIndex][3] = isBookmarked; // ブックマークの値を更新
-			localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
-		}
-
-		fetchData(); // 更新後にデータを再取得
+//		fetchData(); // 更新後にデータを再取得
 //		alert('成功');
 	})
 	.catch(error => {
 		console.error('Error updating spreadsheet:', error);
 //		alert('失敗');
 	})
-	.finally(() => {
-		// オーバーレイを非表示
-		overlaySetNone();
-	});
 }
 
 // モーダル関連
@@ -476,18 +492,42 @@ document.addEventListener('DOMContentLoaded', function() {
 // 新規追加フォーム送信
 const insertForm = document.forms['insert-form'];
 
-insertForm.addEventListener('submit', e => {
-	e.preventDefault();
+insertForm.addEventListener('submit', function(event) {
+	event.preventDefault(); // デフォルトの送信を防ぐ
+	
+	const insertModal1 = document.getElementById('insertModal1').value;
+	const insertModal2 = document.getElementById('insertModal2').value;
 
-	const insertFormData = new FormData(insertForm);
+	const now = new Date();
+	const formattedDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
 	insertModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	insertForm.reset(); // フォームの内容をクリア
-	overlaySetBlock();
+//	overlaySetBlock();
 
-	// FormDataにactionパラメータを追加
+	const newDate = [];
+	newDate.push(false);
+	newDate.push(insertModal1);
+	newDate.push(insertModal2);
+	newDate.push(false);
+	newDate.push(formattedDate);
+	newDate.push(formattedDate);
+
+	// キャッシュの更新
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+	cachedData.push(newDate);
+	localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+
+	search();
+
+	const insertFormData = new FormData(insertForm); // フォームデータを新たに作成
+
+	// FormDataにパラメータを追加
 	insertFormData.append('action', 'add'); // actionを'add'に設定
+	insertFormData.append('data1', insertModal1); // モーダルの入力データを設定
+	insertFormData.append('data2', insertModal2); // モーダルの入力データを設定
+	insertFormData.append('time', formattedDate); // 追加、更新時間を設定
 
 	fetch(scriptURL, { method: 'POST', body: insertFormData })
 		.then(response => {
@@ -499,13 +539,10 @@ insertForm.addEventListener('submit', e => {
 		.then(data => {
 //			alert("登録しました。");
 			console.log(data); // レスポンスデータをログに出力（デバッグ用）
-			localStorage.removeItem('spreadsheetData');
-			fetchData(); // データを再取得してリストを更新
+//			localStorage.removeItem('spreadsheetData');
+//			fetchData(); // データを再取得してリストを更新
 		})
 		.catch(error => console.error('Error!', error.message));
-
-	localStorage.removeItem('spreadsheetData');
-	// alert('キャッシュがクリアされました。');
 });
 
 // 更新フォーム送信
@@ -514,35 +551,32 @@ const updateForm = document.forms['update-form'];
 updateForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 
-	const rowIndex = parseInt(updateModal.dataset.rowIndex); // 検索結果内の行番号を取得
-	const chacheRowIndex = parseInt(updateModal.dataset.chacheRowIndex); // キャッシュデータ内の行番号を取得
+	const sheetRowIndex = parseInt(updateModal.dataset.sheetRowIndex) - 2; // キャッシュデータ内の行番号を取得
+	const updateModal1 = document.getElementById('updateModal1').value;
+	const updateModal2 = document.getElementById('updateModal2').value;
 
-	const modalInput1 = document.getElementById('modalInput1').value;
-	const modalInput2 = document.getElementById('modalInput2').value;
+	// キャッシュの更新
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+	console.log(cachedData);
+	cachedData[sheetRowIndex][1] = updateModal1; // 1列目を更新
+	cachedData[sheetRowIndex][2] = updateModal2; // 2列目を更新
+	localStorage.setItem('spreadsheetData', JSON.stringify(cachedData));
 
-	// currentDataを更新
-	if (rowIndex !== -1 && currentData[rowIndex]) {
-		currentData[rowIndex][1] = modalInput1; // 1列目を更新
-		currentData[rowIndex][2] = modalInput2; // 2列目を更新
-
-		// localStorageを更新
-		localStorage.setItem('spreadsheetData', JSON.stringify(currentData));
-		displayData(currentData); // 更新されたデータを表示
-	}
+	search(); // 更新されたデータを表示
 
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	updateModal.style.display = 'none'; // モーダルを非表示
-	overlaySetBlock();
+//	overlaySetBlock();
 
 	const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
 
 	// 更新アクションと行番号を追加
 	updateFormData.append('action', 'update'); // actionを'update'に設定
-	updateFormData.append('row', chacheRowIndex); // 更新する行番号を追加
+	updateFormData.append('row', sheetRowIndex + 2); // 更新する行番号を追加
 
 	// モーダルの入力データを追加
-	updateFormData.append('data1', modalInput1);
-	updateFormData.append('data2', modalInput2);
+	updateFormData.append('data1', updateModal1);
+	updateFormData.append('data2', updateModal2);
 
 	fetch(scriptURL, { method: 'POST', body: updateFormData })
 		.then(response => {
@@ -555,8 +589,8 @@ updateForm.addEventListener('submit', function(event) {
 			console.log(data); // レスポンスの内容を確認
 			if (data.result === 'success') {
 //				alert("データが更新されました。");
-				localStorage.removeItem('spreadsheetData');
-				fetchData(); // データを再取得してリストを更新
+//				localStorage.removeItem('spreadsheetData');
+//				fetchData(); // データを再取得してリストを更新
 			} else {
 				alert("更新に失敗しました。");
 			}
@@ -584,7 +618,7 @@ document.getElementById('delete-icon-true').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	doDeleteAll.addEventListener('click', () => {
-		overlaySetBlock();
+//		overlaySetBlock();
 		deleteModeChange(); // 削除モード=FALSE
 		// 削除処理を実行
 		deleteSelectedRecords();
@@ -606,6 +640,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // 削除するレコードを選択する関数
 function deleteSelectedRecords() {
 	deleteModalHidden();
+console.log(rowsToDelete);
+	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
+	for (let i = rowsToDelete.length - 1; i >= 0; i--) {
+		cachedData.splice(rowsToDelete[i] - 2, 1); // 1は削除する要素の数
+	}
+	localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
+
+	search();
+
 	// 削除リクエストを送信
 	fetch(scriptURL, {
 		method: 'POST',
@@ -626,8 +669,8 @@ function deleteSelectedRecords() {
 	.then(data => {
 		console.log('Delete successful:', data);
 //		alert("データを削除しました。");
-		localStorage.removeItem('spreadsheetData');
-		fetchData(); // データを再取得してリストを更新
+//		localStorage.removeItem('spreadsheetData');
+//		fetchData(); // データを再取得してリストを更新
 		// rowsToDeleteを初期化
 		rowsToDelete.length = 0; // 配列を空にする
 	})
@@ -649,8 +692,8 @@ function deleteModalShow() {
 }
 
 function deleteModalHidden() {
-	deleteModal.style.display = 'none'; // モーダルを表示
-	modalOverlay.style.display = 'none'; // オーバーレイを表示
+	deleteModal.style.display = 'none'; // モーダルを非表示
+	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	headerOverlay.style.display = 'none';
 	footerOverlay.style.display = 'none';
 }
