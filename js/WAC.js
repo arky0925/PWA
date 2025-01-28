@@ -75,6 +75,25 @@ function sideMenuClose() {
 	updateFilterIcon(); // 絞り込み条件の有無
 }
 
+// オプションメニュー開閉
+const optionMenu = document.getElementById('option-menu');
+const settingIcon = document.getElementById('setting-icon');
+document.addEventListener('DOMContentLoaded', () => {
+
+	// オプションを開く
+	settingIcon.addEventListener('click', () => {
+		headerOverlay.style.display = 'block';
+		optionMenu.classList.add('open');
+	});
+
+	// メニューを閉じる
+	const closeOptionMenu = document.getElementById('close-option-menu');
+	closeOptionMenu.addEventListener('click', () => {
+		headerOverlay.style.display = 'none';
+		optionMenu.classList.remove('open');
+	});
+});
+
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
 
@@ -743,13 +762,16 @@ function headerColor(isVisible) {
 
 // ヘッダーの文字を切り替える関数
 function headerChar(isVisible) {
-	const cancelButton = document.querySelector('.left');
+	const cancelButton = document.getElementById('cancelButton');
+	const settingIcon = document.getElementById('setting-icon');
 	const title = document.querySelector('.center');
 	if (isVisible) {
-		cancelButton.classList.remove('hidden'); // キャンセルボタンを非表示
-		title.classList.remove('hidden'); // タイトルを非表示
+		cancelButton.style.display = 'inline'; // キャンセルボタンを表示
+		settingIcon.style.display = 'none'; // キャンセルボタンを非表示
+		title.classList.remove('hidden'); // タイトルを表示
 	} else {
-		cancelButton.classList.add('hidden'); // キャンセルボタンを非表示
+		cancelButton.style.display = 'none'; // キャンセルボタンを非表示
+		settingIcon.style.display = 'inline'; // キャンセルボタンを表示
 		title.classList.add('hidden'); // タイトルを非表示
 	}
 }
@@ -1130,4 +1152,68 @@ window.addEventListener('scroll', function() {
 // ヘルプページへ遷移
 document.getElementById('help-icon').addEventListener('click', () => {
 	window.location.href = 'index.html'; // 遷移先のページ
+});
+
+// テーマ設定開閉
+const themeOption = document.getElementById('option-theme');
+const theme = document.getElementById('theme');
+document.addEventListener('DOMContentLoaded', () => {
+
+	// オプションを開く
+	theme.addEventListener('click', () => {
+		themeOption.classList.add('open');
+	});
+
+	// メニューを閉じる
+	const closeOptionTheme = document.getElementById('close-option-theme');
+	closeOptionTheme.addEventListener('click', () => {
+		themeOption.classList.remove('open');
+	});
+});
+
+function changeThemeColor(headerColor, backgroundColor, buttonColor) {
+	document.documentElement.style.setProperty('--header-color', headerColor);
+	document.documentElement.style.setProperty('--background-color', backgroundColor);
+	document.documentElement.style.setProperty('--button-color', buttonColor);
+
+	// localStorageに保存
+	localStorage.setItem('headerColor', headerColor);
+	localStorage.setItem('backgroundColor', backgroundColor);
+	localStorage.setItem('buttonColor', buttonColor);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	// localStorageからテーマカラーを取得
+	const headerColor = localStorage.getItem('headerColor') || '#C9A7A3'; // デフォルト色
+	const backgroundColor = localStorage.getItem('backgroundColor') || '#fff2f2'; // デフォルト色
+	const buttonColor = localStorage.getItem('buttonColor') || '#FFC4C4'; // デフォルト色
+
+	// カラーを適用
+	changeThemeColor(headerColor, backgroundColor, buttonColor);
+
+	// イベントリスナーの設定
+	document.getElementById('color-check1').addEventListener('click', () => {
+		changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
+	});
+	document.getElementById('color-check2').addEventListener('click', () => {
+		changeThemeColor('#F44336', '#FFEBEE', '#FF8A80');
+	});
+	document.getElementById('color-check3').addEventListener('click', () => {
+		changeThemeColor('#9C27B0', '#E1BEE7', '#EA80FC');
+	});
+	document.getElementById('color-check4').addEventListener('click', () => {
+		changeThemeColor('#2196F3', '#E3F2FD', '#82B1FF');
+	});
+	document.getElementById('color-check5').addEventListener('click', () => {
+		changeThemeColor('#009688', '#E0F2F1', '#A7FFEB');
+	});
+	document.getElementById('color-check6').addEventListener('click', () => {
+		changeThemeColor('#FFEB3B', '#FFFDE7', '#FFFF8D');
+	});
+	document.getElementById('color-check7').addEventListener('click', () => {
+		changeThemeColor('#795548', '#EFEBE9', '#8D6E63');
+	});
+	document.getElementById('color-check8').addEventListener('click', () => {
+		changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
+	});
 });
