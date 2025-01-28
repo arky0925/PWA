@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+:root {
+	--header-color: #C9A7A3; /* デフォルトのテーマカラー */
+	--background-color: #fff2f2; /* デフォルトの背景色 */
+	--button-color: #FFC4C4; /* デフォルトのテキスト色 */
+}
+
 html {
   font-size: 100%; /* 基本フォントサイズ */
 }
