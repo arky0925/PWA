@@ -907,7 +907,7 @@ document.getElementById('searchButton').addEventListener('click', () => {
 	updateFilterIcon();
 	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
-	footerOverlay.style.display = 'none';
+	HFOverlaySetNone();
 });
 
 // 絞り込み条件の有無
@@ -1155,19 +1155,19 @@ document.getElementById('help-icon').addEventListener('click', () => {
 });
 
 // テーマ設定開閉
-const themeOption = document.getElementById('option-theme');
+const optionTheme = document.getElementById('option-theme');
 const theme = document.getElementById('theme');
 document.addEventListener('DOMContentLoaded', () => {
 
 	// オプションを開く
 	theme.addEventListener('click', () => {
-		themeOption.classList.add('open');
+		optionTheme.classList.add('open');
 	});
 
 	// メニューを閉じる
 	const closeOptionTheme = document.getElementById('close-option-theme');
 	closeOptionTheme.addEventListener('click', () => {
-		themeOption.classList.remove('open');
+		optionTheme.classList.remove('open');
 	});
 });
 
@@ -1215,5 +1215,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	document.getElementById('color-check8').addEventListener('click', () => {
 		changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
+	});
+});
+
+// パスコード設定開閉
+const optionPassword = document.getElementById('option-password');
+const password = document.getElementById('password');
+document.addEventListener('DOMContentLoaded', () => {
+
+	// オプションを開く
+	password.addEventListener('click', () => {
+		optionPassword.classList.add('open');
+	});
+
+	// メニューを閉じる
+	const closeOptionPassword = document.getElementById('close-option-password');
+	closeOptionPassword.addEventListener('click', () => {
+		optionPassword.classList.remove('open');
 	});
 });

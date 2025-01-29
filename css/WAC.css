@@ -781,3 +781,20 @@ textarea:focus {
 	height: 80px;
 	border-radius: 8px;
 }
+
+/* パスコード設定 */
+.option-password {
+	position: fixed;
+	top: 0;
+	right: -100%; /* 初期状態では画面外 */
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-color);
+	color: #000000;
+	transition: right 0.3s ease-in-out;
+	z-index: 2000;
+}
+
+.option-password.open {
+	right: 0;
+}
