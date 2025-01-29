@@ -1285,7 +1285,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			if (input.value.length === 1 && index < digitInputs.length - 1) {
 				digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
-				// パスワードを設定したら、表示をアスタリスクに変える
 				input.type = 'text';
 				input.type = 'password';
 			}
@@ -1322,7 +1321,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			if (input.value.length === 1 && index < verifyInputs.length - 1) {
 				verifyInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
-				// パスワードを設定したら、表示をアスタリスクに変える
 				input.type = 'text';
 				input.type = 'password'; // 入力されたらアスタリスクにする
 			}

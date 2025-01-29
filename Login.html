@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PWA</title>
+	<!-- 拡大縮小禁止 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta charset="UTF-8">
+	<link rel="manifest" href="manifest.json">
+	<link rel="stylesheet" href="master/master.css">
+	<link rel="stylesheet" href="css/Login.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="ServiceWorker.js" defer></script>
+	<script src="js/Login.js" defer></script>
+</head>
+<body>
+	<div class="form-container">
+		<h2>4桁のパスワードを登録</h2>
+		<div id="firstSection">
+			<div class="input-group">
+				<input type="text" maxlength="1" class="digit-input" id="digit1" inputmode="numeric" pattern="[0-9]*">
+				<input type="text" maxlength="1" class="digit-input" id="digit2" inputmode="numeric" pattern="[0-9]*">
+				<input type="text" maxlength="1" class="digit-input" id="digit3" inputmode="numeric" pattern="[0-9]*">
+				<input type="text" maxlength="1" class="digit-input" id="digit4" inputmode="numeric" pattern="[0-9]*">
+			</div>
+		</div>
+		<p id="message"></p>
+	</div>
+</body>
+</html>

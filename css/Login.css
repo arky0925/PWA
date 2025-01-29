@@ -1,0 +1,26 @@
+body {
+	padding:20px;
+}
+
+.form-container {
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+}
+
+.input-group {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.digit-input {
+	width: 50px;
+	height: 50px;
+	font-size: 24px;
+	text-align: center;
+	margin: 5px 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
