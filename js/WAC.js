@@ -1304,6 +1304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		input.addEventListener('keydown', (event) => {
 			if (event.key === 'Backspace' && input.value === '') {
 				if (index > 0) {
+					input.type = 'text';
 					digitInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
 				}
 			}
@@ -1352,6 +1353,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		input.addEventListener('keydown', (event) => {
 			if (event.key === 'Backspace' && input.value === '') {
 				if (index > 0) {
+					input.type = 'text';
 					verifyInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
 				}
 			}
