@@ -800,69 +800,69 @@ textarea:focus {
 }
 
 .toggle-container {
-    position: relative;
-    width: 60px;
-    height: 34px;
+	position: relative;
+	width: 60px;
+	height: 34px;
 }
 
 .toggle-input {
-    opacity: 0; /* 隠す */
-    width: 0;
-    height: 0;
+	opacity: 0; /* 隠す */
+	width: 0;
+	height: 0;
 }
 
 .toggle-label {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc; /* オフの状態 */
-    border-radius: 34px; /* 丸みをつける */
-    transition: background-color 0.2s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc; /* オフの状態 */
+	border-radius: 34px; /* 丸みをつける */
+	transition: background-color 0.2s;
 }
 
 .toggle-label:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white; /* 丸の色 */
-    border-radius: 50%; /* 丸くする */
-    transition: transform 0.2s;
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white; /* 丸の色 */
+border-radius: 50%; /* 丸くする */
+transition: transform 0.2s;
 }
 
 /* チェックされたときのスタイル */
 .toggle-input:checked + .toggle-label {
-    background-color: #4CAF50; /* 緑色 */
+	background-color: #4CAF50; /* 緑色 */
 }
 
 .toggle-input:checked + .toggle-label:before {
-    transform: translateX(26px); /* 丸を右に移動 */
+	transform: translateX(26px); /* 丸を右に移動 */
 }
 
 .form-container {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
 }
 
 .input-group {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
 }
 
 .digit-input {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    text-align: center;
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+	width: 50px;
+	height: 50px;
+	font-size: 24px;
+	text-align: center;
+	margin: 5px 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
