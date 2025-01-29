@@ -1234,3 +1234,124 @@ document.addEventListener('DOMContentLoaded', () => {
 		optionPassword.classList.remove('open');
 	});
 });
+
+const passToggle = document.getElementById('passToggle');
+const passwordChange = document.getElementById('passwordChange');
+document.addEventListener('DOMContentLoaded', () => {
+	const passwordSettig = document.getElementById('passwordSettig');
+	const closePasswordSetting = document.getElementById('close-password-setting');
+	passToggle.addEventListener('change', () => {
+		message.textContent = ''; // メッセージをクリア
+		if (!registrationSuccess) {
+			console.log('オン');
+			passwordSettig.classList.add('open');
+		} else {
+			console.log('オフ');
+			registrationSuccess =false;
+			passwordChange.style.display = 'none';
+		}
+		
+	});
+	// メニューを閉じる
+	closePasswordSetting.addEventListener('click', () => {
+		passwordSettig.classList.remove('open');
+		message.textContent = ''; // メッセージをクリア
+		passToggle.checked = false; // トグルをオフに戻す
+		                    // 入力をリセット
+                    verifyInputs.forEach(input => input.value = '');
+                    // 1回目のパスワードを再表示
+                    firstSection.style.display = 'block';
+                    verifySection.style.display = 'none'; // 確認セクションを非表示にする
+                    digitInputs.forEach(input => input.value = ''); // 1回目の入力もクリア
+                    digitInputs[0].focus(); // 最初の入力ボックスにフォーカス
+	});
+});
+
+let registrationSuccess = false; // 登録成功のフラグ
+let message = document.getElementById('message');
+    const digitInputs = document.querySelectorAll('#firstSection .digit-input');
+    const verifyInputs = document.querySelectorAll('#verifySection .digit-input');
+    const firstSection = document.getElementById('firstSection');
+    const verifySection = document.getElementById('verifySection');
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    let firstPassword = '';
+
+    // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
+    digitInputs[0].focus();
+
+    // 入力ボックスの自動フォーカス処理
+    digitInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            // 半角数字でない場合はクリア
+            if (!/^[0-9]*$/.test(input.value)) {
+                input.value = '';
+            }
+
+            if (input.value.length === 1 && index < digitInputs.length - 1) {
+                digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
+            }
+
+            // すべての入力ボックスが埋まったらパスワードを確認
+            if (Array.from(digitInputs).every(input => input.value.length === 1)) {
+                firstPassword = Array.from(digitInputs).map(input => input.value).join('');
+                message.textContent = 'パスワードが登録されました。次にもう一度入力してください。';
+                message.style.color = 'green'; // 成功メッセージの色
+
+                // 確認セクションを表示
+                firstSection.style.display = 'none';
+                verifySection.style.display = 'block';
+                verifyInputs[0].focus(); // 確認の最初の入力ボックスにフォーカス
+
+                // 入力をリセット
+                digitInputs.forEach(input => input.value = '');
+            }
+        });
+    });
+
+    // 確認のための入力ボックス
+    verifyInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            // 半角数字でない場合はクリア
+            if (!/^[0-9]*$/.test(input.value)) {
+                input.value = '';
+            }
+
+            if (input.value.length === 1 && index < verifyInputs.length - 1) {
+                verifyInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
+            }
+
+            // すべての確認入力ボックスが埋まったら比較
+            if (Array.from(verifyInputs).every(input => input.value.length === 1)) {
+                const verifyPassword = Array.from(verifyInputs).map(input => input.value).join('');
+
+                // パスワードが一致するか確認
+                if (firstPassword === verifyPassword) {
+					// パスワードをローカルストレージに保存
+                    localStorage.setItem('userPassword', firstPassword);
+                    registrationSuccess = true;
+                    passwordSettig.classList.remove('open');
+
+                    // すべての入力をリセット
+                    digitInputs.forEach(input => input.value = '');
+                    verifyInputs.forEach(input => input.value = '');
+                    firstSection.style.display = 'block';
+                    verifySection.style.display = 'none'; // 確認セクションを非表示にする
+                	passwordChange.style.display = 'flex';
+                } else {
+                    message.textContent = 'パスワードが一致しません。もう一度入力してください。';
+                    message.style.color = 'red'; // エラーメッセージの色
+
+                    // 入力をリセット
+                    verifyInputs.forEach(input => input.value = '');
+                    // 1回目のパスワードを再表示
+                    firstSection.style.display = 'block';
+                    verifySection.style.display = 'none'; // 確認セクションを非表示にする
+                    digitInputs.forEach(input => input.value = ''); // 1回目の入力もクリア
+                    digitInputs[0].focus(); // 最初の入力ボックスにフォーカス
+                }
+            }
+        });
+    });
+});

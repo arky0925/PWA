@@ -194,7 +194,7 @@
 		</div>
 	</div>
 	<!-- テーマ設定 -->
-	<div class="option-theme" id="option-theme">
+	<div id="option-theme" class="option-main ">
 		<div class="option-header">
 			<span id="close-option-theme" class="material-icons">chevron_left</span>
 			<div class="center">テーマ設定</div>
@@ -213,11 +213,48 @@
 		</div>
 	</div>
 	<!-- パスコード設定 -->
-	<div class="option-password" id="option-password">
+	<div id="option-password" class="option-main">
 		<div class="option-header">
 			<span id="close-option-password" class="material-icons">chevron_left</span>
 			<div class="center">パスコード設定</div>
 		</div>
+		<div class="password-block">
+			<span>パスコードロックを有効</span>
+			<div class="toggle-container">
+				<input type="checkbox" id="passToggle" class="toggle-input">
+				<label for="passToggle" class="toggle-label"></label>
+			</div>
+		</div>
+		<div id="passwordChange" class="password-block" style="display: none;">
+			<span>パスコード変更</span>
+			<span class="material-icons">chevron_right</span>
+		</div>
+	</div>
+	<div id="passwordSettig" class="option-main">
+		<div class="option-header">
+			<span id="close-password-setting" class="material-icons">chevron_left</span>
+		</div>
+<div class="form-container">
+    <h2>4桁のパスワードを登録</h2>
+    <div id="firstSection">
+        <div class="input-group">
+            <input type="password" maxlength="1" class="digit-input" id="digit1" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="digit2" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="digit3" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="digit4" inputmode="numeric" pattern="[0-9]*">
+        </div>
+    </div>
+    <div id="verifySection" style="display: none;">
+        <h3>もう一度パスワードを入力してください</h3>
+        <div class="input-group">
+            <input type="password" maxlength="1" class="digit-input" id="verifyDigit1" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="verifyDigit2" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="verifyDigit3" inputmode="numeric" pattern="[0-9]*">
+            <input type="password" maxlength="1" class="digit-input" id="verifyDigit4" inputmode="numeric" pattern="[0-9]*">
+        </div>
+    </div>
+    <p id="message"></p>
+</div>
 	</div>
 	<div id="footerOverlay" class="footer-overlay"></div> <!-- フッター専用オーバーレイ -->
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->

@@ -694,6 +694,7 @@ textarea:focus {
 	color: #000000;
 	transition: top 0.3s ease-in-out;
 	z-index: 2000;
+	padding: 20px;
 }
 
 .option-menu.open {
@@ -706,6 +707,10 @@ textarea:focus {
 	align-items: center;
 	border-bottom: 2px solid #ccc; /* 下に線を引く */
 	padding: 10px 20px;
+	margin-top: calc(((100vw - 100%) / 2 ) * -1);
+	margin-left: calc(((100vw - 100%) / 2 ) * -1);
+	margin-right: calc(((100vw - 100%) / 2 ) * -1);
+	margin-bottom: 50px;
 }
 
 .option-header span {
@@ -716,7 +721,6 @@ textarea:focus {
 	background-color: #ffffff; /* 背景色 */
 	border-radius: 8px; /* 角を丸くする */
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
-	margin: 40px 20px;
 }
 
 .optionMenuBlock ul {
@@ -730,10 +734,7 @@ textarea:focus {
 	align-items: center; /* 縦方向の中央揃え */
 	padding: 20px 20px; /* 内側の余白 */
 	cursor: pointer;
-	transition: background-color 0.3s; /* ホバー時のアニメーション */
 	border-bottom: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
-	text-align: center;
-	position: relative;
 }
 
 .optionMenuBlock li:last-child {
@@ -752,8 +753,7 @@ textarea:focus {
 	text-align: left;
 }
 
-/* テーマ設定 */
-.option-theme {
+.option-main {
 	position: fixed;
 	top: 0;
 	right: -100%; /* 初期状態では画面外 */
@@ -763,14 +763,16 @@ textarea:focus {
 	color: #000000;
 	transition: right 0.3s ease-in-out;
 	z-index: 2000;
+	padding: 20px;
 }
 
-.option-theme.open {
+.option-main.open {
 	right: 0;
 }
 
+/* テーマ設定 */
 .color-range {
-	padding: 50px 20px 0 20px;
+	padding-bottom: 20px;
 	cursor: pointer;
 	display: flex; /* 子要素を横並びにする */
 	justify-content: space-between;
@@ -783,18 +785,84 @@ textarea:focus {
 }
 
 /* パスコード設定 */
-.option-password {
-	position: fixed;
-	top: 0;
-	right: -100%; /* 初期状態では画面外 */
-	width: 100%;
-	height: 100%;
-	background-color: var(--background-color);
-	color: #000000;
-	transition: right 0.3s ease-in-out;
-	z-index: 2000;
+.password-block {
+	display: flex; /* フレックスボックスを使って項目を横に並べる */
+	align-items: center; /* 縦方向の中央揃え */
+	justify-content: space-between;
+	padding: 20px 20px; /* 内側の余白 */
+	cursor: pointer;
+	border: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
+	background-color: #ffffff; /* 背景色 */
+	border-radius: 8px; /* 角を丸くする */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+	margin-bottom: 20px;
+	height: 70px;
 }
 
-.option-password.open {
-	right: 0;
+.toggle-container {
+    position: relative;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-input {
+    opacity: 0; /* 隠す */
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* オフの状態 */
+    border-radius: 34px; /* 丸みをつける */
+    transition: background-color 0.2s;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white; /* 丸の色 */
+    border-radius: 50%; /* 丸くする */
+    transition: transform 0.2s;
+}
+
+/* チェックされたときのスタイル */
+.toggle-input:checked + .toggle-label {
+    background-color: #4CAF50; /* 緑色 */
+}
+
+.toggle-input:checked + .toggle-label:before {
+    transform: translateX(26px); /* 丸を右に移動 */
+}
+
+.form-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.digit-input {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
