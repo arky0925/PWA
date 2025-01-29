@@ -10,6 +10,10 @@
   --button-color: #FFC4C4; /* デフォルトのテキスト色 */
 }
 
+html, body {
+    overscroll-behavior: none; /* スワイプによる遷移を無効化 */
+}
+
 html {
   font-size: 100%; /* 基本フォントサイズ */
 }
