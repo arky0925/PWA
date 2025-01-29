@@ -1285,9 +1285,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			if (input.value.length === 1 && index < digitInputs.length - 1) {
 				digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
+				// パスワードを設定したら、表示をアスタリスクに変える
+				input.type = 'password'; // 入力されたらアスタリスクにする
 			}
-			// パスワードを設定したら、表示をアスタリスクに変える
-			input.type = 'password'; // 入力されたらアスタリスクにする
 			// すべての入力ボックスが埋まったらパスワードを確認
 			if (Array.from(digitInputs).every(input => input.value.length === 1)) {
 				firstPassword = Array.from(digitInputs).map(input => input.value).join('');
@@ -1320,9 +1320,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			if (input.value.length === 1 && index < verifyInputs.length - 1) {
 				verifyInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
+				// パスワードを設定したら、表示をアスタリスクに変える
+				input.type = 'password'; // 入力されたらアスタリスクにする
 			}
-			// パスワードを設定したら、表示をアスタリスクに変える
-			input.type = 'password'; // 入力されたらアスタリスクにする
 			// すべての確認入力ボックスが埋まったら比較
 			if (Array.from(verifyInputs).every(input => input.value.length === 1)) {
 				const verifyPassword = Array.from(verifyInputs).map(input => input.value).join('');
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		input.addEventListener('keydown', (event) => {
 			if (event.key === 'Backspace' && input.value === '') {
 				if (index > 0) {
-					input.type = 'text';
+					input.type = 'password';
 					verifyInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
 				}
 			}
