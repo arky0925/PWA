@@ -12,18 +12,18 @@
 	<script src="ServiceWorker.js" defer></script>
 	<script src="js/Login.js" defer></script>
 </head>
-<body>
+<body id="body" style="display: none;">
 	<div class="form-container">
 		<h2>4桁のパスワードを登録</h2>
 		<div id="firstSection">
 			<div class="input-group">
 				<input type="text" maxlength="1" class="digit-input" id="digit1" inputmode="numeric" pattern="[0-9]*">
-				<input type="text" maxlength="1" class="digit-input" id="digit2" inputmode="numeric" pattern="[0-9]*">
-				<input type="text" maxlength="1" class="digit-input" id="digit3" inputmode="numeric" pattern="[0-9]*">
-				<input type="text" maxlength="1" class="digit-input" id="digit4" inputmode="numeric" pattern="[0-9]*">
+				<input type="text" maxlength="1" class="digit-input" id="digit2" inputmode="numeric" pattern="[0-9]*" disable>
+				<input type="text" maxlength="1" class="digit-input" id="digit3" inputmode="numeric" pattern="[0-9]*" disable>
+				<input type="text" maxlength="1" class="digit-input" id="digit4" inputmode="numeric" pattern="[0-9]*" disable>
 			</div>
 		</div>
 		<p id="message"></p>
 	</div>
-</body>
+</body style="display: none;">
 </html>

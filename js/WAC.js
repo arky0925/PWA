@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz99VVyrs3-DBx99S_yIcvN7dzurnDAF0pEgwpeAJa_nprp7OBix9OWJciVAVlyVNmk/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxXjO05S6ASBYNnLtkgYxTR4iA7srUuUegrydozpJRlYzHE99r_0HG3cbUHdbnRpUmn/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -564,11 +564,14 @@ updateForm.addEventListener('submit', function(event) {
 	const sheetRowIndex = parseInt(updateModal.dataset.sheetRowIndex) - 2; // キャッシュデータ内の行番号を取得
 	const updateModal1 = document.getElementById('updateModal1').value;
 	const updateModal2 = document.getElementById('updateModal2').value;
+	const now = new Date();
+	const formattedDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
 	// キャッシュの更新
 	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
-	cachedData[sheetRowIndex][1] = updateModal1; // 1列目を更新
-	cachedData[sheetRowIndex][2] = updateModal2; // 2列目を更新
+	cachedData[sheetRowIndex][1] = updateModal1; // 2列目を更新
+	cachedData[sheetRowIndex][2] = updateModal2; // 3列目を更新
+	cachedData[sheetRowIndex][5] = formattedDate; // 6列目を更新
 	localStorage.setItem('spreadsheetData', JSON.stringify(cachedData));
 
 	search(); // 更新されたデータを表示
@@ -582,6 +585,9 @@ updateForm.addEventListener('submit', function(event) {
 	// モーダルの入力データを追加
 	updateFormData.append('data1', updateModal1);
 	updateFormData.append('data2', updateModal2);
+
+	// 更新時間を追加
+	updateFormData.append('updateTime', formattedDate);
 
 	fetch(scriptURL, { method: 'POST', body: updateFormData })
 		.then(response => {
@@ -1240,15 +1246,20 @@ const passwordChange = document.getElementById('passwordChange');
 const passwordSettig = document.getElementById('passwordSettig');
 const closePasswordSetting = document.getElementById('close-password-setting');
 document.addEventListener('DOMContentLoaded', () => {
+
+	passToggle.checked = registrationSuccess;
+	passwordChange.style.display = registrationSuccess ? 'flex' : 'none';
+
 	passToggle.addEventListener('change', () => {
 		message.textContent = ''; // メッセージをクリア
-		if (!registrationSuccess) {
-			console.log('オン');
+		if (passToggle.checked == true) {
 			passwordSettig.classList.add('open');
+			passToggle.checked = true;
+			digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 		} else {
-			console.log('オフ');
-			registrationSuccess =false;
+			localStorage.setItem('registrationSuccess', 'false');
 			passwordChange.style.display = 'none';
+			passToggle.checked = false;
 		}
 	});
 	// メニューを閉じる
@@ -1257,15 +1268,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		message.textContent = ''; // メッセージをクリア
 		passToggle.checked = false; // トグルをオフに戻す
 		// 入力をリセット
-		verifyInputs.forEach(input => input.value = '');
+		digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
+		verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
 		firstSection.style.display = 'block'; // 1回目のパスワードを再表示
 		verifySection.style.display = 'none'; // 確認セクションを非表示にする
-		digitInputs.forEach(input => input.value = ''); // 1回目の入力もクリア
-		digitInputs[0].focus(); // 最初の入力ボックスにフォーカス
+		document.activeElement.blur();
 	});
 });
 
-let registrationSuccess = false; // 登録成功のフラグ
+//let registrationSuccess = false; // 登録成功のフラグ
+let registrationSuccess = localStorage.getItem('registrationSuccess') === 'true';
 let message = document.getElementById('message');
 const digitInputs = document.querySelectorAll('#firstSection .digit-input');
 const verifyInputs = document.querySelectorAll('#verifySection .digit-input');
@@ -1274,7 +1286,6 @@ const verifySection = document.getElementById('verifySection');
 document.addEventListener('DOMContentLoaded', () => {
 
 	let firstPassword = '';
-	digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 
 	// 入力ボックスの自動フォーカス処理
 	digitInputs.forEach((input, index) => {
@@ -1283,6 +1294,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (!/^[0-9]*$/.test(input.value)) {
 				input.value = '';
 			}
+            // 次の桁を有効にする
+            if (input.value.length === 1) {
+                if (index < digitInputs.length - 1) {
+                    digitInputs[index + 1].disabled = false; // 次の桁を有効にする
+                    digitInputs[index + 1].focus(); // 次の桁にフォーカスを移動
+                }
+                // 現在の桁以外を無効にする
+                for (let i = 0; i < digitInputs.length; i++) {
+                    if (i !== index + 1) {
+                        digitInputs[i].disabled = true;
+                    }
+                }
+            }
 			if (input.value.length === 1 && index < digitInputs.length - 1) {
 				digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
 				input.type = 'text';
@@ -1306,6 +1330,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (index > 0) {
 					input.type = 'text';
 					input.type = 'password';
+					digitInputs[index - 1].disabled = false; // 前の桁を有効にする
 					digitInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
 				}
 			}
@@ -1319,6 +1344,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (!/^[0-9]*$/.test(input.value)) {
 				input.value = '';
 			}
+			// 次の桁を有効にする
+            if (input.value.length === 1) {
+                if (index < verifyInputs.length - 1) {
+                    verifyInputs[index + 1].disabled = false; // 次の桁を有効にする
+                    verifyInputs[index + 1].focus(); // 次の桁にフォーカスを移動
+                }
+                // 現在の桁以外を無効にする
+                for (let i = 0; i < verifyInputs.length; i++) {
+                    if (i !== index + 1) {
+                        verifyInputs[i].disabled = true;
+                    }
+                }
+            }
 			if (input.value.length === 1 && index < verifyInputs.length - 1) {
 				verifyInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
 				input.type = 'text';
@@ -1330,7 +1368,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				// パスワードが一致するか確認
 				if (firstPassword === verifyPassword) {
 					localStorage.setItem('userPassword', firstPassword); // パスワードをローカルストレージに保存
-					registrationSuccess = true;
+					localStorage.setItem('registrationSuccess', 'true');
 					passwordSettig.classList.remove('open');
 					// すべての入力をリセット
 					digitInputs.forEach(input => input.value = '');
@@ -1345,7 +1383,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					verifyInputs.forEach(input => input.value = '');
 					firstSection.style.display = 'block'; // 1回目のパスワードを再表示
 					verifySection.style.display = 'none'; // 確認セクションを非表示にする
-					digitInputs.forEach(input => input.value = ''); // 1回目の入力もクリア
 					digitInputs[0].focus(); // 最初の入力ボックスにフォーカス
 					input.type = 'text';
 					input.type = 'password';
@@ -1358,6 +1395,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (index > 0) {
 					input.type = 'text';
 					input.type = 'password';
+					digitInputs[index - 1].disabled = false; // 前の桁を有効にする
 					verifyInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
 				}
 			}
