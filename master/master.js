@@ -32,8 +32,8 @@ document.addEventListener('touchmove', (event) => {
 	const currentX = event.touches[0].clientX;
 	const diffX = currentX - startX;
 
-	// 左端から50px以上スワイプした場合
+	// 左端50pxから10px以上スワイプした場合
 	if (startX <= 50 && diffX > 10) {
-		event.stopPropagation(); // デフォルトの動作をキャンセル
+		event.preventDefault(); // デフォルトの動作をキャンセル
 	}
-});
+}, { passive: false });
