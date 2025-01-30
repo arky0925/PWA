@@ -24,15 +24,16 @@ document.addEventListener('DOMContentLoaded', function() {
 let startX;
 
 document.addEventListener('touchstart', (event) => {
-	startX = event.touches[0].clientX; // スワイプ開始位置を記録
+	// スワイプ開始位置を記録
+	startX = event.touches[0].clientX;
 });
 
 document.addEventListener('touchmove', (event) => {
 	const currentX = event.touches[0].clientX;
 	const diffX = currentX - startX;
 
-	// 右にスワイプした場合
-	if (diffX < 50) {
-		event.preventDefault(); // デフォルトの戻る動作をキャンセル
+	// 左端から50px以上スワイプした場合
+	if (startX <= 50 && diffX > 10) {
+		event.stopPropagation(); // デフォルトの動作をキャンセル
 	}
 });
