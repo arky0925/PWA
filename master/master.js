@@ -21,8 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-document.addEventListener("touchstart", function (event) {
-	if (event.touches[0].pageX < 10) { // 画面の左端10px以内
-		event.preventDefault();
+let startX;
+
+document.addEventListener('touchstart', (event) => {
+	startX = event.touches[0].clientX; // スワイプ開始位置を記録
+});
+
+document.addEventListener('touchmove', (event) => {
+	const currentX = event.touches[0].clientX;
+	const diffX = currentX - startX;
+
+	// 右にスワイプした場合
+	if (diffX < 50) {
+		event.preventDefault(); // デフォルトの戻る動作をキャンセル
 	}
-}, { passive: false });
+});
