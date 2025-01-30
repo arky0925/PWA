@@ -3,6 +3,7 @@ const userPassword = localStorage.getItem('userPassword');
 let message = document.getElementById('message');
 const digitInputs = document.querySelectorAll('#firstSection .digit-input');
 document.addEventListener('DOMContentLoaded', () => {
+	digitInputs[0].focus();
 	let firstPassword = '';
 	// 入力ボックスの自動フォーカス処理
 	digitInputs.forEach((input, index) => {
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						digitInputs[i].disabled = true; // 他の桁を無効にする
 					}
 					digitInputs[0].disabled = false;
+					digitInputs[0].focus();
 				} else {
 					window.location.href = 'top.html';
 				}
