@@ -1269,7 +1269,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		passToggle.checked = false; // トグルをオフに戻す
 		// 入力をリセット
 		digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
+		// 現在の桁以外を無効にする
+		for (let i = 0; i < digitInputs.length; i++) {
+			digitInputs[i].disabled = true; // 他の桁を無効にする
+		}
+		digitInputs[0].disabled = false;
 		verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
+		// 現在の桁以外を無効にする
+		for (let i = 0; i < verifyInputs.length; i++) {
+			verifyInputs[i].disabled = true; // 他の桁を無効にする
+		}
+		verifyInputs[0].disabled = false;
 		firstSection.style.display = 'block'; // 1回目のパスワードを再表示
 		verifySection.style.display = 'none'; // 確認セクションを非表示にする
 		document.activeElement.blur();
@@ -1377,9 +1387,19 @@ document.addEventListener('DOMContentLoaded', () => {
 					localStorage.setItem('userPassword', firstPassword); // パスワードをローカルストレージに保存
 					localStorage.setItem('registrationSuccess', 'true');
 					passwordSettig.classList.remove('open');
-					// すべての入力をリセット
-					digitInputs.forEach(input => input.value = '');
-					verifyInputs.forEach(input => input.value = '');
+					// 全ての入力をリセット
+					digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < digitInputs.length; i++) {
+						digitInputs[i].disabled = true; // 他の桁を無効にする
+					}
+					digitInputs[0].disabled = false;
+					verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < verifyInputs.length; i++) {
+						verifyInputs[i].disabled = true; // 他の桁を無効にする
+					}
+					verifyInputs[0].disabled = false;
 					firstSection.style.display = 'block';
 					verifySection.style.display = 'none'; // 確認セクションを非表示にする
 					passwordChange.style.display = 'flex';

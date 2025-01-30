@@ -866,3 +866,8 @@ transition: transform 0.2s;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
+
+.digit-input:focus {
+	border-color: #007BFF; /* フォーカス時のボーダー色 */
+	outline: none; /* デフォルトのアウトラインを消す */
+}
