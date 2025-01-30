@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	// 各ボタンのクリックイベントを設定
 	document.getElementById('homeButton').addEventListener('click', function() {
-		window.location.href = 'index.html'; // 遷移先のページ
+		window.location.href = 'top.html'; // 遷移先のページ
 	});
 
 	document.getElementById('couponButton').addEventListener('click', function() {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener("touchstart", function (event) {
-    if (event.touches[0].pageX < 10) { // 画面の左端10px以内
-        event.preventDefault();
-    }
+	if (event.touches[0].pageX < 10) { // 画面の左端10px以内
+		event.preventDefault();
+	}
 }, { passive: false });

@@ -1157,7 +1157,7 @@ window.addEventListener('scroll', function() {
 
 // ヘルプページへ遷移
 document.getElementById('help-icon').addEventListener('click', () => {
-	window.location.href = 'index.html'; // 遷移先のページ
+	window.location.href = 'top.html'; // 遷移先のページ
 });
 
 // テーマ設定開閉
