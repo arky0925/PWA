@@ -1,15 +1,9 @@
-let registrationSuccess = localStorage.getItem('registrationSuccess') === 'true';
-
-const body = document.getElementById('body');
-body.style.display = registrationSuccess ? 'block' : 'none';
+const userPassword = localStorage.getItem('userPassword');
 
 let message = document.getElementById('message');
 const digitInputs = document.querySelectorAll('#firstSection .digit-input');
 document.addEventListener('DOMContentLoaded', () => {
-
 	let firstPassword = '';
-	digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
-
 	// 入力ボックスの自動フォーカス処理
 	digitInputs.forEach((input, index) => {
 		input.addEventListener('input', () => {
@@ -18,18 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
 				input.value = '';
 			}
 			// 次の桁を有効にする
-            if (input.value.length === 1) {
-                if (index < digitInputs.length - 1) {
-                    digitInputs[index + 1].disabled = false; // 次の桁を有効にする
-                    digitInputs[index + 1].focus(); // 次の桁にフォーカスを移動
-                }
-                // 現在の桁以外を無効にする
-                for (let i = 0; i < digitInputs.length; i++) {
-                    if (i !== index + 1) {
-                        digitInputs[i].disabled = true;
-                    }
-                }
-            }
+			if (input.value.length === 1) {
+				if (index < digitInputs.length - 1) {
+					digitInputs[index + 1].disabled = false; // 次の桁を有効にする
+					digitInputs[index + 1].focus(); // 次の桁にフォーカスを移動
+				}
+				// 現在の桁以外を無効にする
+				for (let i = 0; i < digitInputs.length; i++) {
+					if (i !== index + 1) {
+						digitInputs[i].disabled = true;
+					}
+				}
+			}
 			if (input.value.length === 1 && index < digitInputs.length - 1) {
 				digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
 				input.type = 'text';
@@ -38,15 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			// すべての入力ボックスが埋まったらパスワードを確認
 			if (Array.from(digitInputs).every(input => input.value.length === 1)) {
 				firstPassword = Array.from(digitInputs).map(input => input.value).join('');
-				digitInputs.forEach(input => input.value = ''); // 入力をリセット
-				const storedPassword = localStorage.getItem('userPassword');
-				if (firstPassword === storedPassword) {
-					window.location.href = 'index.html'; // 遷移先のページ
-					message.textContent = '';
-				} else {
+				if (!(firstPassword === userPassword)) {
 					message.textContent = 'パスコードが間違っています';
-					message.style.color = 'red'; // 失敗メッセージの色
-					digitInputs[0].focus();
+					message.style.color = 'red'; // 成功メッセージの色
+					digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
+					for (let i = 0; i < digitInputs.length; i++) {
+						digitInputs[i].disabled = true; // 他の桁を無効にする
+					}
+					digitInputs[0].disabled = false;
+				} else {
+					window.location.href = 'top.html';
 				}
 			}
 		});
@@ -57,7 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
 					input.type = 'text';
 					input.type = 'password';
 					digitInputs[index - 1].disabled = false; // 前の桁を有効にする
+					digitInputs[index - 1].value = '';
 					digitInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < digitInputs.length; i++) {
+						if (i !== index - 1) {
+							digitInputs[i].disabled = true; // 他の桁を無効にする
+						}
+					}
 				}
 			}
 		});

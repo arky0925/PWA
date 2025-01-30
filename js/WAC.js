@@ -1244,7 +1244,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const passToggle = document.getElementById('passToggle');
 const passwordChange = document.getElementById('passwordChange');
 const passwordSettig = document.getElementById('passwordSettig');
-const closePasswordSetting = document.getElementById('close-password-setting');
+const passwordCancel = document.getElementById('passwordCancel');
+let previousPassAction = null; // 前のアクションを格納する変数
 document.addEventListener('DOMContentLoaded', () => {
 
 	passToggle.checked = registrationSuccess;
@@ -1252,21 +1253,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	passToggle.addEventListener('change', () => {
 		message.textContent = ''; // メッセージをクリア
+		previousPassAction = "passToggle";
 		if (passToggle.checked == true) {
 			passwordSettig.classList.add('open');
-			passToggle.checked = true;
 			digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 		} else {
 			localStorage.setItem('registrationSuccess', 'false');
+			localStorage.removeItem('userPassword'); // パスワードをローカルストレージに保存
 			passwordChange.style.display = 'none';
 			passToggle.checked = false;
 		}
 	});
+
+	passwordChange.addEventListener('click', () => {
+		passwordSettig.classList.add('open');
+		digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
+		previousPassAction = "passwordChange";
+	});
+
 	// メニューを閉じる
-	closePasswordSetting.addEventListener('click', () => {
+	passwordCancel.addEventListener('click', () => {
 		passwordSettig.classList.remove('open');
 		message.textContent = ''; // メッセージをクリア
-		passToggle.checked = false; // トグルをオフに戻す
+		if (previousPassAction === "passToggle") {
+			passToggle.checked = false;
+		}
 		// 入力をリセット
 		digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
 		for (let i = 0; i < digitInputs.length; i++) {
@@ -1321,9 +1332,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			// すべての入力ボックスが埋まったらパスワードを確認
 			if (Array.from(digitInputs).every(input => input.value.length === 1)) {
 				firstPassword = Array.from(digitInputs).map(input => input.value).join('');
-				message.textContent = 'パスワードが登録されました。次にもう一度入力してください。';
+				message.textContent = 'パスコードが登録されました。次にもう一度入力してください。';
 				message.style.color = 'green'; // 成功メッセージの色
-				// 確認セクションを表示
 				firstSection.style.display = 'none';
 				verifySection.style.display = 'block';
 				verifyInputs[0].focus(); // 確認の最初の入力ボックスにフォーカス
@@ -1397,6 +1407,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					firstSection.style.display = 'block';
 					verifySection.style.display = 'none'; // 確認セクションを非表示にする
 					passwordChange.style.display = 'flex';
+					passToggle.checked = true;
 				} else {
 					message.textContent = 'パスワードが一致しません。もう一度入力してください。';
 					message.style.color = 'red'; // エラーメッセージの色

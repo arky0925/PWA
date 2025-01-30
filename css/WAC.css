@@ -851,6 +851,10 @@ transition: transform 0.2s;
 	background-color: white;
 }
 
+.form-container h3 {
+	text-align: center;
+}
+
 .input-group {
 	display: flex;
 	justify-content: center;

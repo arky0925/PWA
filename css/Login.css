@@ -9,6 +9,10 @@ body {
 	background-color: white;
 }
 
+.form-container h3 {
+	text-align: center;
+}
+
 .input-group {
 	display: flex;
 	justify-content: center;
@@ -23,4 +27,9 @@ body {
 	margin: 5px 5px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
+}
+
+.digit-input:focus {
+	border-color: #007BFF; /* フォーカス時のボーダー色 */
+	outline: none; /* デフォルトのアウトラインを消す */
 }
