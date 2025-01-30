@@ -1269,13 +1269,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		passToggle.checked = false; // トグルをオフに戻す
 		// 入力をリセット
 		digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
-		// 現在の桁以外を無効にする
 		for (let i = 0; i < digitInputs.length; i++) {
 			digitInputs[i].disabled = true; // 他の桁を無効にする
 		}
 		digitInputs[0].disabled = false;
 		verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
-		// 現在の桁以外を無効にする
 		for (let i = 0; i < verifyInputs.length; i++) {
 			verifyInputs[i].disabled = true; // 他の桁を無効にする
 		}
@@ -1294,9 +1292,7 @@ const verifyInputs = document.querySelectorAll('#verifySection .digit-input');
 const firstSection = document.getElementById('firstSection');
 const verifySection = document.getElementById('verifySection');
 document.addEventListener('DOMContentLoaded', () => {
-
 	let firstPassword = '';
-
 	// 入力ボックスの自動フォーカス処理
 	digitInputs.forEach((input, index) => {
 		input.addEventListener('input', () => {
@@ -1304,19 +1300,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (!/^[0-9]*$/.test(input.value)) {
 				input.value = '';
 			}
-            // 次の桁を有効にする
-            if (input.value.length === 1) {
-                if (index < digitInputs.length - 1) {
-                    digitInputs[index + 1].disabled = false; // 次の桁を有効にする
-                    digitInputs[index + 1].focus(); // 次の桁にフォーカスを移動
-                }
-                // 現在の桁以外を無効にする
-                for (let i = 0; i < digitInputs.length; i++) {
-                    if (i !== index + 1) {
-                        digitInputs[i].disabled = true;
-                    }
-                }
-            }
+			// 次の桁を有効にする
+			if (input.value.length === 1) {
+				if (index < digitInputs.length - 1) {
+					digitInputs[index + 1].disabled = false; // 次の桁を有効にする
+					digitInputs[index + 1].focus(); // 次の桁にフォーカスを移動
+				}
+				// 現在の桁以外を無効にする
+				for (let i = 0; i < digitInputs.length; i++) {
+					if (i !== index + 1) {
+						digitInputs[i].disabled = true;
+					}
+				}
+			}
 			if (input.value.length === 1 && index < digitInputs.length - 1) {
 				digitInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
 				input.type = 'text';
@@ -1331,7 +1327,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				firstSection.style.display = 'none';
 				verifySection.style.display = 'block';
 				verifyInputs[0].focus(); // 確認の最初の入力ボックスにフォーカス
-				digitInputs.forEach(input => input.value = ''); // 入力をリセット
+				digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
+				for (let i = 0; i < digitInputs.length; i++) {
+					digitInputs[i].disabled = true; // 他の桁を無効にする
+				}
+				digitInputs[0].disabled = false;
 			}
 		});
 		// バックスペースで前のボックスに移動
@@ -1362,18 +1362,18 @@ document.addEventListener('DOMContentLoaded', () => {
 				input.value = '';
 			}
 			// 次の桁を有効にする
-            if (input.value.length === 1) {
-                if (index < verifyInputs.length - 1) {
-                    verifyInputs[index + 1].disabled = false; // 次の桁を有効にする
-                    verifyInputs[index + 1].focus(); // 次の桁にフォーカスを移動
-                }
-                // 現在の桁以外を無効にする
-                for (let i = 0; i < verifyInputs.length; i++) {
-                    if (i !== index + 1) {
-                        verifyInputs[i].disabled = true;
-                    }
-                }
-            }
+			if (input.value.length === 1) {
+				if (index < verifyInputs.length - 1) {
+					verifyInputs[index + 1].disabled = false; // 次の桁を有効にする
+					verifyInputs[index + 1].focus(); // 次の桁にフォーカスを移動
+				}
+				// 現在の桁以外を無効にする
+				for (let i = 0; i < verifyInputs.length; i++) {
+					if (i !== index + 1) {
+						verifyInputs[i].disabled = true;
+					}
+				}
+			}
 			if (input.value.length === 1 && index < verifyInputs.length - 1) {
 				verifyInputs[index + 1].focus(); // 次の入力ボックスにフォーカス
 				input.type = 'text';
@@ -1387,13 +1387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					localStorage.setItem('userPassword', firstPassword); // パスワードをローカルストレージに保存
 					localStorage.setItem('registrationSuccess', 'true');
 					passwordSettig.classList.remove('open');
-					// 全ての入力をリセット
-					digitInputs.forEach(input => input.value = ''); // 1回目の入力クリア
-					// 現在の桁以外を無効にする
-					for (let i = 0; i < digitInputs.length; i++) {
-						digitInputs[i].disabled = true; // 他の桁を無効にする
-					}
-					digitInputs[0].disabled = false;
+					// 入力をリセット
 					verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
 					// 現在の桁以外を無効にする
 					for (let i = 0; i < verifyInputs.length; i++) {
@@ -1407,6 +1401,12 @@ document.addEventListener('DOMContentLoaded', () => {
 					message.textContent = 'パスワードが一致しません。もう一度入力してください。';
 					message.style.color = 'red'; // エラーメッセージの色
 					// 入力をリセット
+					verifyInputs.forEach(input => input.value = ''); // 2回目の入力クリア
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < verifyInputs.length; i++) {
+						verifyInputs[i].disabled = true; // 他の桁を無効にする
+					}
+					verifyInputs[0].disabled = false;
 					verifyInputs.forEach(input => input.value = '');
 					firstSection.style.display = 'block'; // 1回目のパスワードを再表示
 					verifySection.style.display = 'none'; // 確認セクションを非表示にする
