@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-window.history.pushState(null, null, location.href);
-window.addEventListener("popstate", function () {
-	window.history.pushState(null, null, location.href);
-});
+document.addEventListener("touchstart", function (event) {
+    if (event.touches[0].pageX < 10) { // 画面の左端10px以内
+        event.preventDefault();
+    }
+}, { passive: false });
