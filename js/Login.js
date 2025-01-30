@@ -6,7 +6,7 @@ body.style.display = registrationSuccess ? 'block' : 'none';
 let message = document.getElementById('message');
 const digitInputs = document.querySelectorAll('#firstSection .digit-input');
 document.addEventListener('DOMContentLoaded', () => {
-	
+
 	let firstPassword = '';
 	digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 

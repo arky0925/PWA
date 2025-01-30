@@ -1331,7 +1331,14 @@ document.addEventListener('DOMContentLoaded', () => {
 					input.type = 'text';
 					input.type = 'password';
 					digitInputs[index - 1].disabled = false; // 前の桁を有効にする
+					digitInputs[index - 1].value = '';
 					digitInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < digitInputs.length; i++) {
+						if (i !== index - 1) {
+							digitInputs[i].disabled = true; // 他の桁を無効にする
+						}
+					}
 				}
 			}
 		});
@@ -1395,8 +1402,15 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (index > 0) {
 					input.type = 'text';
 					input.type = 'password';
-					digitInputs[index - 1].disabled = false; // 前の桁を有効にする
+					verifyInputs[index - 1].disabled = false; // 前の桁を有効にする
+					verifyInputs[index - 1].value = '';
 					verifyInputs[index - 1].focus(); // 前の入力ボックスにフォーカス
+					// 現在の桁以外を無効にする
+					for (let i = 0; i < verifyInputs.length; i++) {
+						if (i !== index - 1) {
+							verifyInputs[i].disabled = true; // 他の桁を無効にする
+						}
+					}
 				}
 			}
 		});
