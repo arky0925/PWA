@@ -889,9 +889,18 @@ checkFalse.addEventListener('click', function() {
 
 filterInput.addEventListener('blur', function() {
 	search();
-	if (filterInput.value != '') {
-		if (checkFlgTrue == true || checkFlgFalse == true) {
-	}}
+});
+
+filterInput.addEventListener('keypress', (event) => {
+	if (event.key === 'Enter') {
+		event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+		lastSearchValue = filterInput.value; // 値を保持
+		search();
+		updateFilterIcon();
+		sideMenu.classList.remove('open');
+		modalOverlay.style.display = 'none';
+		HFOverlaySetNone();
+	}
 });
 
 // ブックマークのクリックイベント
@@ -957,35 +966,34 @@ resetSerch.addEventListener('click', () => {
 // プルダウン表示
 const sortIcon = document.getElementById('sort-icon');
 const sortDropdown = document.getElementById('sort-dropdown');
-let sortMode = 'insert';
-let sort = 'desc';
+let sortMode = localStorage.getItem('sortMode') || 'insert';
+let sort = localStorage.getItem('sort') || 'desc';
 
 const ascIcon = document.getElementById('asc-icon');
 const descIcon = document.getElementById('desc-icon');
-descIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
+document.addEventListener('DOMContentLoaded', () => {
+	if (sort == 'asc') {
+		ascIcon.classList.add('actionButtonSelected');
+	} else {
+		descIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
+	}
 
-// 昇順、降順ボタンのクリックイベント
-ascIcon.addEventListener('click', function() {
-	sort = 'asc'; // フラグを切り替え
-	if (sort === 'asc') {
+	// 昇順、降順ボタンのクリックイベント
+	ascIcon.addEventListener('click', function() {
+		localStorage.setItem('sort', 'asc');
+		sort = 'asc';
 		ascIcon.classList.add('actionButtonSelected');
 		descIcon.classList.remove('actionButtonSelected');
-	} else {
-		ascIcon.classList.remove('actionButtonSelected');
-	}
-	sortList(sortMode);
-});
+		sortList(sortMode);
+	});
 
-descIcon.addEventListener('click', function() {
-	sort = 'desc'; // フラグを切り替え
-	ascIcon.classList.remove('#asc-icon');
-	if (sort === 'desc') {
+	descIcon.addEventListener('click', function() {
+		localStorage.setItem('sort', 'desc');
+		sort = 'desc';
 		descIcon.classList.add('actionButtonSelected');
 		ascIcon.classList.remove('actionButtonSelected');
-	} else {
-		descIcon.classList.remove('actionButtonSelected');
-	}
-	sortList(sortMode);
+		sortList(sortMode);
+	});
 });
 
 // sort-iconをクリックしたときにプルダウンを表示
@@ -997,6 +1005,7 @@ sortIcon.addEventListener('click', () => {
 const sortInsert = document.getElementById('sort-insert');
 sortInsert.addEventListener('click', () => {
 	// 追加日時の処理をここに追加
+	localStorage.setItem('sortMode', 'insert');
 	sortMode = 'insert';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
@@ -1005,6 +1014,7 @@ sortInsert.addEventListener('click', () => {
 const sortUpdate = document.getElementById('sort-update');
 sortUpdate.addEventListener('click', () => {
 	// 更新日時の処理をここに追加
+	localStorage.setItem('sortMode', 'update');
 	sortMode = 'update';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
@@ -1013,6 +1023,7 @@ sortUpdate.addEventListener('click', () => {
 const sortCook = document.getElementById('sort-cook');
 sortCook.addEventListener('click', () => {
 	// 料理名の処理をここに追加
+	localStorage.setItem('sortMode', 'cook');
 	sortMode = 'cook';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
@@ -1021,6 +1032,7 @@ sortCook.addEventListener('click', () => {
 const sortCheckbox = document.getElementById('sort-checkbox');
 sortCheckbox.addEventListener('click', () => {
 	// チェックボックスの処理をここに追加
+	localStorage.setItem('sortMode', 'checkbox');
 	sortMode = 'checkbox';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
@@ -1266,6 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	passwordChange.addEventListener('click', () => {
+		message.textContent = ''; // メッセージをクリア
 		passwordSettig.classList.add('open');
 		digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 		previousPassAction = "passwordChange";
