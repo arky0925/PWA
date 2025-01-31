@@ -278,21 +278,16 @@ function displayData(data) {
 
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
-			const currentDataDelete = currentData.some(value => value === rowData);
+			console.log(rowsToDelete);
+			const currentDataDelete = currentData.includes(rowData);
 			if (currentDataDelete) {
-				// チェックボックスの状態に応じてリストアイテムのスタイルを変更
-				if (deleteCheckbox.checked) {
-					listItem.classList.add('selected'); // 選択状態のクラスを追加
-					// 削除対象の行を追加する					
-					if (!rowsToDelete.includes(sheetRowIndex)) {
-						rowsToDelete.push(sheetRowIndex); // 行番号を追加
-					}
-				} else {
-					listItem.classList.remove('selected'); // 選択状態のクラスを削除
-					const index = rowsToDelete.indexOf(sheetRowIndex);
-					if (index > -1) {
-						rowsToDelete.splice(index, 1); // 行番号を削除
-					}
+				const isChecked = deleteCheckbox.checked;
+				listItem.classList.toggle('selected', isChecked); // チェックボックスの状態に応じてクラスをトグル
+				const index = rowsToDelete.indexOf(sheetRowIndex);
+				if (isChecked && index === -1) {
+					rowsToDelete.push(sheetRowIndex); // 行番号を追加
+				} else if (!isChecked && index > -1) {
+					rowsToDelete.splice(index, 1); // 行番号を削除
 				}
 			}
 			// ヘッダーの削除レコード数を更新
@@ -514,13 +509,7 @@ insertForm.addEventListener('submit', function(event) {
 
 	insertForm.reset(); // フォームの内容をクリア
 
-	const newDate = [];
-	newDate.push(false);
-	newDate.push(insertModal1);
-	newDate.push(insertModal2);
-	newDate.push(false);
-	newDate.push(formattedDate);
-	newDate.push(formattedDate);
+	const newDate = [false, insertModal1, insertModal2, false, formattedDate, formattedDate];
 
 	// キャッシュの更新
 	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
@@ -764,11 +753,7 @@ function deleteModeChange() {
 // ヘッダーの色を切り替える関数
 function headerColor(isVisible) {
 	const header = document.getElementById('header');
-	if (isVisible) {
-		header.classList.add('header-delete-mode');
-	} else {
-		header.classList.remove('header-delete-mode');
-	}
+	header.classList.toggle('header-delete-mode', isVisible);
 }
 
 // ヘッダーの文字を切り替える関数
@@ -776,15 +761,9 @@ function headerChar(isVisible) {
 	const cancelButton = document.getElementById('cancelButton');
 	const settingIcon = document.getElementById('setting-icon');
 	const title = document.querySelector('.center');
-	if (isVisible) {
-		cancelButton.style.display = 'inline'; // キャンセルボタンを表示
-		settingIcon.style.display = 'none'; // キャンセルボタンを非表示
-		title.classList.remove('hidden'); // タイトルを表示
-	} else {
-		cancelButton.style.display = 'none'; // キャンセルボタンを非表示
-		settingIcon.style.display = 'inline'; // キャンセルボタンを表示
-		title.classList.add('hidden'); // タイトルを非表示
-	}
+	cancelButton.style.display = isVisible ? 'inline' : 'none';
+	settingIcon.style.display = isVisible ? 'none' : 'inline';
+	title.classList.toggle('hidden', !isVisible);
 }
 
 // チェックボックスの表示を切り替える関数
@@ -867,26 +846,18 @@ function search() {
 const checkTrue = document.getElementById('checkTrue');
 checkTrue.addEventListener('click', function() {
 	checkFlgTrue = !checkFlgTrue; // フラグを切り替え
-	if (checkFlgTrue) {
-		checkFlgFalse = false;
-		checkTrue.classList.add('searchOptionSelected');
-		checkFalse.classList.remove('searchOptionSelected');
-	} else {
-		checkTrue.classList.remove('searchOptionSelected');
-	}
+	checkFlgFalse = false; // checkFalseは常にfalseに設定
+	checkTrue.classList.toggle('searchOptionSelected', checkFlgTrue);
+	checkFalse.classList.remove('searchOptionSelected'); // checkFalseのクラスは常に削除
 	search();
 });
 
 const checkFalse = document.getElementById('checkFalse');
 checkFalse.addEventListener('click', function() {
 	checkFlgFalse = !checkFlgFalse; // フラグを切り替え
-	if (checkFlgFalse) {
-		checkFlgTrue = false;
-		checkFalse.classList.add('searchOptionSelected');
-		checkTrue.classList.remove('searchOptionSelected');
-	} else {
-		checkFalse.classList.remove('searchOptionSelected');
-	}
+	checkFlgTrue = false; // checkTrueは常にfalseに設定
+	checkFalse.classList.toggle('searchOptionSelected', checkFlgFalse);
+	checkTrue.classList.remove('searchOptionSelected'); // checkTrueのクラスは常に削除
 	search();
 });
 
@@ -911,11 +882,7 @@ filterInput.addEventListener('keypress', (event) => {
 const bookmarkFilter = document.getElementById('bookmarkFilter');
 bookmarkFilter.addEventListener('click', function() {
 	bookmarkSearchFlg = !bookmarkSearchFlg; // フラグを切り替え
-	if (bookmarkSearchFlg) {
-		bookmarkFilter.classList.add('searchOptionSelected');
-	} else {
-		bookmarkFilter.classList.remove('searchOptionSelected');
-	}
+	bookmarkFilter.classList.toggle('searchOptionSelected', bookmarkSearchFlg);
 	search();
 });
 
@@ -932,14 +899,10 @@ document.getElementById('searchButton').addEventListener('click', () => {
 // 絞り込み条件の有無
 const filterResetIcon = document.getElementById('filterResetIcon');
 function updateFilterIcon() {
-	const filterIconText = document.querySelector('#filterIcon span:last-child'); // <span>要素を取得
-	if (checkFlgTrue == true || checkFlgFalse == true || bookmarkSearchFlg == true || filterInput.value != ''){
-		filterIconText.textContent = '絞り込み中'; // テキストを変更
-		filterResetIcon.style.display = 'flex'; // 絞り込み中の場合、表示する
-	} else {
-		filterIconText.textContent = '絞り込み'; // テキストを変更
-		filterResetIcon.style.display = 'none'; // 絞り込み中の場合、非表示する
-	}
+	const filterIconText = document.querySelector('#filterIcon span:last-child');
+	const isFiltering = checkFlgTrue || checkFlgFalse || bookmarkSearchFlg || filterInput.value !== '';
+	filterIconText.textContent = isFiltering ? '絞り込み中' : '絞り込み';
+	filterResetIcon.style.display = isFiltering ? 'flex' : 'none';
 }
 
 // 絞り込み条件リセットアクション
@@ -973,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (sort == 'asc') {
 		ascIcon.classList.add('actionButtonSelected');
 	} else {
-		descIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
+		descIcon.classList.add('actionButtonSelected');
 	}
 
 	ascIcon.addEventListener('click', function() {
@@ -1002,148 +965,94 @@ sortIcon.addEventListener('click', () => {
 
 // 並び替えプルダウンをクリックしたときの処理
 const sortInsert = document.getElementById('sortInsert');
-sortInsert.addEventListener('click', () => {
-	// 追加日時の処理
-	localStorage.setItem('sortMode', 'insert');
-	sortMode = 'insert';
-	sortList(sortMode);
-	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
-});
-
 const sortUpdate = document.getElementById('sortUpdate');
-sortUpdate.addEventListener('click', () => {
-	// 更新日時の処理
-	localStorage.setItem('sortMode', 'update');
-	sortMode = 'update';
-	sortList(sortMode);
-	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
-});
-
 const sortCook = document.getElementById('sortCook');
-sortCook.addEventListener('click', () => {
-	// 料理名の処理
-	localStorage.setItem('sortMode', 'cook');
-	sortMode = 'cook';
-	sortList(sortMode);
-	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
-});
-
 const sortCheckbox = document.getElementById('sortCheckbox');
-sortCheckbox.addEventListener('click', () => {
-	// チェックボックスの処理
-	localStorage.setItem('sortMode', 'checkbox');
-	sortMode = 'checkbox';
+const handleSortClick = (mode) => {
+	localStorage.setItem('sortMode', mode);
+	sortMode = mode;
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
-});
+};
+sortInsert.addEventListener('click', () => handleSortClick('insert'));
+sortUpdate.addEventListener('click', () => handleSortClick('update'));
+sortCook.addEventListener('click', () => handleSortClick('cook'));
+sortCheckbox.addEventListener('click', () => handleSortClick('checkbox'));
 
 // リストをソートする関数
 function sortList(order) {
 	currentData.sort((a, b) => {
-
-		const aValue = String(a[1]); // 明示的に文字列に変換
-		const bValue = String(b[1]); // 明示的に文字列に変換
-		const ainsertTimestamp = new Date(a[4]); // E列の値を日時に変換
-		const binsertTimestamp = new Date(b[4]); // E列の値を日時に変換
-		const aupdateTimestamp = new Date(a[5]); // F列の値を日時に変換
-		const bupdateTimestamp = new Date(b[5]); // F列の値を日時に変換
-
+		const aValue = String(a[1]);
+		const bValue = String(b[1]);
+		const aInsertTimestamp = new Date(a[4]);
+		const bInsertTimestamp = new Date(b[4]);
+		const aUpdateTimestamp = new Date(a[5]);
+		const bUpdateTimestamp = new Date(b[5]);
+		const compareTimestamps = (aTimestamp, bTimestamp) => {
+			if (!aTimestamp && !bTimestamp) return 0;
+			if (!aTimestamp) return 1;
+			if (!bTimestamp) return -1;
+			return aTimestamp - bTimestamp;
+		};
+		const compareBoolean = (aBool, bBool) => {
+			return (aBool === bBool) ? 0 : (aBool ? -1 : 1);
+		};
 		// ①追加日時に基づいてソート
-		if (order === 'insert' && sort === 'asc') {
-			if (!a[4] && !b[4]) return 0; // 両方空の場合はそのまま
-			if (!a[4]) return 1; // aが空の場合はbを上に
-			if (!b[4]) return -1; // bが空の場合はaを上に
-			return ainsertTimestamp - binsertTimestamp; // 昇順でソート
-		} else if (order === 'insert' && sort === 'desc') {
-			if (!a[4] && !b[4]) return 0; // 両方空の場合はそのまま
-			if (!a[4]) return -1; // aが空の場合はbを上に
-			if (!b[4]) return 1; // bが空の場合はaを上に
-			return binsertTimestamp - ainsertTimestamp; // 降順でソート
+		if (order === 'insert') {
+			return sort === 'asc' ? compareTimestamps(aInsertTimestamp, bInsertTimestamp) 
+									: compareTimestamps(bInsertTimestamp, aInsertTimestamp);
 		}
 		// ②更新日時に基づいてソート
-		if (order === 'update' && sort === 'asc') {
-			if (!a[5] && !b[5]) return 0; // 両方空の場合はそのまま
-			if (!a[5]) return 1; // aが空の場合はbを上に
-			if (!b[5]) return -1; // bが空の場合はaを上に
-			return aupdateTimestamp - bupdateTimestamp; // 昇順でソート
-		} else if (order === 'update' && sort === 'desc') {
-			if (!a[5] && !b[5]) return 0; // 両方空の場合はそのまま
-			if (!a[5]) return -1; // aが空の場合はbを上に
-			if (!b[5]) return 1; // bが空の場合はaを上に
-			return bupdateTimestamp - aupdateTimestamp; // 降順でソート
+		if (order === 'update') {
+			return sort === 'asc' ? compareTimestamps(aUpdateTimestamp, bUpdateTimestamp) 
+									: compareTimestamps(bUpdateTimestamp, aUpdateTimestamp);
 		}
 		// ③テキストに基づいてソート
-		if (order === 'cook' && sort === 'asc') {
-			// 表示テキストを文字列として比較
-			return aValue.localeCompare(bValue); // 昇順でソート
-		} else if (order === 'cook' && sort === 'desc') {
-			// 表示テキストを文字列として比較
-			return bValue.localeCompare(aValue); // 降順でソート
+		if (order === 'cook') {
+			return sort === 'asc' ? aValue.localeCompare(bValue) 
+									: bValue.localeCompare(aValue);
 		}
 		// ④チェックボックスの状態に基づいてソート
-		if (order === 'checkbox' && sort === 'asc') {
-			if (a[0] === true && b[0] === false) {
-				return -1; // aを上に
-			} else if (a[0] === false && b[0] === true) {
-				return 1; // bを上に
-			} else {
-				return 0; // 同じ場合はそのまま
-			}
-		} else if (order === 'checkbox' && sort === 'desc') {	
-			if (a[0] === false && b[0] === true) {
-				return -1; // aを上に
-			} else if (a[0] === true && b[0] === false) {
-				return 1; // bを上に
-			} else {
-				return 0; // 同じ場合はそのまま
-			}
+		if (order === 'checkbox') {
+			return sort === 'asc' ? compareBoolean(a[0], b[0]) 
+									: compareBoolean(b[0], a[0]);
 		}
 	});
-
-	// ソートされたcurrentDataをdisplayData関数に渡して表示
-	displayData(currentData);
-	// プルダウンの色を変更
-	dropdownColor(sortMode);
-	// 並び替えの条件テキストを変更
-	updateDropdownIcon();
+	displayData(currentData); // ソートされたcurrentDataをdisplayData関数に渡して表示
+	dropdownColor(sortMode); // プルダウンの色を変更
+	updateDropdownIcon(); // 並び替えの条件テキストを変更
 }
 
 // プルダウンの色を変更
 function dropdownColor(order) {
-	if (order === 'insert') {
-		sortInsert.classList.add('sort-top'); // クラスを追加
-	} else {
-		sortInsert.classList.remove('sort-top'); // クラスを削除
-	}
-	if (order === 'update') {
-		sortUpdate.classList.add('sort-center'); // クラスを追加
-	} else {
-		sortUpdate.classList.remove('sort-center'); // クラスを削除
-	}
-	if (order === 'cook') {
-		sortCook.classList.add('sort-center'); // クラスを追加
-	} else {
-		sortCook.classList.remove('sort-center'); // クラスを削除
-	}
-	if (order === 'checkbox') {
-		sortCheckbox.classList.add('sort-bottom'); // クラスを追加
-	} else {
-		sortCheckbox.classList.remove('sort-bottom'); // クラスを削除
-	}
+	const sortOptions = {
+		insert: sortInsert,
+		update: sortUpdate,
+		cook: sortCook,
+		checkbox: sortCheckbox
+	};
+
+	Object.keys(sortOptions).forEach(key => {
+		const element = sortOptions[key];
+		if (key === order) {
+			element.classList.add(`sort-${key === 'insert' ? 'top' : key === 'checkbox' ? 'bottom' : 'center'}`);
+		} else {
+			element.classList.remove(`sort-${key === 'insert' ? 'top' : key === 'checkbox' ? 'bottom' : 'center'}`);
+		}
+	});
 }
 
 // 並び替え条件のテキスト
 function updateDropdownIcon() {
 	const sortIconText = document.querySelector('#sortIcon span:last-child'); // <span>要素を取得
-	if (sortMode == 'insert'){
-		sortIconText.textContent = '追加日時順'; // テキストを変更
-	} else if (sortMode == 'update') {
-		sortIconText.textContent = '更新日時順'; // テキストを変更
-	} else if (sortMode == 'cook') {
-		sortIconText.textContent = '料理名順'; // テキストを変更
-	} else if (sortMode == 'checkbox') {
-		sortIconText.textContent = 'チェック順'; // テキストを変更
-	}
+	const sortTexts = {
+		insert: '追加日時順',
+		update: '更新日時順',
+		cook: '料理名順',
+		checkbox: 'チェック順'
+	};
+
+	sortIconText.textContent = sortTexts[sortMode] || ''; // 対応するテキストを設定
 }
 
 // ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
