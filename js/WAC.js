@@ -271,6 +271,7 @@ function displayData(data) {
 
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
+				gsap.to(updateModal, { opacity: 1, duration: 0.3 });
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
 				HFOverlaySetBlock();
 			}
@@ -462,6 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
+		gsap.to(insertModal, { opacity: 1, duration: 0.3 });
 		insertModal.style.display = 'block'; // モーダルを表示
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
 		HFOverlaySetBlock();
@@ -469,7 +471,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
-		insertModal.style.display = 'none'; // モーダルを非表示
+		setTimeout(function() {
+			insertModal.style.display = 'none'; // モーダルを非表示
+		}, 300);
+		gsap.to(insertModal, { opacity: 0, duration: 0.5 });
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
 		insertForm.reset(); // フォームの内容をクリア
@@ -477,15 +482,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを閉じる
 	document.getElementById('updateCloseButton').addEventListener('click', function() {
-		updateModal.style.display = 'none'; // モーダルを非表示
+		setTimeout(function() {
+			updateModal.style.display = 'none'; // モーダルを非表示
+		}, 300);
+		gsap.to(updateModal, { opacity: 0, duration: 0.5 });
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
 	});
 
 	// モーダルの外側（オーバーレイ）をクリックしたときに閉じる
 	modalOverlay.addEventListener('click', function() {
-		insertModal.style.display = 'none'; // モーダルを非表示
-		updateModal.style.display = 'none'; // モーダルを非表示
+		setTimeout(function() {
+			insertModal.style.display = 'none'; // モーダルを非表示
+			updateModal.style.display = 'none'; // モーダルを非表示
+		}, 300);
+		gsap.to(insertModal, { opacity: 0, duration: 0.3 });
+		gsap.to(updateModal, { opacity: 0, duration: 0.3 });
 		insertForm.reset(); // フォームの内容をクリア
 		sideMenuClose(); // ヘッダー、フッター、モーダルのオーバーレイ非表示を含む
 		deleteModal.style.display = 'none';
@@ -497,7 +509,10 @@ const insertForm = document.forms['insert-form'];
 
 insertForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
-	insertModal.style.display = 'none'; // モーダルを非表示
+	setTimeout(function() {
+		insertModal.style.display = 'none'; // モーダルを非表示
+	}, 300);
+	gsap.to(insertModal, { opacity: 0, duration: 0.3 });
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	HFOverlaySetNone();
 
@@ -553,7 +568,10 @@ const updateForm = document.forms['update-form'];
 
 updateForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
-	updateModal.style.display = 'none'; // モーダルを非表示
+	setTimeout(function() {
+		updateModal.style.display = 'none'; // モーダルを非表示
+	}, 300);
+	gsap.to(updateModal, { opacity: 0, duration: 0.3 });
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	HFOverlaySetNone();
 
