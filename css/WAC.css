@@ -29,7 +29,7 @@ span.delete-icon, .update-icon, button {
 	cursor: pointer;
 }
 
-.action-button {
+.navigation-buttons {
 	background-color: var(--background-color);
 	position: fixed;
 	top: 46px;
@@ -40,11 +40,11 @@ span.delete-icon, .update-icon, button {
 	border-bottom: 1px solid #ccc; /* 各項目の下に境目の線を追加 */
 }
 
-.action-button-delete {
+.delete-navigation-buttons {
 	display: none;
 }
 
-.action-button button{
+.navigation-buttons button{
 	flex: 1;
 	background-color: var(--background-color);
 	color: #000000;
@@ -58,7 +58,7 @@ span.delete-icon, .update-icon, button {
 	float: right;
 }
 
-#tune-icon {
+#filterIcon { /* id指定でないと適用されない */
 	color: #ff0000;
 }
 
@@ -66,7 +66,7 @@ span.delete-icon, .update-icon, button {
 	color: #ff0000 !important;
 }
 
-.dropdown {
+.sort-dropdown {
 	display: none; /* 初期状態で非表示 */
 	position: fixed;
 	background-color: #ffffff; /* 背景色 */
@@ -80,17 +80,21 @@ span.delete-icon, .update-icon, button {
 	right: 70px; /* 右からの距離（必要に応じて調整） */
 }
 
-.dropdown ul {
+.sort-dropdown ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-.dropdown li {
+.sort-dropdown li {
 	padding: 10px 20px; /* パディングを増やして余裕を持たせる */
 	cursor: pointer;
 	transition: background-color 0.3s; /* ホバー時のアニメーション */
 	border-bottom: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
+}
+
+.sort-dropdown li:last-child {
+	border-bottom: none; /* 最後の項目には境目の線を表示しない */
 }
 
 /* プルダウンのスタイル */
@@ -106,10 +110,6 @@ span.delete-icon, .update-icon, button {
 .sort-bottom {
 	background-color: #e0e0e0; /* 任意の色に変更 */
 	border-radius: 0 0 8px 8px; /* 角を丸くする */
-}
-
-.dropdown li:last-child {
-	border-bottom: none; /* 最後の項目には境目の線を表示しない */
 }
 
 /* サイドメニュー */
@@ -148,23 +148,23 @@ span.delete-icon, .update-icon, button {
 	cursor: pointer;
 }
 
-.sideMenuBlock {
+.side-menu-block {
 	padding: 10px 20px;
 	display: flex; /* フレックスボックスを使用 */
 	flex-direction: column; /* 縦に配置 */
 }
 
-.blockName {
+.block-name {
 	padding: 10px 0px; /* アイテムのパディング */
 	font-weight: 900;
 	margin-bottom: 10px;
 }
 
-.sideMenuBlock input {
+.side-menu-block input {
 	margin-bottom: 10px;
 }
 
-.checkFilterButton {
+.filter-check-button {
 	display: flex; /* フレックスボックスを使用 */
 	justify-content: space-between; /* アイテムの間にスペースを均等に配置 */
 	margin-bottom: 10px;
@@ -182,17 +182,17 @@ span.delete-icon, .update-icon, button {
 	transition: background-color 0.3s; /* ホバー時のアニメーション */
 }
 
-.checkFilterButton .material-icons {
+.filter-check-button .material-icons {
 	color: #000000;
 }
 
-.optionButton {
+.option-button {
 	display: flex; /* フレックスボックスを使用 */
 	align-items: center; /* 垂直方向に中央揃え */
 	margin-bottom: 10px;
 }
 
-.optionButton button {
+.option-button button {
 	background-color: #ffffff;
 	border: 1px solid #ccc; /* 枠線 */
 	color: #000000;
@@ -203,7 +203,7 @@ span.delete-icon, .update-icon, button {
 	border-color: #ff6f61;
 }
 
-#bookmark {
+.bookmark-filter {
 	display: flex; /* フレックスボックスを使用 */
 	align-items: center; /* 垂直方向に中央揃え */
 	padding: 10px 10px; /* パディング */
@@ -448,7 +448,7 @@ textarea:focus {
 	outline: none; /* デフォルトのアウトラインを消す */
 }
 
-#submit1, #submit2 {
+.form-submit {
 	border: none;
 	background-color: #ff4d4d;
 	color: white;
@@ -496,7 +496,7 @@ textarea:focus {
 	transition: opacity 0.3s ease; /* ボタンのフェードイン・アウト */
 }
 
-#dataDisplay .text-Node {
+#dataDisplay .text-node {
 	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
 	overflow-wrap: break-word; /* 単語の途切れを許可 */
 	word-wrap: break-word; /* 古いブラウザのサポート */
@@ -564,13 +564,7 @@ textarea:focus {
 	transition: background-color 0.3s; /* ホバー時の色変更アニメーション */
 }
 
-#reloadOverlay {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-}
-
-#loading-text {
+.loading-text {
 	display: block;
 	position: absolute;
 	top: 50%;
@@ -584,7 +578,7 @@ textarea:focus {
 	font-size: 12px; /* フォントサイズを小さく */
 }
 
-#loading-content {
+.loading-content {
 	display: block;
 	position: relative;
 	left: 50%;
@@ -595,7 +589,7 @@ textarea:focus {
 	border: 3px solid #F00;
 }
 
-#loading-content:after {
+.loading-content:after {
 	content: "";
 	position: absolute;
 	border: 3px solid #0F0;
@@ -605,7 +599,7 @@ textarea:focus {
 	bottom: 10px;
 }
 
-#loading-content:before {
+.loading-content:before {
 	content: "";
 	position: absolute;
 	border: 3px solid #00F;
@@ -615,7 +609,7 @@ textarea:focus {
 	bottom: 5px;
 }
 
-#loading-content {
+.loading-content {
 	border: 3px solid transparent;
 	border-top-color: #4D658D;
 	border-bottom-color: #4D658D;
@@ -626,7 +620,7 @@ textarea:focus {
 	animation: loader 2s linear infinite;
 }
 
-#loading-content:before {
+.loading-content:before {
 	border: 3px solid transparent;
 	border-top-color: #D4CC6A;
 	border-bottom-color: #D4CC6A;
@@ -637,7 +631,7 @@ textarea:focus {
 	animation: loader 3s linear infinite;
 }
 
-#loading-content:after {
+.loading-content:after {
 	border: 3px solid transparent;
 	border-top-color: #84417C;
 	border-bottom-color: #84417C;
@@ -717,19 +711,19 @@ textarea:focus {
 	cursor: pointer;
 }
 
-.optionMenuBlock {
+.option-menu-block {
 	background-color: #ffffff; /* 背景色 */
 	border-radius: 8px; /* 角を丸くする */
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
 }
 
-.optionMenuBlock ul {
+.option-menu-block ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-.optionMenuBlock li {
+.option-menu-block li {
 	display: flex; /* フレックスボックスを使って項目を横に並べる */
 	align-items: center; /* 縦方向の中央揃え */
 	padding: 20px 20px; /* 内側の余白 */
@@ -737,15 +731,15 @@ textarea:focus {
 	border-bottom: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
 }
 
-.optionMenuBlock li:last-child {
+.option-menu-block li:last-child {
 	border-bottom: none; /* 最後の項目には境目の線を表示しない */
 }
 
-.optionMenuBlock li .material-icons {
+.option-menu-block li .material-icons {
 	margin-right: 20px;
 }
 
-.optionMenuBlock li  .text-Node {
+.option-menu-block li .text-node {
 	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
 	overflow-wrap: break-word; /* 単語の途切れを許可 */
 	word-wrap: break-word; /* 古いブラウザのサポート */
@@ -844,14 +838,14 @@ transition: transform 0.2s;
 	transform: translateX(26px); /* 丸を右に移動 */
 }
 
-.form-container {
+.password-settig-main {
 	padding: 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background-color: white;
 }
 
-.form-container h3 {
+.password-settig-main h3 {
 	text-align: center;
 }
 

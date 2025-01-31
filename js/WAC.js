@@ -32,21 +32,21 @@ function HFOverlaySetNone() {
 	footerOverlay.style.display = 'none';
 }
 
-const updateIcon = document.getElementById('update-icon');
-updateIcon.addEventListener('click', () => {
+const chacheClearIcon = document.getElementById('chacheClearIcon');
+chacheClearIcon.addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
 	fetchData();
 	alert('キャッシュをクリアしてデータを取得します。');
 });
 
 // サイドメニュー開閉
-const sideMenu = document.getElementById('side-menu');
-const tuneIcon = document.getElementById('tune-icon');
+const sideMenu = document.getElementById('sideMenu');
+const filterIcon = document.getElementById('filterIcon');
 const reSearchButton = document.getElementById('reSearchButton');
 document.addEventListener('DOMContentLoaded', () => {
 
 	// メニューを開く
-	tuneIcon.addEventListener('click', () => {
+	filterIcon.addEventListener('click', () => {
 		sideMenuOpen();
 	});
 	reSearchButton.addEventListener('click', () => {
@@ -54,8 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// メニューを閉じる
-	const closeMenu = document.getElementById('close-menu');
-	closeMenu.addEventListener('click', () => {
+	document.getElementById('closeSideMenuButton').addEventListener('click', () => {
 		sideMenuClose();
 	});
 });
@@ -76,7 +75,7 @@ function sideMenuClose() {
 }
 
 // オプションメニュー開閉
-const optionMenu = document.getElementById('option-menu');
+const optionMenu = document.getElementById('optionMenu');
 const settingIcon = document.getElementById('setting-icon');
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -87,8 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// メニューを閉じる
-	const closeOptionMenu = document.getElementById('close-option-menu');
-	closeOptionMenu.addEventListener('click', () => {
+	document.getElementById('closeOptionMenu').addEventListener('click', () => {
 		headerOverlay.style.display = 'none';
 		optionMenu.classList.remove('open');
 	});
@@ -191,7 +189,7 @@ function displayData(data) {
 		// 2列目の要素をリストアイテムに追加
 		const secondColumnText = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
 		const textNode = document.createElement('span'); // テキストをラップするためのspan要素
-		textNode.classList.add('text-Node'); // クラスを追加してデザインを管理
+		textNode.classList.add('text-node'); // クラスを追加してデザインを管理
 		textNode.textContent = secondColumnText; // テキストを設定
 		listItem.appendChild(textNode); // spanをリストアイテムに追加
 
@@ -302,13 +300,13 @@ function displayData(data) {
 		}
 
 		// 削除全選択
-		document.getElementById('done-icon').addEventListener('click', function() {
+		document.getElementById('selectAllIcon').addEventListener('click', function() {
 			deleteCheckbox.checked = true; // チェックボックスの状態を切り替え
 			deleteSelect();
 		});
 
 		// 削除全解除
-		document.getElementById('remove-done-icon').addEventListener('click', function() {
+		document.getElementById('resetAllIcon').addEventListener('click', function() {
 			deleteCheckbox.checked = false; // チェックボックスの状態を切り替え
 			deleteSelect();
 		});
@@ -458,11 +456,9 @@ function updateBookmark(row, isBookmarked) {
 
 // モーダル関連
 const insertModal = document.getElementById('insertModal');
-const addIcon = document.getElementById('add-icon');
+const addIcon = document.getElementById('addIcon');
 
 document.addEventListener('DOMContentLoaded', function() {
-	const closeModal1 = document.getElementById('closeModal1');
-	const closeModal2 = document.getElementById('closeModal2');
 
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
@@ -472,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// モーダルを閉じる
-	closeModal1.addEventListener('click', function() {
+	document.getElementById('insertCloseButton').addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
@@ -480,7 +476,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// モーダルを閉じる
-	closeModal2.addEventListener('click', function() {
+	document.getElementById('updateCloseButton').addEventListener('click', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
@@ -607,13 +603,15 @@ updateForm.addEventListener('submit', function(event) {
 
 let deleteMode = false; // 削除モードの状態を管理
 
+const deleteModeIcon = document.getElementById('deleteModeIcon');
 document.addEventListener('DOMContentLoaded', () => {
-	document.getElementById('delete-icon-false').addEventListener('click', () => {
+	deleteModeIcon.addEventListener('click', () => {
 		deleteModeChange(); // 削除モード=TRUE
 	});
 });
 
-document.getElementById('delete-icon-true').addEventListener('click', () => {
+const deleteAllIcon = document.getElementById('deleteAllIcon');
+deleteAllIcon.addEventListener('click', () => {
 	if (rowsToDelete.length === 0) {
 		alert('削除するデータが選択されていません。');
 	} else {
@@ -712,14 +710,12 @@ function deleteModeChange() {
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
 
-	// add-icon,update-conの表示を切り替える
+	// addIcon,chacheClearIconの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
-	updateIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
-	// action-buttonの表示を切り替える
-	const actionButtonSearch = document.getElementById('action-button-search');
-	const actionButtonDelete = document.getElementById('action-button-delete');
-	actionButtonSearch.style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
-	actionButtonDelete.style.display = deleteMode ? 'flow-root' : 'none'; // 削除モードがTRUEの場合、非表示にする
+	chacheClearIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
+	// NavigationButtonsの表示を切り替える
+	document.getElementById('navigationButtons').style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
+	document.getElementById('deleteNavigationButtons').style.display = deleteMode ? 'flow-root' : 'none'; // 削除モードがTRUEの場合、非表示にする
 
 	// リストの全てのチェックボックスを非活性または活性にする
 	const checkboxes = document.querySelectorAll('#dataDisplay input[type="checkbox"]');
@@ -800,10 +796,8 @@ function deleteButton(isVisible) {
 
 // ゴミ箱アイコンの表示を切り替える関数
 function deleteIcon(isVisible) {
-	const deleteIconTrue = document.getElementById('delete-icon-true'); // ゴミ箱アイコンを取得
-	const deleteIconFalse = document.getElementById('delete-icon-false'); // ゴミ箱アイコンを取得
-	deleteIconTrue.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
-	deleteIconFalse.style.display = isVisible ? 'none' : 'inline'; // 表示/非表示を切り替え
+	deleteAllIcon.style.display = isVisible ? 'inline' : 'none'; // 表示/非表示を切り替え
+	deleteModeIcon.style.display = isVisible ? 'none' : 'inline'; // 表示/非表示を切り替え
 }
 
 // ヘッダーの削除レコード数の表示を切り替える関数
@@ -834,7 +828,7 @@ function doClear() {
 	checkFlgFalse = false;
 	checkFalse.classList.remove('searchOptionSelected');
 	bookmarkSearchFlg = false;
-	bookmark.classList.remove('searchOptionSelected');
+	bookmarkFilter.classList.remove('searchOptionSelected');
 }
 
 // 検索機能
@@ -905,13 +899,13 @@ filterInput.addEventListener('keypress', (event) => {
 });
 
 // ブックマークのクリックイベント
-const bookmark = document.getElementById('bookmark');
-bookmark.addEventListener('click', function() {
+const bookmarkFilter = document.getElementById('bookmarkFilter');
+bookmarkFilter.addEventListener('click', function() {
 	bookmarkSearchFlg = !bookmarkSearchFlg; // フラグを切り替え
 	if (bookmarkSearchFlg) {
-		bookmark.classList.add('searchOptionSelected');
+		bookmarkFilter.classList.add('searchOptionSelected');
 	} else {
-		bookmark.classList.remove('searchOptionSelected');
+		bookmarkFilter.classList.remove('searchOptionSelected');
 	}
 	search();
 });
@@ -927,21 +921,19 @@ document.getElementById('searchButton').addEventListener('click', () => {
 });
 
 // 絞り込み条件の有無
+const filterResetIcon = document.getElementById('filterResetIcon');
 function updateFilterIcon() {
-	const tuneIconText = document.querySelector('#tune-icon span:last-child'); // <span>要素を取得
-	// filter-reset-iconの表示を切り替える
-	const filterResetIcon = document.getElementById('filter-reset-icon');
+	const filterIconText = document.querySelector('#filterIcon span:last-child'); // <span>要素を取得
 	if (checkFlgTrue == true || checkFlgFalse == true || bookmarkSearchFlg == true || filterInput.value != ''){
-		tuneIconText.textContent = '絞り込み中'; // テキストを変更
+		filterIconText.textContent = '絞り込み中'; // テキストを変更
 		filterResetIcon.style.display = 'flex'; // 絞り込み中の場合、表示する
 	} else {
-		tuneIconText.textContent = '絞り込み'; // テキストを変更
-		filterResetIcon.style.display = 'none'; // 絞り込み中の場合、表示する
+		filterIconText.textContent = '絞り込み'; // テキストを変更
+		filterResetIcon.style.display = 'none'; // 絞り込み中の場合、非表示する
 	}
 }
 
 // 絞り込み条件リセットアクション
-const filterResetIcon = document.getElementById('filter-reset-icon');
 filterResetIcon.addEventListener('click', () => {
 	doClear();
 	search();
@@ -953,8 +945,7 @@ const searchNoneScreen = document.getElementById('searchNoneScreen');
 function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
 	searchNoneScreen.style.display = isSearchNoneScreen ? 'inline' : 'none';
-	const deleteIconFalse = document.getElementById('delete-icon-false'); // ゴミ箱アイコンを取得
-	deleteIconFalse.style.display = isSearchNoneScreen ? 'none' : 'inline'; // 表示/非表示を切り替え
+	deleteModeIcon.style.display = isSearchNoneScreen ? 'none' : 'inline'; // 表示/非表示を切り替え
 }
 
 const resetSerch = document.getElementById('resetSerch');
@@ -964,14 +955,11 @@ resetSerch.addEventListener('click', () => {
 	updateFilterIcon();
 });
 
-// プルダウン表示
-const sortIcon = document.getElementById('sort-icon');
-const sortDropdown = document.getElementById('sort-dropdown');
+// 昇順、降順の切り替え
 let sortMode = localStorage.getItem('sortMode') || 'insert';
+const ascIcon = document.getElementById('ascIcon');
+const descIcon = document.getElementById('descIcon');
 let sort = localStorage.getItem('sort') || 'desc';
-
-const ascIcon = document.getElementById('asc-icon');
-const descIcon = document.getElementById('desc-icon');
 document.addEventListener('DOMContentLoaded', () => {
 	if (sort == 'asc') {
 		ascIcon.classList.add('actionButtonSelected');
@@ -979,7 +967,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		descIcon.classList.add('actionButtonSelected'); // 初期状態でasc-iconを赤に
 	}
 
-	// 昇順、降順ボタンのクリックイベント
 	ascIcon.addEventListener('click', function() {
 		localStorage.setItem('sort', 'asc');
 		sort = 'asc';
@@ -997,42 +984,44 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
-// sort-iconをクリックしたときにプルダウンを表示
+// sortIconをクリックしたときにプルダウンを表示
+const sortIcon = document.getElementById('sortIcon');
+const sortDropdown = document.getElementById('sortDropdown');
 sortIcon.addEventListener('click', () => {
 	sortDropdown.style.display = sortDropdown.style.display === 'block' ? 'none' : 'block';
 });
 
 // 並び替えプルダウンをクリックしたときの処理
-const sortInsert = document.getElementById('sort-insert');
+const sortInsert = document.getElementById('sortInsert');
 sortInsert.addEventListener('click', () => {
-	// 追加日時の処理をここに追加
+	// 追加日時の処理
 	localStorage.setItem('sortMode', 'insert');
 	sortMode = 'insert';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortUpdate = document.getElementById('sort-update');
+const sortUpdate = document.getElementById('sortUpdate');
 sortUpdate.addEventListener('click', () => {
-	// 更新日時の処理をここに追加
+	// 更新日時の処理
 	localStorage.setItem('sortMode', 'update');
 	sortMode = 'update';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortCook = document.getElementById('sort-cook');
+const sortCook = document.getElementById('sortCook');
 sortCook.addEventListener('click', () => {
-	// 料理名の処理をここに追加
+	// 料理名の処理
 	localStorage.setItem('sortMode', 'cook');
 	sortMode = 'cook';
 	sortList(sortMode);
 	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
 });
 
-const sortCheckbox = document.getElementById('sort-checkbox');
+const sortCheckbox = document.getElementById('sortCheckbox');
 sortCheckbox.addEventListener('click', () => {
-	// チェックボックスの処理をここに追加
+	// チェックボックスの処理
 	localStorage.setItem('sortMode', 'checkbox');
 	sortMode = 'checkbox';
 	sortList(sortMode);
@@ -1136,7 +1125,7 @@ function dropdownColor(order) {
 
 // 並び替え条件のテキスト
 function updateDropdownIcon() {
-	const sortIconText = document.querySelector('#sort-icon span:last-child'); // <span>要素を取得
+	const sortIconText = document.querySelector('#sortIcon span:last-child'); // <span>要素を取得
 	if (sortMode == 'insert'){
 		sortIconText.textContent = '追加日時順'; // テキストを変更
 	} else if (sortMode == 'update') {
@@ -1169,23 +1158,19 @@ window.addEventListener('scroll', function() {
 });
 
 // ヘルプページへ遷移
-document.getElementById('help-icon').addEventListener('click', () => {
+document.getElementById('helpIcon').addEventListener('click', () => {
 	window.location.href = 'top.html'; // 遷移先のページ
 });
 
 // テーマ設定開閉
-const optionTheme = document.getElementById('option-theme');
-const theme = document.getElementById('theme');
+const optionTheme = document.getElementById('optionTheme');
 document.addEventListener('DOMContentLoaded', () => {
-
 	// オプションを開く
-	theme.addEventListener('click', () => {
+	document.getElementById('theme').addEventListener('click', () => {
 		optionTheme.classList.add('open');
 	});
-
 	// メニューを閉じる
-	const closeOptionTheme = document.getElementById('close-option-theme');
-	closeOptionTheme.addEventListener('click', () => {
+	document.getElementById('closeOptionTheme').addEventListener('click', () => {
 		optionTheme.classList.remove('open');
 	});
 });
@@ -1211,58 +1196,54 @@ document.addEventListener('DOMContentLoaded', () => {
 	changeThemeColor(headerColor, backgroundColor, buttonColor);
 
 	// イベントリスナーの設定
-	document.getElementById('color-check1').addEventListener('click', () => {
+	document.getElementById('colorCheck1').addEventListener('click', () => {
 		changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
 	});
-	document.getElementById('color-check2').addEventListener('click', () => {
+	document.getElementById('colorCheck2').addEventListener('click', () => {
 		changeThemeColor('#F44336', '#FFEBEE', '#FF8A80');
 	});
-	document.getElementById('color-check3').addEventListener('click', () => {
+	document.getElementById('colorCheck3').addEventListener('click', () => {
 		changeThemeColor('#9C27B0', '#E1BEE7', '#EA80FC');
 	});
-	document.getElementById('color-check4').addEventListener('click', () => {
+	document.getElementById('colorCheck4').addEventListener('click', () => {
 		changeThemeColor('#2196F3', '#E3F2FD', '#82B1FF');
 	});
-	document.getElementById('color-check5').addEventListener('click', () => {
+	document.getElementById('colorCheck5').addEventListener('click', () => {
 		changeThemeColor('#009688', '#E0F2F1', '#A7FFEB');
 	});
-	document.getElementById('color-check6').addEventListener('click', () => {
+	document.getElementById('colorCheck6').addEventListener('click', () => {
 		changeThemeColor('#FFEB3B', '#FFFDE7', '#FFFF8D');
 	});
-	document.getElementById('color-check7').addEventListener('click', () => {
+	document.getElementById('colorCheck7').addEventListener('click', () => {
 		changeThemeColor('#795548', '#EFEBE9', '#8D6E63');
 	});
-	document.getElementById('color-check8').addEventListener('click', () => {
+	document.getElementById('colorCheck8').addEventListener('click', () => {
 		changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
 	});
 });
 
 // パスコード設定開閉
-const optionPassword = document.getElementById('option-password');
-const password = document.getElementById('password');
+const optionPassword = document.getElementById('optionPassword');
 document.addEventListener('DOMContentLoaded', () => {
-
 	// オプションを開く
-	password.addEventListener('click', () => {
+	document.getElementById('password').addEventListener('click', () => {
 		optionPassword.classList.add('open');
 	});
-
 	// メニューを閉じる
-	const closeOptionPassword = document.getElementById('close-option-password');
-	closeOptionPassword.addEventListener('click', () => {
+	document.getElementById('closeOptionPassword').addEventListener('click', () => {
 		optionPassword.classList.remove('open');
 	});
 });
 
 const passToggle = document.getElementById('passToggle');
-const passwordChange = document.getElementById('passwordChange');
+const passwordChangeBlock = document.getElementById('passwordChangeBlock');
 const passwordSettig = document.getElementById('passwordSettig');
 const passwordCancel = document.getElementById('passwordCancel');
 let previousPassAction = null; // 前のアクションを格納する変数
 document.addEventListener('DOMContentLoaded', () => {
 
 	passToggle.checked = registrationSuccess;
-	passwordChange.style.display = registrationSuccess ? 'flex' : 'none';
+	passwordChangeBlock.style.display = registrationSuccess ? 'flex' : 'none';
 
 	passToggle.addEventListener('change', () => {
 		message.textContent = ''; // メッセージをクリア
@@ -1273,12 +1254,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		} else {
 			localStorage.setItem('registrationSuccess', 'false');
 			localStorage.removeItem('userPassword'); // パスワードをローカルストレージに保存
-			passwordChange.style.display = 'none';
+			passwordChangeBlock.style.display = 'none';
 			passToggle.checked = false;
 		}
 	});
 
-	passwordChange.addEventListener('click', () => {
+	passwordChangeBlock.addEventListener('click', () => {
 		message.textContent = ''; // メッセージをクリア
 		passwordSettig.classList.add('open');
 		digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
@@ -1303,13 +1284,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			verifyInputs[i].disabled = true; // 他の桁を無効にする
 		}
 		verifyInputs[0].disabled = false;
-		firstSection.style.display = 'block'; // 1回目のパスワードを再表示
+		firstSection.style.display = 'block'; // 1回目のパスワード画面を再表示
 		verifySection.style.display = 'none'; // 確認セクションを非表示にする
 		document.activeElement.blur();
 	});
 });
 
-//let registrationSuccess = false; // 登録成功のフラグ
 let registrationSuccess = localStorage.getItem('registrationSuccess') === 'true';
 let message = document.getElementById('message');
 const digitInputs = document.querySelectorAll('#firstSection .digit-input');
@@ -1420,7 +1400,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					verifyInputs[0].disabled = false;
 					firstSection.style.display = 'block';
 					verifySection.style.display = 'none'; // 確認セクションを非表示にする
-					passwordChange.style.display = 'flex';
+					passwordChangeBlock.style.display = 'flex';
 					passToggle.checked = true;
 				} else {
 					message.textContent = 'パスワードが一致しません。もう一度入力してください。';
