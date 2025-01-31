@@ -894,6 +894,7 @@ filterInput.addEventListener('blur', function() {
 filterInput.addEventListener('keypress', (event) => {
 	if (event.key === 'Enter') {
 		event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+		document.activeElement.blur();
 		lastSearchValue = filterInput.value; // 値を保持
 		search();
 		updateFilterIcon();
