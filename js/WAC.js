@@ -278,7 +278,6 @@ function displayData(data) {
 
 		// 削除モードがTRUEのときの処理
 		function deleteSelect() {
-			console.log(rowsToDelete);
 			const currentDataDelete = currentData.includes(rowData);
 			if (currentDataDelete) {
 				const isChecked = deleteCheckbox.checked;
@@ -286,6 +285,7 @@ function displayData(data) {
 				const index = rowsToDelete.indexOf(sheetRowIndex);
 				if (isChecked && index === -1) {
 					rowsToDelete.push(sheetRowIndex); // 行番号を追加
+					rowsToDelete.sort((a, b) => a - b); // 昇順に並び替え
 				} else if (!isChecked && index > -1) {
 					rowsToDelete.splice(index, 1); // 行番号を削除
 				}
@@ -465,7 +465,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
-		gsap.to(insertModal, { opacity: 0, duration: 0.5 });
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
 		insertForm.reset(); // フォームの内容をクリア
@@ -474,7 +473,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// モーダルを閉じる
 	document.getElementById('updateCloseButton').addEventListener('click', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
-		gsap.to(updateModal, { opacity: 0, duration: 0.5 });
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		HFOverlaySetNone();
 	});
