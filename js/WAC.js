@@ -485,10 +485,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
 		insertForm.reset(); // フォームの内容をクリア
 		sideMenuClose(); // ヘッダー、フッター、モーダルのオーバーレイ非表示を含む
-		setTimeout(function() {
+		gsap.to(deleteModal, { opacity: 0, duration: 0.3, onComplete: () => {
 			deleteModal.style.display = 'none'; // モーダルを非表示
-		}, 300);
-		gsap.to(deleteModal, { opacity: 0, duration: 0.3 });
+		}});
 	});
 });
 
@@ -686,10 +685,9 @@ function deleteModalShow() {
 }
 
 function deleteModalHidden() {
-	setTimeout(function() {
+	gsap.to(deleteModal, { opacity: 0, duration: 0.3, onComplete: () => {
 		deleteModal.style.display = 'none'; // モーダルを非表示
-	}, 300);
-	gsap.to(deleteModal, { opacity: 0, duration: 0.3 });
+	}});
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
 	HFOverlaySetNone();
 }
@@ -959,9 +957,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // sortIconをクリックしたときにプルダウンを表示
 const sortIcon = document.getElementById('sortIcon');
 const sortDropdown = document.getElementById('sortDropdown');
+let isDropdownVisible = false; // プルダウンの表示状態を管理するフラグ
 sortIcon.addEventListener('click', () => {
-	sortDropdown.style.display = sortDropdown.style.display === 'block' ? 'none' : 'block';
+	isDropdownVisible = !isDropdownVisible; // 状態をトグル
+	if (isDropdownVisible) {
+		sortDropdown.style.display = 'block'; // プルダウンを表示
+		gsap.to(sortDropdown, { opacity: 1, duration: 0.2 });
+	} else {
+		sortDropdownHidden(); // プルダウンを非表示
+	}
 });
+
+// プルダウンを非表示
+function sortDropdownHidden() {
+	isDropdownVisible = false;
+	gsap.to(sortDropdown, { opacity: 0, duration: 0.2, onComplete: () => {
+		sortDropdown.style.display = 'none'; // プルダウンを非表示
+	}});
+}
 
 // 並び替えプルダウンをクリックしたときの処理
 const sortInsert = document.getElementById('sortInsert');
@@ -972,7 +985,7 @@ const handleSortClick = (mode) => {
 	localStorage.setItem('sortMode', mode);
 	sortMode = mode;
 	sortList(sortMode);
-	sortDropdown.style.display = 'none'; // プルダウンを非表示にする
+	sortDropdownHidden(); // プルダウンを非表示
 };
 sortInsert.addEventListener('click', () => handleSortClick('insert'));
 sortUpdate.addEventListener('click', () => handleSortClick('update'));
@@ -1058,7 +1071,8 @@ function updateDropdownIcon() {
 // ドキュメントの他の部分がクリックされたときにプルダウンを閉じる
 document.addEventListener('click', (event) => {
 	if (!sortIcon.contains(event.target) && !sortDropdown.contains(event.target)) {
-		sortDropdown.style.display = 'none';
+		isDropdownVisible = false;
+		sortDropdownHidden(); // プルダウンを非表示
 	}
 });
 
@@ -1067,10 +1081,10 @@ window.addEventListener('scroll', function() {
 	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 	if (scrollTop > lastScrollTop) {
 		// スクロールダウン
-		sortDropdown.style.display = 'none';
+		sortDropdownHidden(); // プルダウンを非表示
 	} else {
 		// スクロールアップ
-		sortDropdown.style.display = 'none';
+		sortDropdownHidden(); // プルダウンを非表示
 	}
 	lastScrollTop = scrollTop; // 現在のスクロール位置を更新
 });
