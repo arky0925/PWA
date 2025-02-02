@@ -489,6 +489,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
+let timer;
+
+addIcon.addEventListener('mousedown', () => {
+	// 500ミリ秒後に長押しと判断
+	timer = setTimeout(() => {
+		alert('長押しが検出されました！');
+	}, 500);
+});
+
+addIcon.addEventListener('mouseup', () => {
+	clearTimeout(timer); // マウスを離したらタイマーをクリア
+});
+
+addIcon.addEventListener('mouseleave', () => {
+	clearTimeout(timer); // ボタンからマウスが離れた場合もタイマーをクリア
+});
+
 // 新規追加フォーム送信
 const insertForm = document.forms['insert-form'];
 
