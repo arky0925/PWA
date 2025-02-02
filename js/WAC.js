@@ -133,6 +133,7 @@ function fetchData() {
 let currentData = []; // 現在表示されているデータを保持する
 let chacheDate = []; // キャッシュデータを保持する
 let filteredRows = []; // 絞り込み結果の行番号を格納
+let handOver;
 
 // データをリストに表示する関数
 function displayData(data) {
@@ -250,8 +251,7 @@ function displayData(data) {
 		// 削除ボタンを作成
 		const deleteButton = document.createElement('span');
 		deleteButton.textContent = 'delete_outline';
-		deleteButton.classList.add('material-icons'); // クラスを追加
-		deleteButton.classList.add('single-delete-icons'); // クラスを追加
+		deleteButton.classList.add('material-icons', 'single-delete-icons'); // クラスを追加
 		listItem.appendChild(deleteButton); // リストアイテムに追加
 
 		// リストアイテムにクリックイベントを追加
@@ -306,19 +306,18 @@ function displayData(data) {
 			deleteSelect();
 		});
 
-		let handOver;
 		deleteButton.addEventListener('click', (event) => {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
 			deleteModalShow();
 			doDeleteSingle.style.display = 'block';
 			doDeleteAll.style.display = 'none';
-			handOver = rowData;
+			handOver = sheetRowIndex;
 		});
 
 		// 削除対象の1行を送信
 		doDeleteSingle.addEventListener('click', (event) => {
 			event.stopPropagation(); // リストアイテムのタッチイベントをトリガーしない
-			if (handOver) {
+			if (sheetRowIndex == handOver) {
 				handOver = null;
 				deleteModalHidden();
 
