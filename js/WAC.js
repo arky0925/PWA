@@ -491,20 +491,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let timer;
 
-addIcon.addEventListener('mousedown', () => {
-	// 500ミリ秒後に長押しと判断
+// 長押しを検出する関数
+const startLongPress = () => {
 	timer = setTimeout(() => {
 		alert('長押しが検出されました！');
 	}, 500);
-});
+};
 
-addIcon.addEventListener('mouseup', () => {
-	clearTimeout(timer); // マウスを離したらタイマーをクリア
-});
+// タッチイベントの設定
+addIcon.addEventListener('touchstart', startLongPress);
+addIcon.addEventListener('mousedown', startLongPress);
 
-addIcon.addEventListener('mouseleave', () => {
-	clearTimeout(timer); // ボタンからマウスが離れた場合もタイマーをクリア
-});
+// 終了イベントの設定
+const clearLongPress = () => {
+	clearTimeout(timer);
+};
+
+addIcon.addEventListener('touchend', clearLongPress);
+addIcon.addEventListener('mouseup', clearLongPress);
+addIcon.addEventListener('mouseleave', clearLongPress);
 
 // 新規追加フォーム送信
 const insertForm = document.forms['insert-form'];
