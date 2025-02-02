@@ -457,6 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
 		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
 		HFOverlaySetBlock();
 	});
@@ -552,43 +553,45 @@ updateForm.addEventListener('submit', function(event) {
 	const updateModal2 = document.getElementById('updateModal2').value;
 	const now = new Date();
 	const formattedDate = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-
-	// キャッシュの更新
 	const cachedData = JSON.parse(localStorage.getItem('spreadsheetData'));
-	cachedData[sheetRowIndex][1] = updateModal1; // 2列目を更新
-	cachedData[sheetRowIndex][2] = updateModal2; // 3列目を更新
-	cachedData[sheetRowIndex][5] = formattedDate; // 6列目を更新
-	localStorage.setItem('spreadsheetData', JSON.stringify(cachedData));
 
-	search(); // 更新されたデータを表示
+	if(!(cachedData[sheetRowIndex][1] == updateModal1 && cachedData[sheetRowIndex][2] == updateModal2)) {
+		// キャッシュの更新
+		cachedData[sheetRowIndex][1] = updateModal1; // 2列目を更新
+		cachedData[sheetRowIndex][2] = updateModal2; // 3列目を更新
+		cachedData[sheetRowIndex][5] = formattedDate; // 6列目を更新
+		localStorage.setItem('spreadsheetData', JSON.stringify(cachedData));
 
-	const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
+		search(); // 更新されたデータを表示
 
-	// 更新アクションと行番号を追加
-	updateFormData.append('action', 'update'); // actionを'update'に設定
-	updateFormData.append('row', sheetRowIndex + 2); // 更新する行番号を追加
+		const updateFormData = new FormData(updateForm); // フォームデータを新たに作成
 
-	// モーダルの入力データを追加
-	updateFormData.append('data1', updateModal1);
-	updateFormData.append('data2', updateModal2);
+		// 更新アクションと行番号を追加
+		updateFormData.append('action', 'update'); // actionを'update'に設定
+		updateFormData.append('row', sheetRowIndex + 2); // 更新する行番号を追加
 
-	// 更新時間を追加
-	updateFormData.append('updateTime', formattedDate);
+		// モーダルの入力データを追加
+		updateFormData.append('data1', updateModal1);
+		updateFormData.append('data2', updateModal2);
 
-	fetch(scriptURL, { method: 'POST', body: updateFormData })
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json(); // レスポンスをJSON形式で取得
-		})
-		.then(data => {
-			console.log('Update successful:', data); // レスポンスの内容を確認
-		})
-		.catch(error => {
-			console.error('Error!', error.message);
-			// alert("エラーが発生しました。");
-		})
+		// 更新時間を追加
+		updateFormData.append('updateTime', formattedDate);
+
+		fetch(scriptURL, { method: 'POST', body: updateFormData })
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json(); // レスポンスをJSON形式で取得
+			})
+			.then(data => {
+				console.log('Update successful:', data); // レスポンスの内容を確認
+			})
+			.catch(error => {
+				console.error('Error!', error.message);
+				// alert("エラーが発生しました。");
+			})
+	}
 });
 
 let deleteMode = false; // 削除モードの状態を管理
