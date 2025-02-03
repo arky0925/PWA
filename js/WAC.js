@@ -938,6 +938,7 @@ function searchNone() {
 	const isSearchNoneScreen = currentData.length === 0;
 	searchNoneScreen.style.display = isSearchNoneScreen ? 'inline' : 'none';
 	deleteModeIcon.style.display = isSearchNoneScreen ? 'none' : 'inline'; // 表示/非表示を切り替え
+	document.body.style.overflow =  isSearchNoneScreen ? 'hidden' : 'auto'; // スクロールを切り替える
 }
 
 const resetSerch = document.getElementById('resetSerch');
@@ -1101,6 +1102,7 @@ document.addEventListener('click', (event) => {
 let lastScrollTop = 0; // 最後のスクロール位置
 window.addEventListener('scroll', function() {
 	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	document.activeElement.blur();
 	if (scrollTop > lastScrollTop) {
 		// スクロールダウン
 		sortDropdownHidden(); // プルダウンを非表示
@@ -1205,6 +1207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (passToggle.checked == true) {
 			passwordSettig.classList.add('open');
 			digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
+			document.body.style.overflow = 'hidden'; // スクロールを無効にする
 		} else {
 			localStorage.setItem('registrationSuccess', 'false');
 			localStorage.removeItem('userPassword'); // パスワードをローカルストレージに保存
@@ -1218,6 +1221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		passwordSettig.classList.add('open');
 		digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 		previousPassAction = "passwordChange";
+		document.body.style.overflow = 'hidden'; // スクロールを無効にする
 	});
 
 	// メニューを閉じる
@@ -1241,6 +1245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		firstSection.style.display = 'block'; // 1回目のパスワード画面を再表示
 		verifySection.style.display = 'none'; // 確認セクションを非表示にする
 		document.activeElement.blur();
+		document.body.style.overflow = 'auto'; // スクロールを有効にする
 	});
 });
 
@@ -1308,6 +1313,11 @@ document.addEventListener('DOMContentLoaded', () => {
 						}
 					}
 				}
+			}
+		});
+		passwordSettig.addEventListener('click', (event) => {
+			if (event.target !== input) {
+				input.focus(); // inputにフォーカスを戻す
 			}
 		});
 	});
@@ -1391,6 +1401,11 @@ document.addEventListener('DOMContentLoaded', () => {
 						}
 					}
 				}
+			}
+		});
+		passwordSettig.addEventListener('click', (event) => {
+			if (event.target !== input) {
+				input.focus(); // inputにフォーカスを戻す
 			}
 		});
 	});
