@@ -1207,12 +1207,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (passToggle.checked == true) {
 			passwordSettig.classList.add('open');
 			digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
-			document.body.style.overflow = 'hidden'; // スクロールを無効にする
+			document.body.style.overflow = 'hidden';
 		} else {
 			localStorage.setItem('registrationSuccess', 'false');
 			localStorage.removeItem('userPassword'); // パスワードをローカルストレージに保存
 			passwordChangeBlock.style.display = 'none';
 			passToggle.checked = false;
+			document.body.style.overflow = 'auto';
 		}
 	});
 
@@ -1221,7 +1222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		passwordSettig.classList.add('open');
 		digitInputs[0].focus(); // ページが読み込まれたときに最初の入力ボックスにフォーカスを設定
 		previousPassAction = "passwordChange";
-		document.body.style.overflow = 'hidden'; // スクロールを無効にする
+		document.body.style.overflow = 'hidden';
 	});
 
 	// メニューを閉じる
@@ -1245,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		firstSection.style.display = 'block'; // 1回目のパスワード画面を再表示
 		verifySection.style.display = 'none'; // 確認セクションを非表示にする
 		document.activeElement.blur();
-		document.body.style.overflow = 'auto'; // スクロールを有効にする
+		document.body.style.overflow = 'auto';
 	});
 });
 
