@@ -1311,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 		passwordSettig.addEventListener('click', (event) => {
-			if (event.target !== input) {
+			if (event.target !== input && event.target !== passwordCancel) {
 				input.focus(); // inputにフォーカスを戻す
 			}
 		});
@@ -1399,7 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 		passwordSettig.addEventListener('click', (event) => {
-			if (event.target !== input) {
+			if (event.target !== input && event.target !== passwordCancel) {
 				input.focus(); // inputにフォーカスを戻す
 			}
 		});
