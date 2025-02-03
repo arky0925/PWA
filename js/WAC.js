@@ -1315,6 +1315,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				input.focus(); // inputにフォーカスを戻す
 			}
 		});
+		// フォーカス時にスクロールを無効にする
+		input.addEventListener('focus', function() {
+			window.addEventListener('scroll', function (event) {
+				event.preventDefault();
+			}, { passive: false });
+		});
 	});
 
 	// 確認のための入力ボックス
