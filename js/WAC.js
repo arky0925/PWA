@@ -1315,18 +1315,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				input.focus(); // inputにフォーカスを戻す
 			}
 		});
-		let scrollPosition;
-
-input.addEventListener('focus', function() {
-    scrollPosition = window.scrollY; // 現在のスクロール位置を取得
-    document.body.style.position = 'fixed'; // スクロールを固定
-    document.body.style.top = `-${scrollPosition}px`; // スクロール位置を保持
-});
-
-input.addEventListener('blur', function() {
-    document.body.style.position = ''; // スクロールの固定を解除
-    window.scrollTo(0, scrollPosition); // 元の位置に戻す
-});
 	});
 
 	// 確認のための入力ボックス
@@ -1415,17 +1403,5 @@ input.addEventListener('blur', function() {
 				input.focus(); // inputにフォーカスを戻す
 			}
 		});
-				let scrollPosition;
-
-input.addEventListener('focus', function() {
-    scrollPosition = window.scrollY; // 現在のスクロール位置を取得
-    document.body.style.position = 'fixed'; // スクロールを固定
-    document.body.style.top = `-${scrollPosition}px`; // スクロール位置を保持
-});
-
-input.addEventListener('blur', function() {
-    document.body.style.position = ''; // スクロールの固定を解除
-    window.scrollTo(0, scrollPosition); // 元の位置に戻す
-});
 	});
 });
