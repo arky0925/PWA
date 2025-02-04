@@ -443,6 +443,10 @@ input[type="text"], textarea {
 	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
 }
 
+input[type="text"] {
+	white-space: nowrap;
+}
+
 /* フォーカス時のスタイルを追加 */
 input[type="text"]:focus,
 textarea:focus {
