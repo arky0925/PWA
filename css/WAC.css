@@ -444,6 +444,7 @@ input[type="text"], textarea {
 }
 
 input[type="text"] {
+	overflow-x: auto;
 	white-space: nowrap;
 }
 
