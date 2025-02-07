@@ -489,6 +489,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
+function preventEnterKey(event) {
+	if (event.key === 'Enter') {
+		event.preventDefault(); // Enterキーのデフォルト動作を防ぐ
+		document.activeElement.blur(); // フォーカスを外す
+	}
+}
+
+document.getElementById('insertModal1').addEventListener('keydown', preventEnterKey);
+document.getElementById('updateModal1').addEventListener('keydown', preventEnterKey);
+
 let timer;
 
 // 長押しを検出する関数
@@ -885,7 +895,7 @@ filterInput.addEventListener('blur', function() {
 	search();
 });
 
-filterInput.addEventListener('keypress', (event) => {
+filterInput.addEventListener('keydown', (event) => {
 	if (event.key === 'Enter') {
 		event.preventDefault(); // デフォルトのフォーム送信を防ぐ
 		document.activeElement.blur();
