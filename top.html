@@ -7,12 +7,16 @@
 	<meta charset="UTF-8">
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="master/master.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 	<link rel="stylesheet" href="css/top.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="ServiceWorker.js" defer></script>
 	<script src="master/master.js"></script>
 	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
 	<script src="js/top.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 </head>
 <body>
 	<header>
@@ -20,7 +24,20 @@
 		 <span id="menu-icon" class="material-icons menu-icon">menu</span>
 	</header>
 	<main>
-		<img class="styled-image" src="images/header.jpg">
+		<div class="slider slider-for">
+			<div><h3>1</h3></div>
+			<div><h3>2</h3></div>
+			<div><h3>3</h3></div>
+			<div><h3>4</h3></div>
+			<div><h3>5</h3></div>
+		</div>
+		<div class="slider slider-nav">
+			<div><h3>1</h3></div>
+			<div><h3>2</h3></div>
+			<div><h3>3</h3></div>
+			<div><h3>4</h3></div>
+			<div><h3>5</h3></div>
+		</div>
 		<div class="icon-grid">
 			<div class="app-block" id="newsButton">
 				<span class="material-icons">notifications_none</span>

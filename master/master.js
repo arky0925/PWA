@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-document.addEventListener("touchstart", function (event) {
-	if (event.touches[0].pageX < 20) { // 画面の左端50px以内
-		event.preventDefault();
-	}
-}, { passive: false });
+//document.addEventListener("touchstart", function (event) {
+//	if (event.touches[0].pageX < 20) { // 画面の左端50px以内
+//		event.preventDefault();
+//	}
+//}, { passive: false });
