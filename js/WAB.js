@@ -1,77 +1,26 @@
-const card = document.getElementById('card');
+$(document).ready(function() {
+    // 初期コンテンツを読み込む
+    loadPage('WAD.html');
 
-let startX;
-let currentX = 0;
-let isFlicked = false; // フリック状態を追跡するフラグ
+    // メニューリンクをクリックしたとき
+    $('nav a').click(function(e) {
+        e.preventDefault(); // デフォルトのリンク動作を防ぐ
+        var page = $(this).attr('href'); // リンク先のページを取得
+        loadPage(page); // ページを読み込む
+    });
 
-card.addEventListener('touchstart', (event) => {
-    startX = event.touches[0].clientX;
-});
+    // フッターボタンをクリックしたとき
+    $('#footer-button').click(function(e) {
+        e.preventDefault(); // デフォルトのボタン動作を防ぐ
+        loadPage('WAE.html'); // ページ2に遷移する例
+    });
 
-card.addEventListener('touchmove', (event) => {
-    const moveX = event.touches[0].clientX - startX;
-    currentX = moveX;
-    card.style.transform = `translateX(${currentX}px)`;
-});
-
-document.addEventListener('touchend', () => {
-    if (isFlicked) return; // すでにフリックされている場合は何もしない
-
-    if (currentX > 100) {
-        // 右にフリック
-        card.style.transform = 'translateX(120%)';
-        console.log('右に仕訳けました');
-        isFlicked = true; // フリック状態を更新
-        setTimeout(() => {
-        resetCardState();
-    }, 1000);
-    } else if (currentX < -100) {
-        // 左にフリック
-        card.style.transform = 'translateX(-120%)';
-        console.log('左に仕訳けました');
-        isFlicked = true; // フリック状態を更新
-        setTimeout(() => {
-        resetCardState();
-    }, 1000);
-    } else {
-        // 元の位置に戻す
-        card.style.transform = 'translateX(0)';
+    // ページを読み込む関数
+    function loadPage(page) {
+        $('#content').fadeOut(200, function() {
+            $('#content').load(page + ' #content > *', function() {
+                $('#content').fadeIn(200);
+            });
+        });
     }
-    currentX = 0; // リセット
 });
-
-// サムアップアイコンのクリックイベント
-const thumbUpIcon = document.getElementById('thumb-up-icon');
-
-thumbUpIcon.addEventListener('click', () => {
-    if (isFlicked) return; // すでにフリックされている場合は何もしない
-
-    card.style.transform = 'translateX(120%)';
-    console.log('右に仕訳けました');
-    isFlicked = true; // フリック状態を更新
-
-    setTimeout(() => {
-        resetCardState();
-    }, 1000);
-});
-
-// ハートボタンのクリックイベント
-const heartBroken = document.getElementById('heart-broken');
-
-heartBroken.addEventListener('click', () => {
-    if (isFlicked) return; // すでにフリックされている場合は何もしない
-
-    card.style.transform = 'translateX(-120%)';
-    console.log('左に仕訳けました');
-    isFlicked = true; // フリック状態を更新
-
-    setTimeout(() => {
-        resetCardState();
-    }, 1000);
-});
-
-// フリックが完了した後に元の状態に戻す処理を追加
-function resetCardState() {
-    isFlicked = false; // フリック状態をリセット
-    card.style.transform = 'translateX(0)'; // 元の位置に戻す
-}
