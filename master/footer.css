@@ -10,6 +10,9 @@
 
 :root {
   --background-color: #bbdefb;
+  --red-50: #ffebee;
+  --red-100: #ffcdd2;
+  --red-A700: #d50000;
   --blue-50: #e3f2fd;
   --blue-100: #bbdefb;
   --blue-A700: #2962ff;
@@ -29,20 +32,17 @@
   --translate-main-slider: 100%;
   --main-slider-color: #e3f2fd;
   --translate-filters-slider: 0;
-  --filters-container-height: 3.8rem;
+  --filters-container-height: 38px;
   --filters-wrapper-opacity: 1;
 }
 
-html {
-  font-size: 62.5%;
-}
 
-html,
-body {
-  height: 100%;
-}
-
-body {
+footer {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -51,7 +51,7 @@ body {
   background-color: var(--background-color);
 }
 
-button {
+footer button {
   border: none;
   cursor: pointer;
   background-color: transparent;
@@ -66,7 +66,7 @@ nav.amazing-tabs {
   width: 100%;
   background-color: var(--white);
   user-select: none;
-  padding-top: 1rem;
+  padding-top: 10px;
   box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.5); /* 影の設定 */
 }
 
@@ -87,25 +87,13 @@ ul.filter-tabs {
 ul.main-tabs li {
   display: inline-flex;
   position: relative;
-  padding: 1.5rem;
+  padding: 15px;
   z-index: 1;
 }
 
-.avatar,
-.avatar img {
-  height: 4rem;
-  width: 4rem;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.avatar img {
-  object-fit: cover;
-}
-
 .round-button {
-  height: 4.8rem;
-  width: 4.8rem;
+  height: 48px;
+  width: 48px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -131,15 +119,15 @@ ul.main-tabs li {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1.5rem;
+  padding: 15px;
   z-index: 0;
   transition: transform 0.4s ease-in-out;
   transform: translateX(var(--translate-main-slider));
 }
 
 .main-slider-circle {
-  height: 4.8rem;
-  width: 4.8rem;
+  height: 48px;
+  width: 48px;
   border-radius: 50%;
   transition: background-color 0.4s ease-in-out;
   background-color: var(--main-slider-color);
@@ -175,7 +163,7 @@ ul.main-tabs li {
 
 .filters-container {
   overflow: hidden;
-  padding: 0 3rem;
+  padding: 0 30px;
   transition: max-height 0.4s ease-in-out;
   max-height: var(--filters-container-height);
 }
@@ -187,8 +175,8 @@ ul.main-tabs li {
 }
 
 .filter-tabs {
-  border-radius: 1rem;
-  padding: 0.3rem;
+  border-radius: 10px;
+  padding: 3px;
   overflow: hidden;
   background-color: var(--orange-50);
 }
@@ -204,14 +192,14 @@ ul.main-tabs li {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.8rem;
+  border-radius: 8px;
   flex-grow: 1;
-  height: 3rem;
-  padding: 0 1.5rem;
+  height: 30px;
+  padding: 0 15px;
   color: var(--orange-700);
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  font-size: 1.4rem;
+  font-size: 14px;
 }
 
 .filter-button.filter-active {
@@ -222,7 +210,7 @@ ul.main-tabs li {
 .filter-slider {
   pointer-events: none;
   position: absolute;
-  padding: 0.3rem;
+  padding: 3px;
   top: 0;
   left: 0;
   right: 0;
@@ -231,11 +219,11 @@ ul.main-tabs li {
 }
 
 .filter-slider-rect {
-  height: 3rem;
+  height: 30px;
   width: 33.33%;
-  border-radius: 0.8rem;
+  border-radius: 8px;
   background-color: var(--white);
-  box-shadow: 0 0.1rem 1rem -0.4rem rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 10px -4px rgba(0, 0, 0, 0.12);
   transition: transform 0.4s ease-in-out;
   transform: translateX(var(--translate-filters-slider));
 }

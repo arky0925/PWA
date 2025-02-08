@@ -6,10 +6,10 @@ const roundButtons = document.querySelectorAll(".round-button");
 const colors = {
   blue: {
     50: {
-      value: "#e3f2fd"
+      value: "#e3f2fd" // 丸の色
     },
     100: {
-      value: "#bbdefb"
+      value: "#bbdefb" // 背景の色
     }
   },
   green: {
@@ -146,7 +146,7 @@ mainTabs.addEventListener("click", (event) => {
       root.style.setProperty("--filters-container-height", "0");
       root.style.setProperty("--filters-wrapper-opacity", "0");
     } else {
-      root.style.setProperty("--filters-container-height", "3.8rem");
+      root.style.setProperty("--filters-container-height", "38px");
       root.style.setProperty("--filters-wrapper-opacity", "1");
     }
   }
@@ -164,7 +164,3 @@ filterTabs.addEventListener("click", (event) => {
     handleActiveTab(filterButtons, event, "filter-active");
   }
 });
-
-	document.getElementById('couponButton').addEventListener('click', function() {
-		window.location.href = 'WAB.html'; // 遷移先のページ
-	});
