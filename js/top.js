@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+	localStorage.removeItem("activeColor");
+	localStorage.removeItem("activeTranslateValue");
+	localStorage.removeItem("animateJello");
+	localStorage.removeItem("calc");
+
     const menuIcon = document.getElementById("menu-icon");
     const sideMenu = document.getElementById("side-menu");
     const closeMenu = document.getElementById("close-menu");
