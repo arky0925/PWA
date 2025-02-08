@@ -83,13 +83,15 @@ const dataSet = (id) => {
 	root.style.setProperty("--translate-main-slider", targetTranslateValue);
 	root.style.setProperty("--main-slider-color", getColor(targetColor, 50));
 
-//	if (id && id.classList.contains("gallery")) {
-//		root.style.setProperty("--filters-container-height", "38px");
-//		root.style.setProperty("--filters-wrapper-opacity", "1");
-//	} else {
-//		root.style.setProperty("--filters-container-height", "0");
-//		root.style.setProperty("--filters-wrapper-opacity", "0");
-//	}
+	if (id && id.classList.contains("gallery")) {
+		root.style.setProperty("--filters-container-height", "38px");
+		root.style.setProperty("--filters-wrapper-opacity", "1");
+	} else {
+		setTimeout(() => {
+		root.style.setProperty("--filters-container-height", "0");
+		root.style.setProperty("--filters-wrapper-opacity", "0");
+		}, 1000);
+	}
 	mainSliderCircle.classList.add("animate-jello");
 };
 
@@ -103,28 +105,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (fileName == "top.html") {
 		handleActiveTab(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
 	} else if (fileName == "WAB.html") {
 		handleActiveTab(roundButtons, document.getElementById('couponButton'), "active");
 		dataSet(document.getElementById('couponButton'));
-		root.style.setProperty("--filters-container-height", "38px");
-		root.style.setProperty("--filters-wrapper-opacity", "1");
 	} else if (fileName == "WAC.html") {
 		handleActiveTab(roundButtons, document.getElementById('memoryButton'), "active");
 		dataSet(document.getElementById('memoryButton'));
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
 	} else if (fileName == "WAD.html") {
 		handleActiveTab(roundButtons, document.getElementById('stampButton'), "active");
 		dataSet(document.getElementById('stampButton'));
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
 	} else if (fileName == "WAE.html") {
 		handleActiveTab(roundButtons, document.getElementById('knowledgeButton'), "active");
 		dataSet(document.getElementById('knowledgeButton'));
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
 	}
 });
 
