@@ -7,18 +7,14 @@
 	<meta charset="UTF-8">
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="master/master.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 	<link rel="stylesheet" href="css/top.css">
 	<link rel="stylesheet" href="master/footer.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
 	<script src="ServiceWorker.js" defer></script>
 	<script src="master/master.js"></script>
 	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
 	<script src="js/top.js" defer></script>
 	<script src="master/footerjs.js" defer></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 </head>
 <body>
 	<header>
@@ -26,20 +22,77 @@
 		 <span id="menu-icon" class="material-icons menu-icon">menu</span>
 	</header>
 	<main>
-		<div class="slider slider-for">
-			<div><h3>1</h3></div>
-			<div><h3>2</h3></div>
-			<div><h3>3</h3></div>
-			<div><h3>4</h3></div>
-			<div><h3>5</h3></div>
-		</div>
-		<div class="slider slider-nav">
-			<div><h3>1</h3></div>
-			<div><h3>2</h3></div>
-			<div><h3>3</h3></div>
-			<div><h3>4</h3></div>
-			<div><h3>5</h3></div>
-		</div>
+		<ul class="slides">
+			<input type="radio" name="radio-btn" id="img-1" checked />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/cat.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-6" class="prev">&#x2039;</label>
+					<label for="img-2" class="next">&#x203a;</label>
+				</div>
+			</li>
+			<input type="radio" name="radio-btn" id="img-2" />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/flower.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-1" class="prev">&#x2039;</label>
+					<label for="img-3" class="next">&#x203a;</label>
+				</div>
+			</li>
+			<input type="radio" name="radio-btn" id="img-3" />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/view.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-2" class="prev">&#x2039;</label>
+					<label for="img-4" class="next">&#x203a;</label>
+				</div>
+			</li>
+			<input type="radio" name="radio-btn" id="img-4" />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/music.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-3" class="prev">&#x2039;</label>
+					<label for="img-5" class="next">&#x203a;</label>
+				</div>
+			</li>
+		
+			<input type="radio" name="radio-btn" id="img-5" />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/load.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-4" class="prev">&#x2039;</label>
+					<label for="img-6" class="next">&#x203a;</label>
+				</div>
+			</li>
+			<input type="radio" name="radio-btn" id="img-6" />
+			<li class="slide-container">
+				<div class="slide">
+					<img src="images/jellyfish.jpg" />
+				</div>
+				<div class="nav">
+					<label for="img-5" class="prev">&#x2039;</label>
+					<label for="img-1" class="next">&#x203a;</label>
+				</div>
+			</li>
+			<li class="nav-dots">
+				<label for="img-1" class="nav-dot" id="img-dot-1"></label>
+				<label for="img-2" class="nav-dot" id="img-dot-2"></label>
+				<label for="img-3" class="nav-dot" id="img-dot-3"></label>
+				<label for="img-4" class="nav-dot" id="img-dot-4"></label>
+				<label for="img-5" class="nav-dot" id="img-dot-5"></label>
+				<label for="img-6" class="nav-dot" id="img-dot-6"></label>
+			</li>
+		</ul>
 		<div class="icon-grid">
 			<div class="app-block" id="newsButton">
 				<span class="material-icons">notifications_none</span>

@@ -31,12 +31,12 @@ class MyFooter extends HTMLElement {
 								<div class="main-tabs-wrapper">
 									<ul class="main-tabs">
 										<li>
-											<button id="homeButton" class="round-button material-icons gallery active" style="--round-button-active-color: #d50000" data-translate-value="0" data-color="red">
+											<button id="homeButton" class="round-button material-icons active" style="--round-button-active-color: #d50000" data-translate-value="0" data-color="red">
 												filter_list_off
 											</button>
 										</li>
 										<li>
-											<button id="couponButton" class="round-button material-icons" style="--round-button-active-color: #2962ff" data-translate-value="1" data-color="blue">
+											<button id="couponButton" class="round-button material-icons gallery" style="--round-button-active-color: #2962ff" data-translate-value="1" data-color="blue">
 												filter_list_off
 											</button>
 										</li>
