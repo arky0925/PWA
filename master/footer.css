@@ -116,11 +116,9 @@ ul.main-tabs li {
 	pointer-events: none;
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: var(--translate-main-slider);
 	padding-top: 15px;
 	z-index: 0;
-	transition: transform 0.4s ease-in-out;
-	transform: translateX(var(--translate-main-slider));
 }
 
 .main-slider-circle {
