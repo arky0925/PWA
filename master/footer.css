@@ -9,7 +9,6 @@
 }
 
 :root {
-  --background-color: #bbdefb;
   --red-50: #ffebee;
   --red-100: #ffcdd2;
   --red-A700: #d50000;
@@ -29,11 +28,11 @@
   --grey-900: #212121;
   --white: #ffffff;
   --round-button-active-color: #212121;
-  --translate-main-slider: 100%;
-  --main-slider-color: #e3f2fd;
+  --translate-main-slider: 0;
+  --main-slider-color: #ffebee;
   --translate-filters-slider: 0;
-  --filters-container-height: 38px;
-  --filters-wrapper-opacity: 1;
+  --filters-container-height: 0;
+  --filters-wrapper-opacity: 0;
 }
 
 footer {
@@ -57,7 +56,7 @@ footer button {
   outline: none;
 }
 
-.material-icons {
+footer .material-icons {
   font-size: 28px;
 }
 
@@ -70,7 +69,7 @@ nav.amazing-tabs {
 }
 
 .main-tabs-container {
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 10px 10px 10px;
 }
 
 .main-tabs-wrapper {
@@ -82,6 +81,7 @@ ul.filter-tabs {
   list-style-type: none;
   display: flex;
   justify-content: space-between; /* ボタンを均等に配置 */
+  gap: 0; /* 隙間を無くす */
 }
 
 ul.main-tabs li {
@@ -120,7 +120,6 @@ ul.main-tabs li {
   top: 0;
   left: 0;
   padding-top: 15px;
-  padding-right: 25.75px;
   z-index: 0;
   transition: transform 0.4s ease-in-out;
   transform: translateX(var(--translate-main-slider));
