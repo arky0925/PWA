@@ -69,11 +69,6 @@ window.addEventListener('beforeunload', () => {
 });
 
 const dataSet = (id) => {
-	const previousFileName = sessionStorage.getItem('previousFileName');
-	if (!(id && id.classList.contains("gallery")) && previousFileName == "WAB.html") {
-		root.style.setProperty("--filters-container-height", "38px");
-		root.style.setProperty("--filters-wrapper-opacity", "1");
-	}
 	const width = mainTabs.clientWidth;
 	const calc = id.getAttribute('data-translate-value');
 	const targetTranslateValueCalc = 48 * calc + ((width - 240) / 4) * calc;
@@ -93,7 +88,11 @@ const dataSet = (id) => {
 
 // ページが読み込まれたときに状態を復元
 document.addEventListener("DOMContentLoaded", () => {
-	console.log(fileName);
+	const previousFileName = sessionStorage.getItem('previousFileName');
+	if (previousFileName == "WAB.html") {
+		root.style.setProperty("--filters-container-height", "38px");
+		root.style.setProperty("--filters-wrapper-opacity", "1");
+	}
 	if (fileName == "top.html") {
 		handleActiveTab(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
