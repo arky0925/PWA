@@ -2,6 +2,7 @@
 const mainTabs = document.querySelector(".main-tabs");
 const mainSliderCircle = document.querySelector(".main-slider-circle");
 const roundButtons = document.querySelectorAll(".round-button");
+const root = document.documentElement;
 
 const colors = {
 	blue: {
@@ -62,32 +63,18 @@ const handleActiveTab = (tabs, event, className) => {
 
 // ページが読み込まれたときに状態を復元
 document.addEventListener("DOMContentLoaded", () => {
-	const root = document.documentElement;
-
 	// Local Storageからタブの状態を取得
 	const savedColor = sessionStorage.getItem("activeColor");
 	const savedTranslateValue = sessionStorage.getItem("activeTranslateValue");
-	const savedAnimation = sessionStorage.getItem("animateJello");
-	const calc = sessionStorage.getItem("calc");
 
-	if (savedColor && savedTranslateValue) {
-		const savedButton = document.querySelector(`.round-button[data-color="${savedColor}"][data-translate-value="${calc}"]`);
-		
+	if (savedColor) {
+		const savedButton = document.querySelector(`.round-button[data-color="${savedColor}"]`);
 		if (savedButton) {
-			// ボタンをアクティブにする
-			handleActiveTab(roundButtons, { target: savedButton }, "active");
-			
-			root.style.setProperty("--translate-main-slider", sessionStorage.getItem("beforePosition"));
-			root.style.setProperty("--main-slider-color", sessionStorage.getItem("beforeColor"));
-
-			setTimeout(() => {
-				root.style.setProperty("--translate-main-slider", savedTranslateValue);
-				root.style.setProperty("--main-slider-color", getColor(savedColor, 50));
-			}, 1); // 1ミリ秒遅延
-
+			handleActiveTab(roundButtons, { target: savedButton }, "active"); // ボタンをアクティブにする
+			root.style.setProperty("--translate-main-slider", savedTranslateValue);
+			root.style.setProperty("--main-slider-color", getColor(savedColor, 50));
 			root.style.setProperty("--filters-container-height", sessionStorage.getItem("beforeHeight"));
 			root.style.setProperty("--filters-wrapper-opacity", sessionStorage.getItem("beforeOpasity"));
-
 			// フィルターの高さと不透明度を設定
 			setTimeout(() => {
 				if (!savedButton.classList.contains("gallery")) {
@@ -98,11 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					root.style.setProperty("--filters-wrapper-opacity", "1");
 				}
 			}, 1); // 1ミリ秒遅延
-
-			// アニメーションを復元
-			if (savedAnimation === "true") {
-				mainSliderCircle.classList.add("animate-jello");
-			}
 		}
 	}
 });
@@ -113,19 +95,12 @@ mainTabs.addEventListener("click", (event) => {
 	const calc = Number(event.target.dataset.translateValue); // 数値に変換
 	const targetTranslateValueCalc = 48 * calc + ((width - 240) / 4) * calc;
 	const targetTranslateValue = targetTranslateValueCalc + "px";
-	const root = document.documentElement;
 	const targetColor = event.target.dataset.color;
-	const currentTranslateValue = getComputedStyle(root).getPropertyValue('--translate-main-slider').trim();
-	const currentColor = getComputedStyle(root).getPropertyValue('--main-slider-color').trim();
-		sessionStorage.setItem("beforePosition", currentTranslateValue);
-		sessionStorage.setItem("beforeColor", currentColor);
-		sessionStorage.setItem("calc", calc);
 
 	if (event.target.classList.contains("round-button")) {
 		// 状態をLocal Storageに保存
 		sessionStorage.setItem("activeColor", targetColor);
 		sessionStorage.setItem("activeTranslateValue", targetTranslateValue);
-		sessionStorage.setItem("animateJello", "true"); // アニメーションを保存
 
 		// アニメーションのリセット処理
 		mainSliderCircle.classList.remove("animate-jello");
@@ -135,10 +110,10 @@ mainTabs.addEventListener("click", (event) => {
 		root.style.setProperty("--translate-main-slider", targetTranslateValue);
 		root.style.setProperty("--main-slider-color", getColor(targetColor, 50));
 
-		handleActiveTab(roundButtons, event, "active");
+		handleActiveTab(roundButtons, event, "active"); // ボタンをアクティブにする
 
-	const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
-	const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
+		const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
+		const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
 		sessionStorage.setItem("beforeHeight", currentHeight);
 		sessionStorage.setItem("beforeOpacity", currentOpacity);
 
@@ -154,9 +129,7 @@ mainTabs.addEventListener("click", (event) => {
 
 const filterTabs = document.querySelector(".filter-tabs");
 const filterButtons = document.querySelectorAll(".filter-button");
-
 filterTabs.addEventListener("click", (event) => {
-	const root = document.documentElement;
 	const targetTranslateValue = event.target.dataset.translateValue;
 
 	if (event.target.classList.contains("filter-button")) {
