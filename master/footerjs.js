@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	const root = document.documentElement;
 
 	// Local Storageからタブの状態を取得
-	const savedColor = localStorage.getItem("activeColor");
-	const savedTranslateValue = localStorage.getItem("activeTranslateValue");
-	const savedAnimation = localStorage.getItem("animateJello");
-	const calc = localStorage.getItem("calc");
+	const savedColor = sessionStorage.getItem("activeColor");
+	const savedTranslateValue = sessionStorage.getItem("activeTranslateValue");
+	const savedAnimation = sessionStorage.getItem("animateJello");
+	const calc = sessionStorage.getItem("calc");
 
 	if (savedColor && savedTranslateValue) {
 		const savedButton = document.querySelector(`.round-button[data-color="${savedColor}"][data-translate-value="${calc}"]`);
@@ -77,16 +77,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			// ボタンをアクティブにする
 			handleActiveTab(roundButtons, { target: savedButton }, "active");
 			
-			root.style.setProperty("--translate-main-slider", localStorage.getItem("beforePosition"));
-			root.style.setProperty("--main-slider-color", localStorage.getItem("beforeColor"));
+			root.style.setProperty("--translate-main-slider", sessionStorage.getItem("beforePosition"));
+			root.style.setProperty("--main-slider-color", sessionStorage.getItem("beforeColor"));
 
 			setTimeout(() => {
 				root.style.setProperty("--translate-main-slider", savedTranslateValue);
 				root.style.setProperty("--main-slider-color", getColor(savedColor, 50));
 			}, 1); // 1ミリ秒遅延
 
-			root.style.setProperty("--filters-container-height", localStorage.getItem("beforeHeight"));
-			root.style.setProperty("--filters-wrapper-opacity", localStorage.getItem("beforeOpasity"));
+			root.style.setProperty("--filters-container-height", sessionStorage.getItem("beforeHeight"));
+			root.style.setProperty("--filters-wrapper-opacity", sessionStorage.getItem("beforeOpasity"));
 
 			// フィルターの高さと不透明度を設定
 			setTimeout(() => {
@@ -117,15 +117,15 @@ mainTabs.addEventListener("click", (event) => {
 	const targetColor = event.target.dataset.color;
 	const currentTranslateValue = getComputedStyle(root).getPropertyValue('--translate-main-slider').trim();
 	const currentColor = getComputedStyle(root).getPropertyValue('--main-slider-color').trim();
-		localStorage.setItem("beforePosition", currentTranslateValue);
-		localStorage.setItem("beforeColor", currentColor);
-		localStorage.setItem("calc", calc);
+		sessionStorage.setItem("beforePosition", currentTranslateValue);
+		sessionStorage.setItem("beforeColor", currentColor);
+		sessionStorage.setItem("calc", calc);
 
 	if (event.target.classList.contains("round-button")) {
 		// 状態をLocal Storageに保存
-		localStorage.setItem("activeColor", targetColor);
-		localStorage.setItem("activeTranslateValue", targetTranslateValue);
-		localStorage.setItem("animateJello", "true"); // アニメーションを保存
+		sessionStorage.setItem("activeColor", targetColor);
+		sessionStorage.setItem("activeTranslateValue", targetTranslateValue);
+		sessionStorage.setItem("animateJello", "true"); // アニメーションを保存
 
 		// アニメーションのリセット処理
 		mainSliderCircle.classList.remove("animate-jello");
@@ -139,8 +139,8 @@ mainTabs.addEventListener("click", (event) => {
 
 	const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
 	const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
-		localStorage.setItem("beforeHeight", currentHeight);
-		localStorage.setItem("beforeOpacity", currentOpacity);
+		sessionStorage.setItem("beforeHeight", currentHeight);
+		sessionStorage.setItem("beforeOpacity", currentOpacity);
 
 		if (!event.target.classList.contains("gallery")) {
 			root.style.setProperty("--filters-container-height", "0");
