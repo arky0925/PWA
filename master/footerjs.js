@@ -51,15 +51,21 @@ const getColor = (color, variant) => {
 	return colors[color][variant].value;
 };
 
-const handleActiveTab = (tabs, id, className) => {
-  tabs.forEach((tab) => {
-    tab.classList.remove(className);
-  });
+const handleActiveTab = (tabs, target, className) => {
+	tabs.forEach((tab) => {
+		tab.classList.remove(className);
+	});
 
-  const activeTab = id;
-  if (activeTab) {
-    activeTab.classList.add(className);
-  }
+	let activeTab;
+	if (target instanceof Event) {
+		activeTab = target.target; // イベントのターゲットを取得
+	} else {
+		activeTab = target; // IDから要素を取得
+	}
+
+	if (activeTab) {
+		activeTab.classList.add(className);
+	}
 };
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
@@ -84,6 +90,7 @@ const dataSet = (id) => {
 		root.style.setProperty("--filters-container-height", "0");
 		root.style.setProperty("--filters-wrapper-opacity", "0");
 	}
+	mainSliderCircle.classList.add("animate-jello");
 };
 
 // ページが読み込まれたときに状態を復元
