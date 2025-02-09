@@ -51,17 +51,7 @@ const getColor = (color, variant) => {
 	return colors[color][variant].value;
 };
 
-const handleActiveTab = (tabs, event, className) => {
-	tabs.forEach((tab) => {
-		tab.classList.remove(className);
-	});
-
-	if (!event.target.classList.contains(className)) {
-		event.target.classList.add(className);
-	}
-};
-
-const handleActiveTabA = (tabs, target, className) => {
+const handleActiveTab = (tabs, target, className) => {
 	tabs.forEach((tab) => {
 		tab.classList.remove(className);
 	});
@@ -72,17 +62,12 @@ const handleActiveTabA = (tabs, target, className) => {
 	} else {
 		activeTab = target; // IDから要素を取得
 	}
-
 	if (activeTab) {
 		activeTab.classList.add(className);
 	}
 };
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
-// 遷移前のファイル名を保存
-//window.addEventListener('beforeunload', () => {
-//	sessionStorage.setItem('previousFileName', fileName); // localStorageに保存
-//});
 
 const dataSet = (id) => {
 	const width = mainTabs.clientWidth;
@@ -92,16 +77,7 @@ const dataSet = (id) => {
 	const targetColor = id.getAttribute('data-color');
 	root.style.setProperty("--translate-main-slider", targetTranslateValue);
 	root.style.setProperty("--main-slider-color", getColor(targetColor, 50));
-
-//	if (id && id.classList.contains("gallery")) {
-//		root.style.setProperty("--filters-container-height", "38px");
-//		root.style.setProperty("--filters-wrapper-opacity", "1");
-//	} else {
-//		setTimeout(() => {
-//		root.style.setProperty("--filters-container-height", "0");
-//		root.style.setProperty("--filters-wrapper-opacity", "0");
-//		}, 1);
-//	}
+	sessionStorage.setItem('previousFileName', fileName); // 遷移前のファイル名を保存
 	mainSliderCircle.classList.add("animate-jello");
 };
 
@@ -111,45 +87,36 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (previousFileName == "WAB.html") {
 		root.style.setProperty("--filters-container-height", "38px");
 		root.style.setProperty("--filters-wrapper-opacity", "1");
-//		alert("前のページはWABです")
 	} else {
 		root.style.setProperty("--filters-container-height", "0");
 		root.style.setProperty("--filters-wrapper-opacity", "0");
-//		alert("前のページはWAB以外です")
 	}
 	// フィルターの高さと不透明度を設定
 	setTimeout(() => {
 		if (fileName == "WAB.html") {
 			root.style.setProperty("--filters-container-height", "38px");
 			root.style.setProperty("--filters-wrapper-opacity", "1");
-//			alert("今のページはWABです")
 		} else {
 			root.style.setProperty("--filters-container-height", "0");
 			root.style.setProperty("--filters-wrapper-opacity", "0");
-//			alert("今のページはWAB以外です")
 		}
 	}, 1); // 1ミリ秒遅延
 
 	if (fileName == "top.html") {
-		handleActiveTabA(roundButtons, document.getElementById('homeButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
-		sessionStorage.setItem('previousFileName', "top.html");
 	} else if (fileName == "WAB.html") {
-		handleActiveTabA(roundButtons, document.getElementById('couponButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('couponButton'), "active");
 		dataSet(document.getElementById('couponButton'));
-		sessionStorage.setItem('previousFileName', "WAB.html");
 	} else if (fileName == "WAC.html") {
-		handleActiveTabA(roundButtons, document.getElementById('memoryButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('memoryButton'), "active");
 		dataSet(document.getElementById('memoryButton'));
-		sessionStorage.setItem('previousFileName', "WAC.html");
 	} else if (fileName == "WAD.html") {
-		handleActiveTabA(roundButtons, document.getElementById('stampButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('stampButton'), "active");
 		dataSet(document.getElementById('stampButton'));
-		sessionStorage.setItem('previousFileName', "WAD.html");
 	} else if (fileName == "WAE.html") {
-		handleActiveTabA(roundButtons, document.getElementById('knowledgeButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('knowledgeButton'), "active");
 		dataSet(document.getElementById('knowledgeButton'));
-		sessionStorage.setItem('previousFileName', "WAE.html");
 	}
 });
 
@@ -157,7 +124,6 @@ const filterTabs = document.querySelector(".filter-tabs");
 const filterButtons = document.querySelectorAll(".filter-button");
 filterTabs.addEventListener("click", (event) => {
 	const targetTranslateValue = event.target.dataset.translateValue;
-
 	if (event.target.classList.contains("filter-button")) {
 		root.style.setProperty("--translate-filters-slider", targetTranslateValue);
 		handleActiveTab(filterButtons, event, "filter-active");
