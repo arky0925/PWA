@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			root.style.setProperty("--filters-wrapper-opacity", "1");
 		}
 	}, 1); // 1ミリ秒遅延
-
 });
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
