@@ -81,7 +81,7 @@ const handleActiveTabA = (tabs, target, className) => {
 // ページが読み込まれたときに状態を復元
 document.addEventListener("DOMContentLoaded", () => {
 	const previousFileName = sessionStorage.getItem('previousFileName');
-	if (previousFileName == "WAB.html") {
+	if (previousFileName !== "WAB.html") {
 		root.style.setProperty("--filters-container-height", "38px");
 		root.style.setProperty("--filters-wrapper-opacity", "1");
 	} else {
@@ -90,12 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	// フィルターの高さと不透明度を設定
 	setTimeout(() => {
-		if (fileName == "WAB.html") {
+		if (fileName !== "WAB.html") {
 			root.style.setProperty("--filters-container-height", "38px");
 			root.style.setProperty("--filters-wrapper-opacity", "1");
 		} else {
-			root.style.setProperty("--filters-container-height", "38px");
-			root.style.setProperty("--filters-wrapper-opacity", "1");
 			root.style.setProperty("--filters-container-height", "0");
 			root.style.setProperty("--filters-wrapper-opacity", "0");
 		}
