@@ -51,17 +51,7 @@ const getColor = (color, variant) => {
 	return colors[color][variant].value;
 };
 
-const handleActiveTab = (tabs, event, className) => {
-	tabs.forEach((tab) => {
-		tab.classList.remove(className);
-	});
-
-	if (!event.target.classList.contains(className)) {
-		event.target.classList.add(className);
-	}
-};
-
-const handleActiveTabA = (tabs, target, className) => {
+const handleActiveTab = (tabs, target, className) => {
 	tabs.forEach((tab) => {
 		tab.classList.remove(className);
 	});
@@ -77,55 +67,6 @@ const handleActiveTabA = (tabs, target, className) => {
 		activeTab.classList.add(className);
 	}
 };
-
-
-// ページが読み込まれたときに状態を復元
-document.addEventListener("DOMContentLoaded", () => {
-	// Local Storageからタブの状態を取得
-	const savedColor = sessionStorage.getItem("activeColor");
-
-	if (savedColor) {
-		const savedButton = document.querySelector(`.round-button[data-color="${savedColor}"]`);
-		if (savedButton) {
-			root.style.setProperty("--filters-container-height", sessionStorage.getItem("beforeHeight"));
-			root.style.setProperty("--filters-wrapper-opacity", sessionStorage.getItem("beforeOpasity"));
-			mainSliderCircle.classList.add("animate-jello");
-			// フィルターの高さと不透明度を設定
-			setTimeout(() => {
-				if (!savedButton.classList.contains("gallery")) {
-					root.style.setProperty("--filters-container-height", "0");
-					root.style.setProperty("--filters-wrapper-opacity", "0");
-				} else {
-					root.style.setProperty("--filters-container-height", "38px");
-					root.style.setProperty("--filters-wrapper-opacity", "1");
-				}
-			}, 1); // 1ミリ秒遅延
-		}
-	}
-});
-
-// メインタブのイベントリスナーを修正
-mainTabs.addEventListener("click", (event) => {
-	const targetColor = event.target.dataset.color;
-
-	if (event.target.classList.contains("round-button")) {
-		// 状態をLocal Storageに保存
-		sessionStorage.setItem("activeColor", targetColor);
-
-		const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
-		const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
-		sessionStorage.setItem("beforeHeight", currentHeight);
-		sessionStorage.setItem("beforeOpacity", currentOpacity);
-
-		if (!event.target.classList.contains("gallery")) {
-			root.style.setProperty("--filters-container-height", "0");
-			root.style.setProperty("--filters-wrapper-opacity", "0");
-		} else {
-			root.style.setProperty("--filters-container-height", "38px");
-			root.style.setProperty("--filters-wrapper-opacity", "1");
-		}
-	}
-});
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
 // 遷移前のファイル名を保存
@@ -160,21 +101,24 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (previousFileName == "WAB.html") {
 		root.style.setProperty("--filters-container-height", "38px");
 		root.style.setProperty("--filters-wrapper-opacity", "1");
+	} else {
+		root.style.setProperty("--filters-container-height", "0");
+		root.style.setProperty("--filters-wrapper-opacity", "0");
 	}
 	if (fileName == "top.html") {
-		handleActiveTabA(roundButtons, document.getElementById('homeButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
 	} else if (fileName == "WAB.html") {
-		handleActiveTabA(roundButtons, document.getElementById('couponButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('couponButton'), "active");
 		dataSet(document.getElementById('couponButton'));
 	} else if (fileName == "WAC.html") {
-		handleActiveTabA(roundButtons, document.getElementById('memoryButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('memoryButton'), "active");
 		dataSet(document.getElementById('memoryButton'));
 	} else if (fileName == "WAD.html") {
-		handleActiveTabA(roundButtons, document.getElementById('stampButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('stampButton'), "active");
 		dataSet(document.getElementById('stampButton'));
 	} else if (fileName == "WAE.html") {
-		handleActiveTabA(roundButtons, document.getElementById('knowledgeButton'), "active");
+		handleActiveTab(roundButtons, document.getElementById('knowledgeButton'), "active");
 		dataSet(document.getElementById('knowledgeButton'));
 	}
 });
