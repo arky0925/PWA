@@ -120,6 +120,24 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 });
 
+// メインタブのイベントリスナーを修正
+mainTabs.addEventListener("click", (event) => {
+	if (event.target.classList.contains("round-button")) {
+		const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
+		const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
+		sessionStorage.setItem("beforeHeight", currentHeight);
+		sessionStorage.setItem("beforeOpacity", currentOpacity);
+
+		if (!event.target.classList.contains("gallery")) {
+			root.style.setProperty("--filters-container-height", "0");
+			root.style.setProperty("--filters-wrapper-opacity", "0");
+		} else {
+			root.style.setProperty("--filters-container-height", "38px");
+			root.style.setProperty("--filters-wrapper-opacity", "1");
+		}
+	}
+});
+
 const filterTabs = document.querySelector(".filter-tabs");
 const filterButtons = document.querySelectorAll(".filter-button");
 filterTabs.addEventListener("click", (event) => {
