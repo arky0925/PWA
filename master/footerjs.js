@@ -116,15 +116,15 @@ const dataSet = (id) => {
 	root.style.setProperty("--translate-main-slider", targetTranslateValue);
 	root.style.setProperty("--main-slider-color", getColor(targetColor, 50));
 
-	if (id && id.classList.contains("gallery")) {
-		root.style.setProperty("--filters-container-height", "38px");
-		root.style.setProperty("--filters-wrapper-opacity", "1");
-	} else {
-		setTimeout(() => {
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
-		}, 1);
-	}
+//	if (id && id.classList.contains("gallery")) {
+//		root.style.setProperty("--filters-container-height", "38px");
+//		root.style.setProperty("--filters-wrapper-opacity", "1");
+//	} else {
+//		setTimeout(() => {
+//		root.style.setProperty("--filters-container-height", "0");
+//		root.style.setProperty("--filters-wrapper-opacity", "0");
+//		}, 1);
+//	}
 	mainSliderCircle.classList.add("animate-jello");
 };
 
