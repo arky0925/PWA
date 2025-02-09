@@ -78,32 +78,6 @@ const handleActiveTabA = (tabs, target, className) => {
 	}
 };
 
-// ページが読み込まれたときに状態を復元
-document.addEventListener("DOMContentLoaded", () => {
-	const previousFileName = sessionStorage.getItem('previousFileName');
-	if (previousFileName == "WAB.html") {
-		root.style.setProperty("--filters-container-height", "38px");
-		root.style.setProperty("--filters-wrapper-opacity", "1");
-		alert("前のページはWABです")
-	} else {
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
-		alert("前のページはWAB以外です")
-	}
-	// フィルターの高さと不透明度を設定
-	setTimeout(() => {
-		if (fileName == "WAB.html") {
-			root.style.setProperty("--filters-container-height", "38px");
-			root.style.setProperty("--filters-wrapper-opacity", "1");
-			alert("今のページはWABです")
-		} else {
-			root.style.setProperty("--filters-container-height", "0");
-			root.style.setProperty("--filters-wrapper-opacity", "0");
-			alert("今のページはWAB以外です")
-		}
-	}, 1); // 1ミリ秒遅延
-});
-
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
 // 遷移前のファイル名を保存
 window.addEventListener('beforeunload', () => {
@@ -133,6 +107,29 @@ const dataSet = (id) => {
 
 // ページが読み込まれたときに状態を復元
 document.addEventListener("DOMContentLoaded", () => {
+	const previousFileName = sessionStorage.getItem('previousFileName');
+	if (previousFileName == "WAB.html") {
+		root.style.setProperty("--filters-container-height", "38px");
+		root.style.setProperty("--filters-wrapper-opacity", "1");
+//		alert("前のページはWABです")
+	} else {
+		root.style.setProperty("--filters-container-height", "0");
+		root.style.setProperty("--filters-wrapper-opacity", "0");
+//		alert("前のページはWAB以外です")
+	}
+	// フィルターの高さと不透明度を設定
+	setTimeout(() => {
+		if (fileName == "WAB.html") {
+			root.style.setProperty("--filters-container-height", "38px");
+			root.style.setProperty("--filters-wrapper-opacity", "1");
+//			alert("今のページはWABです")
+		} else {
+			root.style.setProperty("--filters-container-height", "0");
+			root.style.setProperty("--filters-wrapper-opacity", "0");
+//			alert("今のページはWAB以外です")
+		}
+	}, 1); // 1ミリ秒遅延
+
 	if (fileName == "top.html") {
 		handleActiveTabA(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
