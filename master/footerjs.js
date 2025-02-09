@@ -80,9 +80,9 @@ const handleActiveTabA = (tabs, target, className) => {
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
 // 遷移前のファイル名を保存
-window.addEventListener('beforeunload', () => {
-	sessionStorage.setItem('previousFileName', fileName); // localStorageに保存
-});
+//window.addEventListener('beforeunload', () => {
+//	sessionStorage.setItem('previousFileName', fileName); // localStorageに保存
+//});
 
 const dataSet = (id) => {
 	const width = mainTabs.clientWidth;
@@ -133,18 +133,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (fileName == "top.html") {
 		handleActiveTabA(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
+		sessionStorage.setItem('previousFileName', "top.html");
 	} else if (fileName == "WAB.html") {
 		handleActiveTabA(roundButtons, document.getElementById('couponButton'), "active");
 		dataSet(document.getElementById('couponButton'));
+		sessionStorage.setItem('previousFileName', "WAB.html");
 	} else if (fileName == "WAC.html") {
 		handleActiveTabA(roundButtons, document.getElementById('memoryButton'), "active");
 		dataSet(document.getElementById('memoryButton'));
+		sessionStorage.setItem('previousFileName', "WAC.html");
 	} else if (fileName == "WAD.html") {
 		handleActiveTabA(roundButtons, document.getElementById('stampButton'), "active");
 		dataSet(document.getElementById('stampButton'));
+		sessionStorage.setItem('previousFileName', "WAD.html");
 	} else if (fileName == "WAE.html") {
 		handleActiveTabA(roundButtons, document.getElementById('knowledgeButton'), "active");
 		dataSet(document.getElementById('knowledgeButton'));
+		sessionStorage.setItem('previousFileName', "WAE.html");
 	}
 });
 
