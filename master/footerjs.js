@@ -110,12 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // メインタブのイベントリスナーを修正
 mainTabs.addEventListener("click", (event) => {
+	const width = mainTabs.clientWidth;
+	const calc = Number(event.target.dataset.translateValue); // 数値に変換
+	const targetTranslateValueCalc = 48 * calc + ((width - 240) / 4) * calc;
+	const targetTranslateValue = targetTranslateValueCalc + "px";
+	const targetColor = event.target.dataset.color;
 
 	if (event.target.classList.contains("round-button")) {
+		// 状態をLocal Storageに保存
+		sessionStorage.setItem("activeColor", targetColor);
+		sessionStorage.setItem("activeTranslateValue", targetTranslateValue);
+
 		// アニメーションのリセット処理
 		mainSliderCircle.classList.remove("animate-jello");
 		void mainSliderCircle.offsetWidth; // 再描画を強制
 		mainSliderCircle.classList.add("animate-jello");
+
+		root.style.setProperty("--translate-main-slider", targetTranslateValue);
+		root.style.setProperty("--main-slider-color", getColor(targetColor, 50));
+
+		handleActiveTab(roundButtons, event, "active"); // ボタンをアクティブにする
 
 		const currentHeight = getComputedStyle(root).getPropertyValue('--filters-container-height').trim();
 		const currentOpacity = getComputedStyle(root).getPropertyValue('--filters-wrapper-opacity').trim();
