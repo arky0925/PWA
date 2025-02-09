@@ -51,7 +51,17 @@ const getColor = (color, variant) => {
 	return colors[color][variant].value;
 };
 
-const handleActiveTab = (tabs, target, className) => {
+const handleActiveTab = (tabs, event, className) => {
+	tabs.forEach((tab) => {
+		tab.classList.remove(className);
+	});
+
+	if (!event.target.classList.contains(className)) {
+		event.target.classList.add(className);
+	}
+};
+
+const handleActiveTabA = (tabs, target, className) => {
 	tabs.forEach((tab) => {
 		tab.classList.remove(className);
 	});
@@ -67,6 +77,29 @@ const handleActiveTab = (tabs, target, className) => {
 		activeTab.classList.add(className);
 	}
 };
+
+// ページが読み込まれたときに状態を復元
+document.addEventListener("DOMContentLoaded", () => {
+	const previousFileName = sessionStorage.getItem('previousFileName');
+	if (!(previousFileName == "WAB.html")) {
+		root.style.setProperty("--filters-container-height", "0");
+		root.style.setProperty("--filters-wrapper-opacity", "0");
+	} else {
+		root.style.setProperty("--filters-container-height", "38px");
+		root.style.setProperty("--filters-wrapper-opacity", "1");
+	}
+	// フィルターの高さと不透明度を設定
+	setTimeout(() => {
+		if (!(fileName == "WAB.html")) {
+			root.style.setProperty("--filters-container-height", "0");
+			root.style.setProperty("--filters-wrapper-opacity", "0");
+		} else {
+			root.style.setProperty("--filters-container-height", "38px");
+			root.style.setProperty("--filters-wrapper-opacity", "1");
+		}
+	}, 1); // 1ミリ秒遅延
+
+});
 
 const fileName = window.location.pathname.split('/').pop(); // 現在のファイル名を取得
 // 遷移前のファイル名を保存
@@ -97,28 +130,20 @@ const dataSet = (id) => {
 
 // ページが読み込まれたときに状態を復元
 document.addEventListener("DOMContentLoaded", () => {
-	const previousFileName = sessionStorage.getItem('previousFileName');
-	if (previousFileName == "WAB.html") {
-		root.style.setProperty("--filters-container-height", "38px");
-		root.style.setProperty("--filters-wrapper-opacity", "1");
-	} else {
-		root.style.setProperty("--filters-container-height", "0");
-		root.style.setProperty("--filters-wrapper-opacity", "0");
-	}
 	if (fileName == "top.html") {
-		handleActiveTab(roundButtons, document.getElementById('homeButton'), "active");
+		handleActiveTabA(roundButtons, document.getElementById('homeButton'), "active");
 		dataSet(document.getElementById('homeButton'));
 	} else if (fileName == "WAB.html") {
-		handleActiveTab(roundButtons, document.getElementById('couponButton'), "active");
+		handleActiveTabA(roundButtons, document.getElementById('couponButton'), "active");
 		dataSet(document.getElementById('couponButton'));
 	} else if (fileName == "WAC.html") {
-		handleActiveTab(roundButtons, document.getElementById('memoryButton'), "active");
+		handleActiveTabA(roundButtons, document.getElementById('memoryButton'), "active");
 		dataSet(document.getElementById('memoryButton'));
 	} else if (fileName == "WAD.html") {
-		handleActiveTab(roundButtons, document.getElementById('stampButton'), "active");
+		handleActiveTabA(roundButtons, document.getElementById('stampButton'), "active");
 		dataSet(document.getElementById('stampButton'));
 	} else if (fileName == "WAE.html") {
-		handleActiveTab(roundButtons, document.getElementById('knowledgeButton'), "active");
+		handleActiveTabA(roundButtons, document.getElementById('knowledgeButton'), "active");
 		dataSet(document.getElementById('knowledgeButton'));
 	}
 });
