@@ -535,7 +535,7 @@ textarea:focus {
 /* 新規追加ボタンのスタイル */
 .add-icon {
 	position: fixed; /* スクロールしても位置を固定 */
-	bottom: 100px; /* 下からの距離 */
+	bottom: 110px; /* 下からの距離 */
 	right: 20px; /* 右からの距離 */
 	width: 60px; /* ボタンの幅 */
 	height: 60px; /* ボタンの高さ */
@@ -548,13 +548,12 @@ textarea:focus {
 	font-size: 30px; /* アイコンのサイズ */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
 	cursor: pointer; /* カーソルをポインターに */
-	transition: background-color 0.3s; /* ホバー時の色変更アニメーション */
 }
 
-/* 新規追加ボタンのスタイル */
+/* ヘルプボタンのスタイル */
 .help-icon {
 	position: fixed; /* スクロールしても位置を固定 */
-	bottom: 100px; /* 下からの距離 */
+	bottom: 110px; /* 下からの距離 */
 	left: 20px; /* 右からの距離 */
 	width: 30px; /* ボタンの幅 */
 	height: 30px; /* ボタンの高さ */
@@ -567,7 +566,6 @@ textarea:focus {
 	font-size: 15px; /* アイコンのサイズ */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
 	cursor: pointer; /* カーソルをポインターに */
-	transition: background-color 0.3s; /* ホバー時の色変更アニメーション */
 }
 
 .loading-text {
@@ -874,4 +872,106 @@ transition: transform 0.2s;
 .digit-input:focus {
 	border-color: #007BFF; /* フォーカス時のボーダー色 */
 	outline: none; /* デフォルトのアウトラインを消す */
+}
+
+.contain {
+	position: fixed; /* スクロールしても位置を固定 */
+	bottom: 100px; /* 下からの距離 */
+	right: 20px; /* 右からの距離 */
+	width:250px;
+	height:250px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	background:transparent;
+}
+
+.cover {
+	position: fixed; /* スクロールしても位置を固定 */
+	bottom: 110px; /* 下からの距離 */
+	right: 20px; /* 右からの距離 */
+	width: 60px; /* ボタンの幅 */
+	height: 60px; /* ボタンの高さ */
+	display: flex; /* 中央揃え */
+	justify-content: center; /* 中央揃え */
+	align-items: center; /* 中央揃え */
+	background-color: var(--button-color); /* ボタンの背景色 */
+	color: #000000; /* テキストの色 */
+	font-size: 30px; /* アイコンのサイズ */
+	border-radius: 50%; /* 丸い形にする */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
+	cursor: pointer; /* カーソルをポインターに */
+	z-index:9999;
+}
+
+.cover img{
+	z-index:999999;
+	width:40%;
+	height:40%;
+}
+
+.outer {
+	width:0px;
+	height:0px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	border-radius:50%;
+	background:transparent;
+	z-index:1;
+	position:absolute;
+	top:auto;
+	left:auto;
+	transition:all .35s ease;
+}
+
+.isOpen {
+	width:250px;
+	height:250px;
+	top:auto;
+	left:auto;
+	transform:rotate(360deg);
+}
+
+.inner {
+	width:30%;
+	height:26%;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	border-radius:50%;
+	background:#AACCE0;
+	position:relative;
+	left:2%;
+	cursor:pointer;
+	transition:box-shadow .5s ease;
+}
+
+.inner img {
+	width:50%;
+	height:50%;
+}
+
+.inner:hover {
+	box-shadow:0 0px 15px #f0f0ee;
+}
+
+.inner:nth-child(2) {
+	background:#7B9EB2;
+	position:relative;
+	top:-36.75%;
+	left:12%;
+}
+
+.inner:nth-child(3) {
+	background:#092D42;
+	position:relative;
+	top:37%;
+	left:-12%;
+}
+
+.inner:nth-child(4) {
+	background:#347AA3;
+	position:relative;
+	left:-2%;
 }

@@ -39,7 +39,7 @@ header {
 }
 
 main {
-  padding: 60px 20px 160px;
+  padding: 60px 20px 180px;
   min-height: 100vh;
   background-color: var(--background-color);
 }

@@ -455,17 +455,11 @@ const addIcon = document.getElementById('addIcon');
 document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
-	addIcon.addEventListener('click', function(event) {
-		if (longPressDetected) {
-			event.preventDefault(); // 長押しが検出された場合、クリックをキャンセル
-			longPressDetected = false; // フラグをリセット
-		} else {
-			// 通常のクリックアクションを実行
-			insertModal.style.display = 'block'; // モーダルを表示
-			document.getElementById('insertModal1').focus();
-			modalOverlay.style.display = 'block'; // オーバーレイを表示
-			HFOverlaySetBlock();
-		}
+	addIcon.addEventListener('click', function() {
+		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		HFOverlaySetBlock();
 	});
 
 	// モーダルを閉じる
@@ -506,12 +500,10 @@ document.getElementById('insertModal1').addEventListener('keydown', preventEnter
 document.getElementById('updateModal1').addEventListener('keydown', preventEnterKey);
 
 let timer;
-let longPressDetected = false; // 長押しが検出されたかどうかのフラグ
 
 // 長押しを検出する関数
 const startLongPress = () => {
 	timer = setTimeout(() => {
-		longPressDetected = true; // 長押しが検出された
 		alert('長押しが検出されました！');
 	}, 500);
 };
@@ -523,15 +515,11 @@ addIcon.addEventListener('mousedown', startLongPress);
 // 終了イベントの設定
 const clearLongPress = () => {
 	clearTimeout(timer);
-	longPressDetected = false; // タイマークリア時にフラグをリセット
 };
 
 addIcon.addEventListener('touchend', clearLongPress);
 addIcon.addEventListener('mouseup', clearLongPress);
 addIcon.addEventListener('mouseleave', clearLongPress);
-addIcon.addEventListener('touchcancel', clearLongPress);
-
-
 
 // 新規追加フォーム送信
 const insertForm = document.forms['insert-form'];
@@ -1426,4 +1414,15 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	});
+});
+
+var outer = document.getElementById('outer'), cover = document.getElementById('cover'), counter = 0;
+
+cover.addEventListener('click', () => {
+  counter++;
+  if(counter % 2 !== 0) {
+    outer.classList.add('isOpen');
+  } else if(counter % 2 == 0) {
+    outer.classList.remove('isOpen');
+  }
 });
