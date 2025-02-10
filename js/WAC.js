@@ -1416,9 +1416,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
-var outer = document.getElementById('outer'), cover = document.getElementById('cover'), counter = 0;
+const outer = document.getElementById('outer');
+let counter = 0;
 
-cover.addEventListener('click', () => {
+addIcon.addEventListener('click', () => {
   counter++;
   if(counter % 2 !== 0) {
     outer.classList.add('isOpen');
