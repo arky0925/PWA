@@ -902,7 +902,7 @@ transition: transform 0.2s;
 }
 
 .inner {
-	width:30%;
+	width:25%;
 	height:25%;
 	display:flex;
 	justify-content:center;
