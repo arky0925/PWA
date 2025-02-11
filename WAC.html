@@ -5,12 +5,10 @@
 	<!-- 拡大縮小禁止 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta charset="UTF-8">
-	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="master/master.css">
 	<link rel="stylesheet" href="css/WAC.css">
 	<link rel="stylesheet" href="master/footer.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<script src="ServiceWorker.js" defer></script>
 	<script src="master/master.js" defer></script>
 	<script src="master/footer.js" defer></script>
 	<script src="master/footerjs.js" defer></script>
@@ -119,12 +117,12 @@
 			</button >
 		</div>
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
-		<div class="contain">
+		<div id="sircleContain" class="sircle-contain">
 			<div id="outer" class="outer">
 				<div class="inner"><span class="material-icons">restart_alt</span></div>
 				<div class="inner"><span class="material-icons">list_alt</span></div>
-				<div class="inner"><span class="material-icons">settings_suggest</span></div>
-				<div class="inner"><span class="material-icons">a</span></div>
+				<div class="inner"><span class="material-icons">settings_applications</span></div>
+				<div class="inner"><span class="material-icons">none</span></div>
 			</div>
 		</div>
 		<div id="circleCloseIcon" class="circle-icon">&times;</div>

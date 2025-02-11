@@ -422,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	addIcon.addEventListener('click', function() {
 		addIcon.classList.remove('active'); 
 		circleCloseIcon.classList.remove('active'); 
+		sircleContain.style.display = 'none';
 		insertModal.style.display = 'block'; // モーダルを表示
 		document.getElementById('insertModal1').focus();
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
@@ -462,6 +463,7 @@ function preventEnterKey(event) {
 document.getElementById('insertModal1').addEventListener('keydown', preventEnterKey);
 document.getElementById('updateModal1').addEventListener('keydown', preventEnterKey);
 
+const sircleContain = document.getElementById('sircleContain');
 const circleCloseIcon = document.getElementById('circleCloseIcon');
 const modalOverlayWhite = document.getElementById('modalOverlayWhite');
 const footerOverlay = document.getElementById('footerOverlay'); // フッターオーバーレイを取得
@@ -470,6 +472,7 @@ let timer;
 
 // 長押しを検出する関数
 const startLongPress = () => {
+	sircleContain.style.display = 'flex';
 	addIcon.classList.add('active'); 
 	circleCloseIcon.classList.add('active'); 
 	timer = setTimeout(() => {
@@ -491,6 +494,9 @@ function circleMenuClose() {
 	footerOverlay.style.display = 'none';
 	addIcon.classList.remove('active'); 
 	circleCloseIcon.classList.remove('active'); 
+	setTimeout(() => {
+		sircleContain.style.display = 'none';
+	}, 300);
 }
 
 circleCloseIcon.addEventListener('click', circleMenuClose);

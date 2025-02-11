@@ -547,7 +547,7 @@ textarea:focus {
 
 /* 長押し時のスタイル */
 .circle-icon.active {
-    transform: scale(0.85); /* ボタンを少し縮小 */
+	transform: scale(0.85); /* ボタンを少し縮小 */
 }
 
 /* ヘルプボタンのスタイル */
@@ -874,13 +874,13 @@ transition: transform 0.2s;
 	outline: none; /* デフォルトのアウトラインを消す */
 }
 
-.contain {
+.sircle-contain {
 	position: fixed; /* スクロールしても位置を固定 */
 	bottom: 40px; /* 下からの距離 */
 	right: -50px; /* 右からの距離 */
 	width:200px;
 	height:200px;
-	display:flex;
+	display:none;
 	justify-content:center;
 	align-items:center;
 	z-index:150;
@@ -902,7 +902,7 @@ transition: transform 0.2s;
 }
 
 .inner {
-	width:100%;
+	width:30%;
 	height:25%;
 	display:flex;
 	justify-content:center;
