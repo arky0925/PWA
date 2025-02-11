@@ -22,19 +22,11 @@ const sideMenu = document.getElementById('sideMenu');
 const filterIcon = document.getElementById('filterIcon');
 const reSearchButton = document.getElementById('reSearchButton');
 document.addEventListener('DOMContentLoaded', () => {
-
 	// メニューを開く
-	filterIcon.addEventListener('click', () => {
-		sideMenuOpen();
-	});
-	reSearchButton.addEventListener('click', () => {
-		sideMenuOpen();
-	});
-
+	filterIcon.addEventListener('click', sideMenuOpen);
+	reSearchButton.addEventListener('click', sideMenuOpen);
 	// メニューを閉じる
-	document.getElementById('closeSideMenuButton').addEventListener('click', () => {
-		sideMenuClose();
-	});
+	document.getElementById('closeSideMenuButton').addEventListener('click', sideMenuClose);
 });
 
 // サイドメニューを開く
@@ -424,11 +416,12 @@ function updateBookmark(row, isBookmarked) {
 // モーダル関連
 const insertModal = document.getElementById('insertModal');
 const addIcon = document.getElementById('addIcon');
-
 document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
+		addIcon.classList.remove('active'); 
+		circleCloseIcon.classList.remove('active'); 
 		insertModal.style.display = 'block'; // モーダルを表示
 		document.getElementById('insertModal1').focus();
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
@@ -475,20 +468,11 @@ const footerOverlay = document.getElementById('footerOverlay'); // フッター�
 const outer = document.getElementById('outer');
 let timer;
 
-// Haptic Feedbackを実行する関数
-const triggerHapticFeedback = () => {
-    if (window.HapticFeedback) {
-        const haptic = new window.HapticFeedback();
-        haptic.impactOccurred(); // 振動を発生させる
-    } else if (navigator.vibrate) {
-        navigator.vibrate(50); // 50ミリ秒の振動（フォールバック）
-    }
-};
-
 // 長押しを検出する関数
 const startLongPress = () => {
+	addIcon.classList.add('active'); 
+	circleCloseIcon.classList.add('active'); 
 	timer = setTimeout(() => {
-		triggerHapticFeedback(); // 長押し時に振動を発生させる
 		outer.classList.add('isOpen');
 		addIcon.classList.add('hidden');
 		modalOverlayWhite.style.display = 'block';
@@ -505,17 +489,13 @@ function circleMenuClose() {
 	addIcon.classList.remove('hidden');
 	modalOverlayWhite.style.display = 'none';
 	footerOverlay.style.display = 'none';
+	addIcon.classList.remove('active'); 
+	circleCloseIcon.classList.remove('active'); 
 }
 
-circleCloseIcon.addEventListener('click', function() {
-	circleMenuClose()
-});
-modalOverlayWhite.addEventListener('click', function() {
-	circleMenuClose();
-});
-footerOverlay.addEventListener('click', function() {
-	circleMenuClose();
-});
+circleCloseIcon.addEventListener('click', circleMenuClose);
+modalOverlayWhite.addEventListener('click', circleMenuClose);
+footerOverlay.addEventListener('click', circleMenuClose);
 
 // 終了イベントの設定
 const clearLongPress = () => {
@@ -740,8 +720,10 @@ function deleteModeChange() {
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
 
-	// addIcon,chacheClearIconの表示を切り替える
+	// addIcon,circleCloseIcon,outer,chacheClearIconの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
+	circleCloseIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
+	outer.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	chacheClearIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	// NavigationButtonsの表示を切り替える
 	document.getElementById('navigationButtons').style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
@@ -893,9 +875,7 @@ checkFalse.addEventListener('click', function() {
 	search();
 });
 
-filterInput.addEventListener('blur', function() {
-	search();
-});
+filterInput.addEventListener('blur', search);
 
 filterInput.addEventListener('keydown', (event) => {
 	if (event.key === 'Enter') {

@@ -542,6 +542,12 @@ textarea:focus {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 影を付ける */
 	cursor: pointer; /* カーソルをポインターに */
 	z-index: 150;
+	transition: transform 0.2s; /* スムーズな変化 */
+}
+
+/* 長押し時のスタイル */
+.circle-icon.active {
+    transform: scale(0.85); /* ボタンを少し縮小 */
 }
 
 /* ヘルプボタンのスタイル */
@@ -907,11 +913,7 @@ transition: transform 0.2s;
 	top:40%;
 	left:-20%;
 	cursor:pointer;
-}
-
-.inner img {
-	width:50%;
-	height:50%;
+	color: #ffffff;
 }
 
 .inner:nth-child(2) {
