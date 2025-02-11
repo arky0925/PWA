@@ -1,0 +1,193 @@
+.center {
+	position: absolute; /* 中央揃えのため絶対配置 */
+	left: 50%; /* 左から50% */
+	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
+	text-align: center; /* 中央揃え */
+	font-weight: 900; /* 太字 */
+}
+
+/* オプションメニュー */
+.option-menu {
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-color);
+	color: #000000;
+	transition: top 0.3s ease-in-out;
+	z-index: 250;
+	padding: 20px;
+}
+
+.option-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 2px solid #ccc; /* 下に線を引く */
+	padding: 10px 20px;
+	margin-top: calc(((100vw - 100%) / 2 ) * -1);
+	margin-left: calc(((100vw - 100%) / 2 ) * -1);
+	margin-right: calc(((100vw - 100%) / 2 ) * -1);
+	margin-bottom: 50px;
+}
+
+.option-header span {
+	cursor: pointer;
+}
+
+.option-menu-block {
+	background-color: #ffffff; /* 背景色 */
+	border-radius: 8px; /* 角を丸くする */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+}
+
+.option-menu-block ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.option-menu-block li {
+	display: flex; /* フレックスボックスを使って項目を横に並べる */
+	align-items: center; /* 縦方向の中央揃え */
+	padding: 20px 20px; /* 内側の余白 */
+	cursor: pointer;
+	border-bottom: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
+}
+
+.option-menu-block li:last-child {
+	border-bottom: none; /* 最後の項目には境目の線を表示しない */
+}
+
+.option-menu-block li .material-icons {
+	margin-right: 20px;
+}
+
+.option-menu-block li .text-node {
+	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
+	overflow-wrap: break-word; /* 単語の途切れを許可 */
+	word-wrap: break-word; /* 古いブラウザのサポート */
+	hyphens: auto; /* ハイフネーションを自動にする */
+	text-align: left;
+}
+
+.option-main {
+	position: fixed;
+	top: 0;
+	right: -100%; /* 初期状態では画面外 */
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-color);
+	color: #000000;
+	transition: right 0.3s ease-in-out;
+	z-index: 250;
+	padding: 20px;
+}
+
+.option-main.open {
+	right: 0;
+}
+
+/* テーマ設定 */
+.color-range {
+	padding-bottom: 20px;
+	cursor: pointer;
+	display: flex; /* 子要素を横並びにする */
+	justify-content: space-between;
+}
+
+.color-box {
+	width: 80px;
+	height: 80px;
+	border-radius: 8px;
+}
+
+/* パスコード設定 */
+.password-block {
+	display: flex; /* フレックスボックスを使って項目を横に並べる */
+	align-items: center; /* 縦方向の中央揃え */
+	justify-content: space-between;
+	padding: 20px 20px; /* 内側の余白 */
+	cursor: pointer;
+	border: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
+	background-color: #ffffff; /* 背景色 */
+	border-radius: 8px; /* 角を丸くする */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+	margin-bottom: 20px;
+	height: 70px;
+}
+
+.toggle-container {
+	position: relative;
+	width: 60px;
+	height: 34px;
+}
+
+.toggle-input {
+	opacity: 0; /* 隠す */
+	width: 0;
+	height: 0;
+}
+
+.toggle-label {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc; /* オフの状態 */
+	border-radius: 34px; /* 丸みをつける */
+	transition: background-color 0.2s;
+}
+
+.toggle-label:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white; /* 丸の色 */
+border-radius: 50%; /* 丸くする */
+transition: transform 0.2s;
+}
+
+/* チェックされたときのスタイル */
+.toggle-input:checked + .toggle-label {
+	background-color: #4CAF50; /* 緑色 */
+}
+
+.toggle-input:checked + .toggle-label:before {
+	transform: translateX(26px); /* 丸を右に移動 */
+}
+
+.password-settig-main {
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+}
+
+.password-settig-main h3 {
+	text-align: center;
+}
+
+.input-group {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.digit-input {
+	width: 50px;
+	height: 50px;
+	font-size: 24px;
+	text-align: center;
+	margin: 5px 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.digit-input:focus {
+	border-color: #007BFF; /* フォーカス時のボーダー色 */
+	outline: none; /* デフォルトのアウトラインを消す */
+}

@@ -21,8 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-//document.addEventListener("touchstart", function (event) {
-//	if (event.touches[0].pageX < 20) { // 画面の左端50px以内
-//		event.preventDefault();
-//	}
-//}, { passive: false });
+document.addEventListener('DOMContentLoaded', () => {
+	// localStorageからテーマカラーを取得
+	const headerColor = localStorage.getItem('headerColor') || '#C9A7A3'; // デフォルト色
+	const backgroundColor = localStorage.getItem('backgroundColor') || '#fff2f2'; // デフォルト色
+	const buttonColor = localStorage.getItem('buttonColor') || '#FFC4C4'; // デフォルト色
+
+	document.documentElement.style.setProperty('--header-color', headerColor);
+	document.documentElement.style.setProperty('--background-color', backgroundColor);
+	document.documentElement.style.setProperty('--button-color', buttonColor);
+});

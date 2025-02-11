@@ -15,5 +15,92 @@
 	<script src="js/WAE.js" defer></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+	<header id="header">
+		<div class="center">設定</div>
+	</header>
+	<!-- オプションメニュー -->
+	<div id="optionMenu" class="option-menu">
+		<div class="option-header">
+			<span id="closeOptionMenu" class="material-icons">highlight_off</span>
+			<div class="center">設定</div>
+		</div>
+		<div class="option-menu-block">
+			<ul>
+				<li id="theme">
+					<span class="material-icons">dark_mode</span>
+					<span class="text-node">テーマ設定</span>
+					<span class="material-icons">chevron_right</span>
+				</li>
+				<li id="password">
+					<span class="material-icons">lock_outline</span>
+					<span class="text-node">パスコード設定</span>
+					<span class="material-icons">chevron_right</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- テーマ設定 -->
+	<div id="optionTheme" class="option-main ">
+		<div class="option-header">
+			<span id="closeOptionTheme" class="material-icons">chevron_left</span>
+			<div class="center">テーマ設定</div>
+		</div>
+		<div class="color-range">
+			<span id="colorCheck1" class="color-box" style="background-color: #C9A7A3;"></span>
+			<span id="colorCheck2" class="color-box" style="background-color: #F44336;"></span>
+			<span id="colorCheck3" class="color-box" style="background-color: #9C27B0;"></span>
+			<span id="colorCheck4" class="color-box" style="background-color: #2196F3;"></span>
+		</div>
+		<div class="color-range">
+			<span id="colorCheck5" class="color-box" style="background-color: #009688;"></span>
+			<span id="colorCheck6" class="color-box" style="background-color: #FFEB3B;"></span>
+			<span id="colorCheck7" class="color-box" style="background-color: #795548;"></span>
+			<span id="colorCheck8" class="color-box" style="background-color: #607D8B;"></span>
+		</div>
+	</div>
+	<!-- パスコード設定 -->
+	<div id="optionPassword" class="option-main">
+		<div class="option-header">
+			<span id="closeOptionPassword" class="material-icons">chevron_left</span>
+			<div class="center">パスコード設定</div>
+		</div>
+		<div class="password-block">
+			<span>パスコードロックを有効</span>
+			<div class="toggle-container">
+				<input type="checkbox" id="passToggle" class="toggle-input">
+				<label for="passToggle" class="toggle-label"></label>
+			</div>
+		</div>
+		<div id="passwordChangeBlock" class="password-block" style="display: none;">
+			<span>パスコード変更</span>
+			<span class="material-icons">chevron_right</span>
+		</div>
+	</div>
+	<div id="passwordSettig" class="option-main">
+		<div class="option-header">
+			<span id="passwordCancel">キャンセル</span>
+		</div>
+		<div class="password-settig-main">
+			<div id="firstSection">
+				<h3>パスコードを入力</h3>
+				<div class="input-group">
+					<input type="text" maxlength="1" class="digit-input" id="digit1" inputmode="numeric" pattern="[0-9]*">
+					<input type="text" maxlength="1" class="digit-input" id="digit2" inputmode="numeric" pattern="[0-9]*" disabled>
+					<input type="text" maxlength="1" class="digit-input" id="digit3" inputmode="numeric" pattern="[0-9]*" disabled>
+					<input type="text" maxlength="1" class="digit-input" id="digit4" inputmode="numeric" pattern="[0-9]*" disabled>
+				</div>
+			</div>
+			<div id="verifySection" style="display: none;">
+				<h3>パスコードを再度入力</h3>
+				<div class="input-group">
+					<input type="text" maxlength="1" class="digit-input" id="verifyDigit1" inputmode="numeric" pattern="[0-9]*">
+					<input type="text" maxlength="1" class="digit-input" id="verifyDigit2" inputmode="numeric" pattern="[0-9]*" disabled>
+					<input type="text" maxlength="1" class="digit-input" id="verifyDigit3" inputmode="numeric" pattern="[0-9]*" disabled>
+					<input type="text" maxlength="1" class="digit-input" id="verifyDigit4" inputmode="numeric" pattern="[0-9]*" disabled>
+				</div>
+			</div>
+			<p id="message"></p>
+		</div>
+	</div>
 <my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </html>

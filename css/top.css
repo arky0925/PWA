@@ -144,7 +144,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 	right: -100%; /* 初期状態では画面外 */
 	width: 100%;
 	height: 100%;
-	background-color: #fff2f2;
+	background-color: var(--background-color);
 	color: #9E9E9E;
 	transition: right 0.3s ease-in-out;
 	z-index: 2000;
@@ -155,7 +155,7 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 	justify-content: flex-end;
 	align-items: center;
 	padding: 10px 20px;
-	background-color: #fff2f2;
+	background-color: var(--background-color);
 }
 
 .side-menu-header span {

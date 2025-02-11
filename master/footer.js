@@ -52,7 +52,7 @@ class MyFooter extends HTMLElement {
 										</li>
 										<li>
 											<button id="knowledgeButton" class="round-button material-icons" style="--round-button-active-color: #ff6d00" data-translate-value="4" data-color="orange">
-												auto_awesome
+												settings
 											</button>
 										</li>
 									</ul>
