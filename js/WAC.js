@@ -477,15 +477,18 @@ let timer;
 
 // Haptic Feedbackを実行する関数
 const triggerHapticFeedback = () => {
-	if (navigator.vibrate) {
-		navigator.vibrate(50); // 50ミリ秒の振動
-	}
+    if (window.HapticFeedback) {
+        const haptic = new window.HapticFeedback();
+        haptic.impactOccurred(); // 振動を発生させる
+    } else if (navigator.vibrate) {
+        navigator.vibrate(50); // 50ミリ秒の振動（フォールバック）
+    }
 };
 
 // 長押しを検出する関数
 const startLongPress = () => {
 	timer = setTimeout(() => {
-		triggerHapticFeedback(); // 振動を発生させる
+		triggerHapticFeedback(); // 長押し時に振動を発生させる
 		outer.classList.add('isOpen');
 		addIcon.classList.add('hidden');
 		modalOverlayWhite.style.display = 'block';
