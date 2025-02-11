@@ -3,34 +3,12 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbykisgiCffqMuKuOmVBAz
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
 const reloadOverlay = document.getElementById('reloadOverlay'); // リロードオーバーレイを取得
-const headerOverlay = document.getElementById('headerOverlay'); // ヘッダーオーバーレイを取得
-const footerOverlay = document.getElementById('footerOverlay'); // ヘッダーオーバーレイを取得
 
 const rowsToDelete = []; // 削除対象のレコード数
 
 window.onload = function() {
 	fetchData();
 };
-
-function overlaySetBlock() {
-	reloadOverlay.style.display = 'block';
-	HFOverlaySetBlock();
-}
-
-function overlaySetNone() {
-	reloadOverlay.style.display = 'none';
-	HFOverlaySetNone();
-}
-
-function HFOverlaySetBlock() {
-	headerOverlay.style.display = 'block';
-	footerOverlay.style.display = 'block';
-}
-
-function HFOverlaySetNone() {
-	headerOverlay.style.display = 'none';
-	footerOverlay.style.display = 'none';
-}
 
 const chacheClearIcon = document.getElementById('chacheClearIcon');
 chacheClearIcon.addEventListener('click', () => {
@@ -63,14 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function sideMenuOpen() {
 	sideMenu.classList.add('open');
 	modalOverlay.style.display = 'block';
-	HFOverlaySetBlock();
 }
 
 // サイドメニューを閉じる
 function sideMenuClose() {
 	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
-	HFOverlaySetNone();
 	updateFilterIcon(); // 絞り込み条件の有無
 }
 
@@ -81,13 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// オプションを開く
 	settingIcon.addEventListener('click', () => {
-		headerOverlay.style.display = 'block';
 		optionMenu.classList.add('open');
 	});
 
 	// メニューを閉じる
 	document.getElementById('closeOptionMenu').addEventListener('click', () => {
-		headerOverlay.style.display = 'none';
 		optionMenu.classList.remove('open');
 	});
 });
@@ -96,7 +70,7 @@ function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
 
 	// オーバーレイを表示
-	overlaySetBlock();
+	reloadOverlay.style.display = 'block';
 
 	if (cachedData) {
 		// キャッシュが存在する場合はそれを使用
@@ -105,7 +79,7 @@ function fetchData() {
 		search();
 
 		// オーバーレイを非表示
-		overlaySetNone();
+		reloadOverlay.style.display = 'none';
 	} else {
 		// キャッシュがない場合はスプレッドシートからデータを取得
 		fetch(scriptURL)
@@ -125,7 +99,7 @@ function fetchData() {
 			.catch(error => console.error('Error!', error.message))
 			.finally(() => {
 				// オーバーレイを非表示
-				overlaySetNone();
+				reloadOverlay.style.display = 'none';
 			});
 	}
 }
@@ -272,7 +246,6 @@ function displayData(data) {
 				// モーダルを表示
 				updateModal.style.display = 'block'; // 編集モーダルを表示
 				modalOverlay.style.display = 'block'; // オーバーレイを表示
-				HFOverlaySetBlock();
 			}
 		});
 
@@ -459,14 +432,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		insertModal.style.display = 'block'; // モーダルを表示
 		document.getElementById('insertModal1').focus();
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
-		HFOverlaySetBlock();
 	});
 
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
-		HFOverlaySetNone();
 		insertForm.reset(); // フォームの内容をクリア
 	});
 
@@ -474,7 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('updateCloseButton').addEventListener('click', function() {
 		updateModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
-		HFOverlaySetNone();
 	});
 
 	// モーダルの外側（オーバーレイ）をクリックしたときに閉じる
@@ -499,18 +469,42 @@ function preventEnterKey(event) {
 document.getElementById('insertModal1').addEventListener('keydown', preventEnterKey);
 document.getElementById('updateModal1').addEventListener('keydown', preventEnterKey);
 
+const circleCloseIcon = document.getElementById('circleCloseIcon');
+const modalOverlayWhite = document.getElementById('modalOverlayWhite');
+const footerOverlay = document.getElementById('footerOverlay'); // フッターオーバーレイを取得
+const outer = document.getElementById('outer');
 let timer;
 
 // 長押しを検出する関数
 const startLongPress = () => {
 	timer = setTimeout(() => {
-		alert('長押しが検出されました！');
-	}, 500);
+		outer.classList.add('isOpen');
+		addIcon.classList.add('hidden');
+		modalOverlayWhite.style.display = 'block';
+		footerOverlay.style.display = 'block';
+	}, 300);
 };
 
 // タッチイベントの設定
 addIcon.addEventListener('touchstart', startLongPress);
 addIcon.addEventListener('mousedown', startLongPress);
+
+function circleMenuClose() {
+	outer.classList.remove('isOpen');
+	addIcon.classList.remove('hidden');
+	modalOverlayWhite.style.display = 'none';
+	footerOverlay.style.display = 'none';
+}
+
+circleCloseIcon.addEventListener('click', function() {
+	circleMenuClose()
+});
+modalOverlayWhite.addEventListener('click', function() {
+	circleMenuClose();
+});
+footerOverlay.addEventListener('click', function() {
+	circleMenuClose();
+});
 
 // 終了イベントの設定
 const clearLongPress = () => {
@@ -518,6 +512,7 @@ const clearLongPress = () => {
 };
 
 addIcon.addEventListener('touchend', clearLongPress);
+addIcon.addEventListener('touchmove', clearLongPress);
 addIcon.addEventListener('mouseup', clearLongPress);
 addIcon.addEventListener('mouseleave', clearLongPress);
 
@@ -528,7 +523,6 @@ insertForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 	insertModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
-	HFOverlaySetNone();
 
 	const insertModal1 = document.getElementById('insertModal1').value;
 	const insertModal2 = document.getElementById('insertModal2').value;
@@ -578,7 +572,6 @@ updateForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
 	updateModal.style.display = 'none'; // モーダルを非表示
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
-	HFOverlaySetNone();
 
 	const sheetRowIndex = parseInt(updateModal.dataset.sheetRowIndex) - 2; // キャッシュデータ内の行番号を取得
 	const updateModal1 = document.getElementById('updateModal1').value;
@@ -713,7 +706,6 @@ function deleteModalShow() {
 	deleteModal.style.display = 'block'; // モーダルを表示
 	gsap.to(deleteModal, { opacity: 1, duration: 0.3 });
 	modalOverlay.style.display = 'block'; // オーバーレイを表示
-	HFOverlaySetBlock();
 }
 
 function deleteModalHidden() {
@@ -721,7 +713,6 @@ function deleteModalHidden() {
 		deleteModal.style.display = 'none'; // モーダルを非表示
 	}});
 	modalOverlay.style.display = 'none'; // オーバーレイを非表示
-	HFOverlaySetNone();
 }
 
 document.getElementById('deleteCancel').addEventListener('click', () => {
@@ -904,7 +895,6 @@ filterInput.addEventListener('keydown', (event) => {
 		updateFilterIcon();
 		sideMenu.classList.remove('open');
 		modalOverlay.style.display = 'none';
-		HFOverlaySetNone();
 	}
 });
 
@@ -923,7 +913,6 @@ document.getElementById('searchButton').addEventListener('click', () => {
 	updateFilterIcon();
 	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
-	HFOverlaySetNone();
 });
 
 // 絞り込み条件の有無
@@ -1414,16 +1403,4 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	});
-});
-
-const outer = document.getElementById('outer');
-let counter = 0;
-
-addIcon.addEventListener('click', () => {
-  counter++;
-  if(counter % 2 !== 0) {
-    outer.classList.add('isOpen');
-  } else if(counter % 2 == 0) {
-    outer.classList.remove('isOpen');
-  }
 });

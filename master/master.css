@@ -1,45 +1,45 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
-  --header-color: #C9A7A3; /* デフォルトのテーマカラー */
-  --background-color: #fff2f2; /* デフォルトの背景色 */
-  --button-color: #FFC4C4; /* デフォルトのテキスト色 */
+	--header-color: #C9A7A3; /* デフォルトのテーマカラー */
+	--background-color: #fff2f2; /* デフォルトの背景色 */
+	--button-color: #FFC4C4; /* デフォルトのテキスト色 */
 }
 
 html {
-  font-size: 100%; /* 基本フォントサイズ */
+	font-size: 100%; /* 基本フォントサイズ */
 }
 
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  background-color: var(--background-color); /* ステータスバーの下の背景色 */
-  user-select: none; /* テキスト選択を無効にする */
-  -webkit-user-select: none; /* Safari用 */
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+	background-color: var(--background-color); /* ステータスバーの下の背景色 */
+	user-select: none; /* テキスト選択を無効にする */
+	-webkit-user-select: none; /* Safari用 */
 }
 
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 46px;
-  background-color: var(--header-color);
-  color: #fff;
-  text-align: center;
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 46px;
+	background-color: var(--header-color);
+	color: #fff;
+	text-align: center;
+	z-index: 50;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
 }
 
 main {
-  padding: 60px 20px 180px;
-  min-height: 100vh;
-  background-color: var(--background-color);
+	padding: 60px 20px 180px;
+	min-height: 100vh;
+	background-color: var(--background-color);
 }

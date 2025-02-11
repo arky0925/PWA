@@ -31,7 +31,6 @@
 			<span id="deleteAllIcon" class="material-icons delete-icon" style="display: none;">delete_forever</span>
 		</div>
 	</header>
-	<div id="headerOverlay" class="header-overlay"></div> <!-- ヘッダー専用オーバーレイ -->
 	<main>
 		<div id ="navigationButtons" class ="navigation-buttons">
 			<button id="filterIcon">
@@ -80,6 +79,7 @@
 			<div class="loading-content"></div>
 		</div>
 		<div id="modalOverlay" class="overlay"></div> <!-- モーダルオーバーレイ -->
+		<div id="modalOverlayWhite" class="overlayWhite"></div> <!-- モーダルオーバーレイ -->
 		<!-- モーダルウィンドウ(新規追加) -->
 		<div id="insertModal" class="modal">
 			<form method="post" action="" name="insert-form">
@@ -119,7 +119,6 @@
 			</button >
 		</div>
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
-		<div id="addIcon" class="add-icon">+</div>
 		<div class="contain">
 			<div id="outer" class="outer">
 				<div class="inner"><img src="https://res.cloudinary.com/dsp6kqag8/image/upload/v1468198589/Home_drcqdz.svg" /></div>
@@ -128,6 +127,8 @@
 				<div class="inner"><img src="https://res.cloudinary.com/dsp6kqag8/image/upload/v1468198589/Rating_limkrw.svg" /></div>
 			</div>
 		</div>
+		<div id="circleCloseIcon" class="circle-icon">&times;</div>
+		<div id="addIcon" class="circle-icon">+</div>
 		<div id="helpIcon" class="help-icon">?</div>
 		<!-- 検索結果なし画面 -->
 		<div id ="searchNoneScreen" class="search-none-screen">
