@@ -14,7 +14,7 @@
 	color: #000000;
 	transition: top 0.3s ease-in-out;
 	z-index: 250;
-	padding: 20px;
+	padding-top: 30px;
 }
 
 .option-header {
