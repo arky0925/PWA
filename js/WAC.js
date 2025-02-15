@@ -1168,67 +1168,81 @@ function templateData(data) {
 		textNode.className = 'text-node';
 		textNode.textContent = (row[0] !== undefined && row[0] !== null) ? row[0] : ''; // 0も表示 // 1列目の値を取得（存在しない場合は空文字）
 		linkDiv.appendChild(textNode);
-            const icon = document.createElement('i'); // i要素を作成
-            icon.className = 'material-icons fa-chevron-down';
-            icon.textContent = 'expand_more';
-            linkDiv.appendChild(icon);
-            li.appendChild(linkDiv);
-            const submenu = document.createElement('ul'); // ul.submenu要素を作成
-            submenu.className = 'submenu';
-            const dishName = document.createElement('span'); // span要素（料理名）を作成
-            dishName.textContent = '料理名';
-            submenu.appendChild(dishName);
-            const dishTextarea = document.createElement('textarea'); // textarea要素（料理）を作成
-            dishTextarea.name = '料理';
-            dishTextarea.className = 'textarea-single';
-            dishTextarea.rows = 1;
-            dishTextarea.placeholder = '料理';
-            dishTextarea.readOnly = true;
-            dishTextarea.textContent = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
-            submenu.appendChild(dishTextarea);
-            const notesLabel = document.createElement('span'); // span要素（備考欄）を作成
-            notesLabel.textContent = '備考欄';
-            submenu.appendChild(notesLabel);
-            const notesTextarea = document.createElement('textarea'); // textarea要素（備考欄）を作成
-            notesTextarea.name = '備考欄';
-            notesTextarea.rows = 7;
-            notesTextarea.placeholder = 'メモ';
-            notesTextarea.readOnly = true;
-            notesTextarea.textContent = (row[2] !== undefined && row[2] !== null) ? row[2] : ''; // 0も表示 // 3列目の値を取得（存在しない場合は空文字）
-            submenu.appendChild(notesTextarea);
-            const button = document.createElement('button'); // button要素を作成
-            button.id = 'templateButton';
-            button.className = 'template-button';
-            button.textContent = '選択';
-            submenu.appendChild(button);
-            li.appendChild(submenu);
-            accordion.appendChild(li); // リストに追加
+		const icon = document.createElement('i'); // i要素を作成
+		icon.className = 'material-icons fa-chevron-down';
+		icon.textContent = 'expand_more';
+		linkDiv.appendChild(icon);
+		
+		// リストアイテムにクリックイベントを追加
+		linkDiv.addEventListener('click', () => {
+//			// サブメニューの表示/非表示を切り替え
+//			if (submenu.style.display === 'block') {
+//				submenu.style.display = 'none';
+//				submenu.classList.remove('open');
+//			} else {
+//				submenu.classList.add('open');
+//				submenu.style.display = 'block';
+//			}
+		});
+		
+		li.appendChild(linkDiv);
+		const submenu = document.createElement('ul'); // ul.submenu要素を作成
+		submenu.className = 'submenu';
+		const dishName = document.createElement('span'); // span要素（料理名）を作成
+		dishName.textContent = '料理名';
+		submenu.appendChild(dishName);
+		const dishTextarea = document.createElement('textarea'); // textarea要素（料理）を作成
+		dishTextarea.name = '料理';
+		dishTextarea.className = 'textarea-single';
+		dishTextarea.rows = 1;
+		dishTextarea.placeholder = '料理';
+		dishTextarea.readOnly = true;
+		dishTextarea.textContent = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
+		submenu.appendChild(dishTextarea);
+		const notesLabel = document.createElement('span'); // span要素（備考欄）を作成
+		notesLabel.textContent = '備考欄';
+		submenu.appendChild(notesLabel);
+		const notesTextarea = document.createElement('textarea'); // textarea要素（備考欄）を作成
+		notesTextarea.name = '備考欄';
+		notesTextarea.rows = 7;
+		notesTextarea.placeholder = 'メモ';
+		notesTextarea.readOnly = true;
+		notesTextarea.textContent = (row[2] !== undefined && row[2] !== null) ? row[2] : ''; // 0も表示 // 3列目の値を取得（存在しない場合は空文字）
+		submenu.appendChild(notesTextarea);
+		const button = document.createElement('button'); // button要素を作成
+		button.id = 'templateButton';
+		button.className = 'template-button';
+		button.textContent = '選択';
+		submenu.appendChild(button);
+		li.appendChild(submenu);
+		accordion.appendChild(li); // リストに追加
 	});
 }
 
 $(function() {
-	var Accordion = function(el, multiple) {
-		this.el = el || {};
-		this.multiple = multiple || false;
+var Accordion = function(el, multiple) {
+this.el = el || {};
+this.multiple = multiple || false;
 
-		// Variables privadas
-		var links = this.el.find('.link');
-		// Evento
-		links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
-	}
 
-	Accordion.prototype.dropdown = function(e) {
-		var $el = e.data.el;
-			$this = $(this),
-			$next = $this.next();
+	// Variables privadas
+	var links = this.el.find('.link');
+	// Evento
+	links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+}
 
-		$next.slideToggle();
-		$this.parent().toggleClass('open');
+Accordion.prototype.dropdown = function(e) {
+	var $el = e.data.el;
+		$this = $(this),
+		$next = $this.next();
 
-		if (!e.data.multiple) {
-			$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
-		};
-	}	
+	$next.slideToggle();
+	$this.parent().toggleClass('open');
 
-	var accordion = new Accordion($('#accordion'), false);
+	if (!e.data.multiple) {
+		$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+	};
+}	
+
+var accordion = new Accordion($('#accordion'), false);
 });
