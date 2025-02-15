@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbykisgiCffqMuKuOmVBAz0pt--Cl07Wu5y5poLTdI7bj-8lgiWmIc-a_l_5ufbengZj/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzdvQN-SX6oauQdT3XWL2iRxkK9a1u9hnfSaWycWSToLSRMB1ERHyhIybht1gkMvd8m/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得
@@ -8,12 +8,16 @@ const rowsToDelete = []; // 削除対象のレコード数
 
 window.onload = function() {
 	fetchData();
+	fetchtemplateData();
+	console.log(localStorage);
 };
 
 const chacheClearIcon = document.getElementById('chacheClearIcon');
 chacheClearIcon.addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
+	localStorage.removeItem('templateData');
 	fetchData();
+	fetchtemplateData();
 	alert('キャッシュをクリアしてデータを取得します。');
 });
 
@@ -42,8 +46,25 @@ function sideMenuClose() {
 	updateFilterIcon(); // 絞り込み条件の有無
 }
 
+// オプションメニュー開閉
+const templateSelectMenu = document.getElementById('templateSelectMenu');
+const templateSelectButton = document.getElementById('templateSelectButton');
+document.addEventListener('DOMContentLoaded', () => {
+
+	// オプションを開く
+	templateSelectButton.addEventListener('click', () => {
+		templateSelectMenu.classList.add('open');
+	});
+
+	// メニューを閉じる
+	document.getElementById('closetemplateSelectMenu').addEventListener('click', () => {
+		templateSelectMenu.classList.remove('open');
+	});
+});
+
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
+	const action = 'spreadSheetGet';
 
 	// オーバーレイを表示
 	reloadOverlay.style.display = 'block';
@@ -58,7 +79,7 @@ function fetchData() {
 		reloadOverlay.style.display = 'none';
 	} else {
 		// キャッシュがない場合はスプレッドシートからデータを取得
-		fetch(scriptURL)
+		fetch(`${scriptURL}?action=${action}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
@@ -1108,4 +1129,106 @@ window.addEventListener('scroll', function() {
 // ヘルプページへ遷移
 document.getElementById('helpIcon').addEventListener('click', () => {
 	window.location.href = 'top.html'; // 遷移先のページ
+});
+
+function fetchtemplateData() {
+	const chacheTemplateData = localStorage.getItem('templateData');
+	const action = 'templateGet';
+
+	if (chacheTemplateData) {
+		// キャッシュが存在する場合はそれを使用
+		templateData(JSON.parse(chacheTemplateData)); // データを表示
+	} else {
+		// キャッシュがない場合はスプレッドシートからデータを取得
+		fetch(`${scriptURL}?action=${action}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
+			})
+			.then(data => {
+				// キャッシュにデータを保存
+				localStorage.setItem('templateData', JSON.stringify(data));
+				templateData(data);
+			})
+			.catch(error => console.error('Error!', error.message))
+	}
+}
+
+function templateData(data) {
+	const accordion = document.getElementById('accordion');
+	accordion.innerHTML = ''; // 既存の内容をクリア
+
+	data.forEach((row) => {
+		const li = document.createElement('li'); // リストアイテムを作成
+		const linkDiv = document.createElement('div'); // div.link要素を作成
+		linkDiv.className = 'link';
+		const textNode = document.createElement('span'); // span.text-node要素を作成
+		textNode.className = 'text-node';
+		textNode.textContent = (row[0] !== undefined && row[0] !== null) ? row[0] : ''; // 0も表示 // 1列目の値を取得（存在しない場合は空文字）
+		linkDiv.appendChild(textNode);
+            const icon = document.createElement('i'); // i要素を作成
+            icon.className = 'material-icons fa-chevron-down';
+            icon.textContent = 'expand_more';
+            linkDiv.appendChild(icon);
+            li.appendChild(linkDiv);
+            const submenu = document.createElement('ul'); // ul.submenu要素を作成
+            submenu.className = 'submenu';
+            const dishName = document.createElement('span'); // span要素（料理名）を作成
+            dishName.textContent = '料理名';
+            submenu.appendChild(dishName);
+            const dishTextarea = document.createElement('textarea'); // textarea要素（料理）を作成
+            dishTextarea.name = '料理';
+            dishTextarea.className = 'textarea-single';
+            dishTextarea.rows = 1;
+            dishTextarea.placeholder = '料理';
+            dishTextarea.readOnly = true;
+            dishTextarea.textContent = (row[1] !== undefined && row[1] !== null) ? row[1] : ''; // 0も表示 // 2列目の値を取得（存在しない場合は空文字）
+            submenu.appendChild(dishTextarea);
+            const notesLabel = document.createElement('span'); // span要素（備考欄）を作成
+            notesLabel.textContent = '備考欄';
+            submenu.appendChild(notesLabel);
+            const notesTextarea = document.createElement('textarea'); // textarea要素（備考欄）を作成
+            notesTextarea.name = '備考欄';
+            notesTextarea.rows = 7;
+            notesTextarea.placeholder = 'メモ';
+            notesTextarea.readOnly = true;
+            notesTextarea.textContent = (row[2] !== undefined && row[2] !== null) ? row[2] : ''; // 0も表示 // 3列目の値を取得（存在しない場合は空文字）
+            submenu.appendChild(notesTextarea);
+            const button = document.createElement('button'); // button要素を作成
+            button.id = 'templateButton';
+            button.className = 'template-button';
+            button.textContent = '選択';
+            submenu.appendChild(button);
+            li.appendChild(submenu);
+            accordion.appendChild(li); // リストに追加
+	});
+}
+
+$(function() {
+	var Accordion = function(el, multiple) {
+		this.el = el || {};
+		this.multiple = multiple || false;
+
+		// Variables privadas
+		var links = this.el.find('.link');
+		// Evento
+		links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+	}
+
+	Accordion.prototype.dropdown = function(e) {
+		var $el = e.data.el;
+			$this = $(this),
+			$next = $this.next();
+
+		$next.slideToggle();
+		$this.parent().toggleClass('open');
+
+		if (!e.data.multiple) {
+			$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+		};
+	}	
+
+	var accordion = new Accordion($('#accordion'), false);
 });

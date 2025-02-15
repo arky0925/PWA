@@ -227,18 +227,9 @@ span.delete-icon, .update-icon, button {
 	padding: 10px 15px; /* パディング */
 	border-radius: 5px; /* 角を丸く */
 	cursor: pointer; /* カーソルをポインターに */
-	transition: background-color 0.3s, transform 0.2s; /* ホバー時のアニメーション */
 	font-size: 16px;/* フォントサイズ */
 	font-weight: 900; /* 太字 */
 	width: 100%; /* ボタンを全幅に */
-}
-
-.search-button:hover {
-	transform: translateY(-2px); /* ホバー時に少し上に移動 */
-}
-
-.search-button:active {
-	transform: translateY(0); /* アクティブ時に元の位置に戻す */
 }
 
 .search-none-screen {
@@ -727,4 +718,94 @@ textarea:focus {
 	top: 20px;
 	width: 100%;
 	height: 100%;
+}
+
+/* テンプレート選択メニュー */
+.template-select-menu {
+	position: fixed;
+	top: 200%;
+	right: 0; /* 初期状態では画面外 */
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-color);
+	color: #000000;
+	transition: top 0.3s ease-in-out;
+	z-index: 2000;
+	padding: 20px;
+}
+
+.template-select-menu.open {
+	top: 0;
+}
+
+.template-select-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 2px solid #ccc; /* 下に線を引く */
+	padding: 10px 20px;
+	margin-top: calc(((100vw - 100%) / 2 ) * -1);
+	margin-left: calc(((100vw - 100%) / 2 ) * -1);
+	margin-right: calc(((100vw - 100%) / 2 ) * -1);
+}
+
+.template-select-header span {
+	cursor: pointer;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.accordion {
+	width: 100%;
+	max-width: 360px;
+	margin: 30px auto 20px;
+	background: #ffffff;
+	border-radius: 4px;
+}
+
+.link {
+	cursor: pointer;
+	display: flex;
+	padding: 15px 15px 15px 25px;
+	color: #4D4D4D;
+	font-size: 14px;
+	font-weight: 700;
+	border-bottom: 1px solid #CCC;
+	position: relative;
+	transition: all 0.2s ease;
+}
+
+.text-node {
+	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
+}
+
+.fa-chevron-down {
+	transition: all 0.4s ease;
+}
+
+.accordion li.open .link {
+	color: #b63b4d;
+}
+
+.accordion li.open i.fa-chevron-down {
+	transform: rotate(180deg);
+}
+
+.submenu {
+	display: none;
+	background: #dcdcdc;
+	padding: 20px;
+}
+
+.template-button {
+	background-color: #ff4d4d; /* ボタンの背景色 */
+	color: #ffffff; /* テキストの色 */
+	border: none; /* ボーダーをなしに */
+	padding: 5px 10px; /* パディング */
+	border-radius: 5px; /* 角を丸く */
+	cursor: pointer; /* カーソルをポインターに */
+	font-size: 16px;/* フォントサイズ */
+	margin-top: 5px;
 }

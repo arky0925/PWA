@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="css/WAC.css">
 	<link rel="stylesheet" href="master/footer.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="master/master.js" defer></script>
 	<script src="master/footer.js" defer></script>
 	<script src="master/footerjs.js" defer></script>
@@ -81,7 +82,7 @@
 		<div id="insertModal" class="modal">
 			<form method="post" action="" name="insert-form">
 				<div class="modal-title">
-					<span class="material-icons">list_alt</span>
+					<span id="templateSelectButton" class="material-icons">list_alt</span>
 					<h4 id="addTitle">新規追加</h4>
 					<span class="close-button" id="insertCloseButton">&times;</span>
 				</div>
@@ -182,6 +183,29 @@
 		<div class="side-menu-footer">
 			<button id="searchButton" class="search-button">検索</button>
 		</div>
+	</div>
+	<!-- テンプレート選択メニュー -->
+	<div id="templateSelectMenu" class="template-select-menu">
+		<div class="template-select-header">
+			<span id="closetemplateSelectMenu" class="material-icons">highlight_off</span>
+			<div class="center">テンプレート選択</div>
+			<span>並び替え</span>
+		</div>
+		<ul id="accordion" class="accordion">
+			<li>
+				<div class="link">
+					<span class="text-node">Web Design</span>
+					<i class="material-icons fa-chevron-down">expand_more</i>
+				</div>
+				<ul class="submenu">
+					<span>料理名</span>
+					<textarea name="料理" class="textarea-single" rows="1" placeholder="料理" readonly>aaa</textarea>
+					<span>備考欄</span>
+					<textarea name="備考欄" rows="7" placeholder="メモ" readonly>aaa</textarea>
+					<button id="templateButton" class="template-button">選択</button>
+				</ul>
+			</li>
+		</ul>
 	</div>
 	<div id="footerOverlay" class="footer-overlay"></div> <!-- フッター専用オーバーレイ -->
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
