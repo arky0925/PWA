@@ -80,8 +80,9 @@
 		<!-- モーダルウィンドウ(新規追加) -->
 		<div id="insertModal" class="modal">
 			<form method="post" action="" name="insert-form">
-				<div class="title">
-					<h4>新規追加</h4>
+				<div class="modal-title">
+					<span class="material-icons">list_alt</span>
+					<h4 id="addTitle">新規追加</h4>
 					<span class="close-button" id="insertCloseButton">&times;</span>
 				</div>
 				<textarea name="料理" id="insertModal1" class="textarea-single" rows="1" placeholder="料理" required></textarea>
@@ -92,7 +93,8 @@
 		<!-- モーダルウィンドウ(編集) -->
 		<div id="updateModal" class="modal">
 			<form method="post" action="" name="update-form">
-				<div class="title">
+				<div class="modal-title">
+					<span></span>
 					<h4>編集</h4>
 					<span class="close-button" id="updateCloseButton">&times;</span>
 				</div>
@@ -118,9 +120,9 @@
 		<ul id="dataDisplay"></ul> <!-- リストを表示するためのul要素 -->
 		<div id="sircleContain" class="sircle-contain">
 			<div id="outer" class="outer">
-				<div class="inner"><span class="material-icons">restart_alt</span></div>
-				<div class="inner"><span class="material-icons">list_alt</span></div>
-				<div class="inner"><span class="material-icons">settings_applications</span></div>
+				<div id="continuityAdd" class="inner"><span class="material-icons">restart_alt</span></div>
+				<div id="" class="inner"><span class="material-icons">list_alt</span></div>
+				<div id="" class="inner"><span class="material-icons">settings_applications</span></div>
 				<div class="inner"><span class="material-icons">none</span></div>
 			</div>
 		</div>

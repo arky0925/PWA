@@ -293,3 +293,39 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 });
+
+function getLocalStorageSize() {
+	let total = 0;
+	// localStorageの各アイテムのサイズを計算
+	for (let i = 0; i < localStorage.length; i++) {
+		const key = localStorage.key(i);
+		const value = localStorage.getItem(key);
+		total += key.length + value.length; // キーと値のサイズを加算
+	}
+	// サイズをKB単位に変換
+	const sizeInKB = total / 1024;
+	return sizeInKB.toFixed(2); // 小数点以下2桁にフォーマット
+}
+
+// 容量をHTMLに表示
+document.addEventListener('DOMContentLoaded', () => {
+	const storageSizeElement = document.getElementById('storageSize');
+	const size = getLocalStorageSize();
+	storageSizeElement.textContent += `${size} KB`;
+});
+
+//function clearLocalStorageExcept(exceptKeys) {
+//	// localStorageの全てのキーを取得
+//	const keys = Object.keys(localStorage);
+//	// exceptKeysに含まれないキーを削除
+//	keys.forEach(key => {
+//		if (!exceptKeys.includes(key)) {
+//			localStorage.removeItem(key);
+//		}
+//	});
+//}
+
+document.getElementById('chacheClear').addEventListener('click', () => {
+	localStorage.removeItem('spreadsheetData');
+	location.reload();
+});

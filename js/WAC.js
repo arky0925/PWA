@@ -410,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		insertModal.style.display = 'block'; // モーダルを表示
 		document.getElementById('insertModal1').focus();
 		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		document.getElementById('addTitle').textContent = '新規追加';
 	});
 
 	// モーダルを閉じる
@@ -417,6 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示
 		insertForm.reset(); // フォームの内容をクリア
+		continuityAddFlg = false;
 	});
 
 	// モーダルを閉じる
@@ -434,6 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		gsap.to(deleteModal, { opacity: 0, duration: 0.3, onComplete: () => {
 			deleteModal.style.display = 'none'; // モーダルを非表示
 		}});
+		continuityAddFlg = false;
 	});
 });
 
@@ -497,13 +500,26 @@ addIcon.addEventListener('touchmove', clearLongPress);
 addIcon.addEventListener('mouseup', clearLongPress);
 addIcon.addEventListener('mouseleave', clearLongPress);
 
+let continuityAddFlg = false;
+document.getElementById('continuityAdd').addEventListener('click', function() {
+	document.getElementById('addTitle').textContent = '連続追加';
+	continuityAddFlg = true;
+	circleMenuClose();
+	insertModal.style.display = 'block'; // モーダルを表示
+	document.getElementById('insertModal1').focus();
+	modalOverlay.style.display = 'block'; // オーバーレイを表示
+});
+
 // 新規追加フォーム送信
 const insertForm = document.forms['insert-form'];
 
 insertForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
-	insertModal.style.display = 'none'; // モーダルを非表示
-	modalOverlay.style.display = 'none'; // オーバーレイを非表示
+	
+	if (!continuityAddFlg) {
+		insertModal.style.display = 'none'; // モーダルを非表示
+		modalOverlay.style.display = 'none'; // オーバーレイを非表示
+	}
 
 	const insertModal1 = document.getElementById('insertModal1').value;
 	const insertModal2 = document.getElementById('insertModal2').value;
