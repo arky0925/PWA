@@ -441,16 +441,7 @@ const insertModal = document.getElementById('insertModal');
 const addIcon = document.getElementById('addIcon');
 document.addEventListener('DOMContentLoaded', function() {
 
-	// モーダルを表示
-	addIcon.addEventListener('click', function() {
-		addIcon.classList.remove('active'); 
-		circleCloseIcon.classList.remove('active'); 
-		sircleContain.style.display = 'none';
-		insertModal.style.display = 'block'; // モーダルを表示
-		document.getElementById('insertModal1').focus();
-		modalOverlay.style.display = 'block'; // オーバーレイを表示
-		document.getElementById('addTitle').textContent = '新規追加';
-	});
+
 
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
@@ -508,6 +499,17 @@ const startLongPress = () => {
 		footerOverlay.style.display = 'block';
 	}, 300);
 };
+
+	// モーダルを表示
+	addIcon.addEventListener('click', function() {
+		addIcon.classList.remove('active'); 
+		circleCloseIcon.classList.remove('active'); 
+		sircleContain.style.display = 'none';
+		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		document.getElementById('addTitle').textContent = '新規追加';
+	});
 
 // タッチイベントの設定
 addIcon.addEventListener('touchstart', startLongPress);
