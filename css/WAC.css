@@ -731,7 +731,8 @@ textarea:focus {
 	color: #000000;
 	transition: top 0.3s ease-in-out;
 	z-index: 2000;
-	padding: 20px;
+	padding: 0 20px;
+	overflow-y: auto; /* 縦方向のスクロールを有効に */
 }
 
 .template-select-menu.open {
@@ -739,41 +740,40 @@ textarea:focus {
 }
 
 .template-select-header {
+	width: 100%;
+	left: 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 2px solid #ccc; /* 下に線を引く */
 	padding: 10px 20px;
-	margin-top: calc(((100vw - 100%) / 2 ) * -1);
-	margin-left: calc(((100vw - 100%) / 2 ) * -1);
-	margin-right: calc(((100vw - 100%) / 2 ) * -1);
+	position: fixed;
+	color: #ffffff;
+	background-color: var(--header-color);
+	z-index: 1;
 }
 
 .template-select-header span {
 	cursor: pointer;
 }
 
-ul {
-	list-style-type: none;
-}
-
 .accordion {
 	width: 100%;
 	max-width: 360px;
-	margin: 30px auto 20px;
-	background: #ffffff;
-	border-radius: 4px;
+	list-style-type: none; /* 点を非表示にする */
+	padding: 60px 0 20px 0;
 }
 
 .link {
+	display: flex; /* フレックスボックスを使って項目を横に並べる */
+	padding: 10px 10px 10px 25px; /* 内側の余白 */
+	margin: 4px 0; /* 上下の外側の余白 */
+	border: 1px solid #ccc; /* 枠線 */
+	border-radius: 5px; /* 角を丸くする */
+	background-color: #f9f9f9; /* 背景色 */
 	cursor: pointer;
-	display: flex;
-	padding: 15px 15px 15px 25px;
-	color: #4D4D4D;
-	font-size: 14px;
-	font-weight: 700;
-	border-bottom: 1px solid #CCC;
 	position: relative;
+	overflow: hidden; /* はみ出した部分を隠す */
+	font-size: 14px;
 	transition: all 0.2s ease;
 }
 
@@ -791,12 +791,21 @@ ul {
 
 .accordion li.open i.fa-chevron-down {
 	transform: rotate(180deg);
+	transition: transform 0.4s ease; /* 回転のアニメーション */
 }
 
 .submenu {
-	display: none;
+	max-height: 0; /* 初期状態は高さ0 */
+	overflow: hidden; /* コンテンツがはみ出さないようにする */
 	background: #dcdcdc;
-	padding: 20px;
+	padding: 0 20px; /* 開閉時にパディングが変わらないように */
+	transition: max-height 0.5s ease, padding 0.5s ease; /* スムーズなアニメーションを追加 */
+	border-radius: 5px; /* 角を丸くする */
+}
+
+.submenu.open {
+	max-height: 500px; /* 最大の高さを設定（必要に応じて調整） */
+	padding: 20px; /* 開いているときのパディング */
 }
 
 .template-button {

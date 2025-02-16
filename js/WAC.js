@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function sideMenuOpen() {
 	sideMenu.classList.add('open');
 	modalOverlay.style.display = 'block';
+	document.body.style.overflow = 'hidden'; // bodyのオーバーフローを隠す
 }
 
 // サイドメニューを閉じる
@@ -44,21 +45,34 @@ function sideMenuClose() {
 	sideMenu.classList.remove('open');
 	modalOverlay.style.display = 'none';
 	updateFilterIcon(); // 絞り込み条件の有無
+	document.body.style.overflow = ''; // bodyのオーバーフローを元に戻す
 }
 
-// オプションメニュー開閉
+// テンプレート選択メニュー開閉
 const templateSelectMenu = document.getElementById('templateSelectMenu');
 const templateSelectButton = document.getElementById('templateSelectButton');
 document.addEventListener('DOMContentLoaded', () => {
 
-	// オプションを開く
+	// メニューを開く
 	templateSelectButton.addEventListener('click', () => {
 		templateSelectMenu.classList.add('open');
+		document.body.style.overflow = 'hidden'; // bodyのオーバーフローを隠す
 	});
 
 	// メニューを閉じる
 	document.getElementById('closetemplateSelectMenu').addEventListener('click', () => {
 		templateSelectMenu.classList.remove('open');
+		// すべてのサブメニューを閉じる
+		const allSubmenus = document.querySelectorAll('#accordion .submenu');
+		allSubmenus.forEach(submenu => {
+			submenu.classList.remove('open'); // openクラスを削除
+		});
+		// すべてのリストアイテムからopenクラスを削除
+		const allListItems = document.querySelectorAll('#accordion li');
+		allListItems.forEach(item => {
+			item.classList.remove('open'); // openクラスを削除
+		});
+		document.body.style.overflow = ''; // bodyのオーバーフローを元に戻す
 	});
 });
 
@@ -1172,19 +1186,6 @@ function templateData(data) {
 		icon.className = 'material-icons fa-chevron-down';
 		icon.textContent = 'expand_more';
 		linkDiv.appendChild(icon);
-		
-		// リストアイテムにクリックイベントを追加
-		linkDiv.addEventListener('click', () => {
-//			// サブメニューの表示/非表示を切り替え
-//			if (submenu.style.display === 'block') {
-//				submenu.style.display = 'none';
-//				submenu.classList.remove('open');
-//			} else {
-//				submenu.classList.add('open');
-//				submenu.style.display = 'block';
-//			}
-		});
-		
 		li.appendChild(linkDiv);
 		const submenu = document.createElement('ul'); // ul.submenu要素を作成
 		submenu.className = 'submenu';
@@ -1216,33 +1217,29 @@ function templateData(data) {
 		submenu.appendChild(button);
 		li.appendChild(submenu);
 		accordion.appendChild(li); // リストに追加
+
+		// リンクにクリックイベントを追加
+		linkDiv.addEventListener('click', () => {
+			const isOpen = submenu.classList.contains('open');
+			const allSubmenus = accordion.getElementsByClassName('submenu');
+			// 他のサブメニューを閉じる
+			for (let j = 0; j < allSubmenus.length; j++) {
+				if (allSubmenus[j] !== submenu) {
+					allSubmenus[j].classList.remove('open'); // 非表示
+				}
+			}
+			// サブメニューのアニメーション
+			submenu.classList.toggle('open', !isOpen); // アクティブ状態を切り替え
+
+			// 他のリストアイテムからopenクラスを削除し、選択中のアイテムに追加
+			const allListItems = accordion.getElementsByTagName('li');
+			for (let k = 0; k < allListItems.length; k++) {
+				if (allListItems[k] !== li) {
+					allListItems[k].classList.remove('open');
+				} else {
+					allListItems[k].classList.toggle('open', !isOpen); // 選択中のアイテムにopenクラスを追加
+				}
+			}
+		});
 	});
 }
-
-$(function() {
-var Accordion = function(el, multiple) {
-this.el = el || {};
-this.multiple = multiple || false;
-
-
-	// Variables privadas
-	var links = this.el.find('.link');
-	// Evento
-	links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
-}
-
-Accordion.prototype.dropdown = function(e) {
-	var $el = e.data.el;
-		$this = $(this),
-		$next = $this.next();
-
-	$next.slideToggle();
-	$this.parent().toggleClass('open');
-
-	if (!e.data.multiple) {
-		$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
-	};
-}	
-
-var accordion = new Accordion($('#accordion'), false);
-});
