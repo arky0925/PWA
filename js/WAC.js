@@ -443,6 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
+		startLongPress();
 		addIcon.classList.remove('active'); 
 		circleCloseIcon.classList.remove('active'); 
 		sircleContain.style.display = 'none';
@@ -510,7 +511,7 @@ const startLongPress = () => {
 };
 
 // タッチイベントの設定
-addIcon.addEventListener('touchstart', startLongPress);
+//addIcon.addEventListener('touchstart', startLongPress);
 addIcon.addEventListener('mousedown', startLongPress);
 
 function circleMenuClose() {
