@@ -61,20 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// メニューを閉じる
 	document.getElementById('closetemplateSelectMenu').addEventListener('click', () => {
-		templateSelectMenu.classList.remove('open');
-		// すべてのサブメニューを閉じる
-		const allSubmenus = document.querySelectorAll('#accordion .submenu');
-		allSubmenus.forEach(submenu => {
-			submenu.classList.remove('open'); // openクラスを削除
-		});
-		// すべてのリストアイテムからopenクラスを削除
-		const allListItems = document.querySelectorAll('#accordion li');
-		allListItems.forEach(item => {
-			item.classList.remove('open'); // openクラスを削除
-		});
-		document.body.style.overflow = ''; // bodyのオーバーフローを元に戻す
+		closetemplateSelectMenu();
 	});
 });
+
+function closetemplateSelectMenu() {
+	templateSelectMenu.classList.remove('open');
+	// すべてのサブメニューを閉じる
+	const allSubmenus = document.querySelectorAll('#accordion .submenu');
+	allSubmenus.forEach(submenu => {
+		submenu.classList.remove('open'); // openクラスを削除
+	});
+	// すべてのリストアイテムからopenクラスを削除
+	const allListItems = document.querySelectorAll('#accordion li');
+	allListItems.forEach(item => {
+		item.classList.remove('open'); // openクラスを削除
+	});
+	document.body.style.overflow = ''; // bodyのオーバーフローを元に戻す
+}
 
 function fetchData() {
 	const cachedData = localStorage.getItem('spreadsheetData');
@@ -1240,6 +1244,12 @@ function templateData(data) {
 					allListItems[k].classList.toggle('open', !isOpen); // 選択中のアイテムにopenクラスを追加
 				}
 			}
+		});
+
+		button.addEventListener('click', () => {
+			document.getElementById('insertModal1').value = (row[1] !== undefined && row[1] !== null) ? row[1] : '';
+			document.getElementById('insertModal2').value = (row[2] !== undefined && row[2] !== null) ? row[2] : '';
+			closetemplateSelectMenu();
 		});
 	});
 }
