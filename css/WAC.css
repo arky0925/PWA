@@ -786,6 +786,7 @@ textarea:focus {
 
 .accordion li.open .link {
 	color: #b63b4d;
+	font-weight: 700;
 }
 
 .accordion li.open i.fa-chevron-down {
