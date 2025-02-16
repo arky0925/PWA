@@ -442,15 +442,15 @@ const addIcon = document.getElementById('addIcon');
 document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
-	addIcon.addEventListener('click', function() {
-		addIcon.classList.remove('active'); 
-		circleCloseIcon.classList.remove('active'); 
-		sircleContain.style.display = 'none';
-		insertModal.style.display = 'block'; // モーダルを表示
-		document.getElementById('insertModal1').focus();
-		modalOverlay.style.display = 'block'; // オーバーレイを表示
-		document.getElementById('addTitle').textContent = '新規追加';
-	});
+//	addIcon.addEventListener('click', function() {
+//		addIcon.classList.remove('active'); 
+//		circleCloseIcon.classList.remove('active'); 
+//		sircleContain.style.display = 'none';
+//		insertModal.style.display = 'block'; // モーダルを表示
+//		document.getElementById('insertModal1').focus();
+//		modalOverlay.style.display = 'block'; // オーバーレイを表示
+//		document.getElementById('addTitle').textContent = '新規追加';
+//	});
 
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
@@ -511,6 +511,18 @@ const startLongPress = () => {
 
 // タッチイベントの設定
 addIcon.addEventListener('touchstart', startLongPress);
+addIcon.addEventListener('touchend', function(e) {
+	clearTimeout(timer);
+	if (!e.cancelable) {
+		addIcon.classList.remove('active'); 
+		circleCloseIcon.classList.remove('active'); 
+		sircleContain.style.display = 'none';
+		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		document.getElementById('addTitle').textContent = '新規追加';
+	}
+});
 addIcon.addEventListener('mousedown', startLongPress);
 
 function circleMenuClose() {
@@ -534,7 +546,7 @@ const clearLongPress = () => {
 	clearTimeout(timer);
 };
 
-addIcon.addEventListener('touchend', clearLongPress);
+//addIcon.addEventListener('touchend', clearLongPress);
 addIcon.addEventListener('touchmove', clearLongPress);
 addIcon.addEventListener('mouseup', clearLongPress);
 addIcon.addEventListener('mouseleave', clearLongPress);
