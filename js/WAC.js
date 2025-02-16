@@ -443,12 +443,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// モーダルを表示
 	addIcon.addEventListener('click', function() {
-        if (navigator.vibrate) {
-            // 100ミリ秒振動する
-            navigator.vibrate(100);
-        } else {
-            console.log("このデバイスは振動に対応していません");
-        }
 		addIcon.classList.remove('active'); 
 		circleCloseIcon.classList.remove('active'); 
 		sircleContain.style.display = 'none';
