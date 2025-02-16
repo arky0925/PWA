@@ -510,7 +510,15 @@ const startLongPress = () => {
 };
 
 // タッチイベントの設定
-addIcon.addEventListener('touchstart', startLongPress);
+addIcon.addEventListener('touchstart', function() {
+			addIcon.classList.remove('active'); 
+		circleCloseIcon.classList.remove('active'); 
+		sircleContain.style.display = 'none';
+		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		document.getElementById('addTitle').textContent = '新規追加';
+});
 addIcon.addEventListener('mousedown', startLongPress);
 
 function circleMenuClose() {
