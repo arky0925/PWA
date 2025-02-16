@@ -510,7 +510,7 @@ const startLongPress = () => {
 };
 
 // タッチイベントの設定
-addIcon.addEventListener('touchstart', startLongPress);
+addIcon.addEventListener('pointerdown', startLongPress);
 addIcon.addEventListener('click', function() {
 	addIcon.classList.remove('active'); 
 	circleCloseIcon.classList.remove('active'); 
