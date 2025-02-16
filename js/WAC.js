@@ -441,7 +441,16 @@ const insertModal = document.getElementById('insertModal');
 const addIcon = document.getElementById('addIcon');
 document.addEventListener('DOMContentLoaded', function() {
 
-
+	// モーダルを表示
+	addIcon.addEventListener('click', function() {
+		addIcon.classList.remove('active'); 
+		circleCloseIcon.classList.remove('active'); 
+		sircleContain.style.display = 'none';
+		insertModal.style.display = 'block'; // モーダルを表示
+		document.getElementById('insertModal1').focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		document.getElementById('addTitle').textContent = '新規追加';
+	});
 
 	// モーダルを閉じる
 	document.getElementById('insertCloseButton').addEventListener('click', function() {
@@ -489,34 +498,18 @@ let timer;
 
 // 長押しを検出する関数
 const startLongPress = () => {
-	sircleContain.style.display = 'flex';
-	addIcon.classList.add('active'); 
-	circleCloseIcon.classList.add('active'); 
-		addIcon.classList.remove('active'); 
-		circleCloseIcon.classList.remove('active'); 
-		sircleContain.style.display = 'none';
-		insertModal.style.display = 'block'; // モーダルを表示
-		document.getElementById('insertModal1').focus();
-		modalOverlay.style.display = 'block'; // オーバーレイを表示
-		document.getElementById('addTitle').textContent = '新規追加';
 	timer = setTimeout(() => {
-		outer.classList.add('isOpen');
-		addIcon.classList.add('hidden');
-		modalOverlayWhite.style.display = 'block';
-		footerOverlay.style.display = 'block';
+		sircleContain.style.display = 'flex';
+		addIcon.classList.add('active'); 
+		circleCloseIcon.classList.add('active'); 
+		setTimeout(() => {
+			outer.classList.add('isOpen');
+			addIcon.classList.add('hidden');
+			modalOverlayWhite.style.display = 'block';
+			footerOverlay.style.display = 'block';
+		}, 50);
 	}, 300);
 };
-
-	// モーダルを表示
-//	addIcon.addEventListener('click', function() {
-//		addIcon.classList.remove('active'); 
-//		circleCloseIcon.classList.remove('active'); 
-//		sircleContain.style.display = 'none';
-//		insertModal.style.display = 'block'; // モーダルを表示
-//		document.getElementById('insertModal1').focus();
-//		modalOverlay.style.display = 'block'; // オーバーレイを表示
-//		document.getElementById('addTitle').textContent = '新規追加';
-//	});
 
 // タッチイベントの設定
 addIcon.addEventListener('touchstart', startLongPress);
