@@ -328,5 +328,5 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('chacheClear').addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
 	localStorage.removeItem('templateData');
-	window.location.reload();
+	window.location.href = 'WAE.html';
 });
