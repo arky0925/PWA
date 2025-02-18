@@ -96,11 +96,10 @@
 	padding-top: 80px;
 }
 
-/* Style for each color choice button */
 .choice {
 	position: relative;
 	background: #fff;
-	border: 3px solid #333;
+	border: none;
 	border-radius: 50%;
 	width: 80px;
 	height: 80px;
@@ -108,7 +107,7 @@
 	color: #333;
 	cursor: pointer;
 	outline: none;
-	transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+	transition: transform 0.2s ease;
 	touch-action: manipulation;
 }
 
@@ -118,44 +117,10 @@
 
 .choice.selected {
 	animation: pop 0.5s ease-out;
-	border-color: transparent;
-	/* Hide the original text */
 	color: transparent;
+	border: 2px solid #333;
 }
 
-.choice[data-color="Red"].selected {
-	background-color: #e74c3c;
-}
-
-.choice[data-color="Blue"].selected {
-	background-color: #3498db;
-}
-
-.choice[data-color="Green"].selected {
-	background-color: #2ecc71;
-}
-
-.choice[data-color="Yellow"].selected {
-	background-color: #f1c40f;
-}
-
-.choice[data-color="Orange"].selected {
-	background-color: #e67e22;
-}
-
-.choice[data-color="Purple"].selected {
-	background-color: #ea80fc;
-}
-
-.choice[data-color="Pink"].selected {
-	background-color: #ffc4c4;
-}
-
-.choice[data-color="Gray"].selected {
-	background-color: #78909c;
-}
-
-/* Pseudo-element for animated text overlay */
 .choice.selected::after {
 	content: attr(data-color);
 	position: absolute;
@@ -177,7 +142,7 @@
 }
 .choice[data-color="Yellow"].selected::after,
 .choice[data-color="Pink"].selected::after {
-	color: #000;
+	color: #fff;
 }
 
 @keyframes pop {
