@@ -30,42 +30,57 @@ function changeThemeColor(headerColor, backgroundColor, buttonColor) {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const choices = document.querySelectorAll(".choice");
+	const savedColor = localStorage.getItem('selectedColor'); // localStorageから選択されたボタンの色を取得
+
+	if (savedColor) {
+		choices.forEach((choice) => {
+			if (choice.getAttribute("data-color") === savedColor) {
+				choice.classList.add("selected"); // 選択されたボタンにクラスを追加
+				changeThemeColorForSavedColor(savedColor); // 保存された色を適用
+			}
+		});
+	}
 
 	choices.forEach((choice) => {
 		choice.addEventListener("click", function () {
 			choices.forEach((btn) => btn.classList.remove("selected"));
 			this.classList.add("selected");
-			// 色に基づいてテーマを変更
-			const color = this.getAttribute("data-color");
-			switch (color) {
-				case "Red":
-					changeThemeColor('#F44336', '#FFEBEE', '#FF8A80');
-					break;
-				case "Blue":
-					changeThemeColor('#2196F3', '#E3F2FD', '#82B1FF');
-					break;
-				case "Green":
-					changeThemeColor('#009688', '#E0F2F1', '#A7FFEB');
-					break;
-				case "Yellow":
-					changeThemeColor('#FFEB3B', '#FFFDE7', '#FFFF8D');
-					break;
-				case "Orange":
-					changeThemeColor('#FF9800', '#FFF3E0', '#FFE0B2');
-					break;
-				case "Purple":
-					changeThemeColor('#9C27B0', '#E1BEE7', '#EA80FC');
-					break;
-				case "Pink":
-					changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
-					break;
-				case "Gray":
-					changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
-					break;
-			}
+			const color = this.getAttribute("data-color"); // 色を取得
+			changeThemeColorForSavedColor(color); // 色に基づいてテーマを変更
+			localStorage.setItem('selectedColor', color); // 選択した色をlocalStorageに保存
 		});
 	});
 });
+
+// 保存された色に基づいてテーマを変更する関数
+function changeThemeColorForSavedColor(color) {
+	switch (color) {
+		case "Red":
+			changeThemeColor('#F44336', '#FFEBEE', '#e74c3c');
+			break;
+		case "Blue":
+			changeThemeColor('#2196F3', '#E3F2FD', '#3498db');
+			break;
+		case "Green":
+			changeThemeColor('#009688', '#E0F2F1', '#2ecc71');
+			break;
+		case "Yellow":
+			changeThemeColor('#FFEB3B', '#FFFDE7', '#f1c40f');
+			break;
+		case "Orange":
+			changeThemeColor('#FF9800', '#FFF3E0', '#e67e22');
+			break;
+		case "Purple":
+			changeThemeColor('#9C27B0', '#E1BEE7', '#ea80fc');
+			break;
+		case "Pink":
+			changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
+			break;
+		case "Gray":
+			changeThemeColor('#607D8B', '#ECEFF1', '#78909c');
+			break;
+	}
+}
 
 // パスコード設定開閉
 const optionPassword = document.getElementById('optionPassword');

@@ -52,7 +52,6 @@ function sideMenuClose() {
 const templateSelectMenu = document.getElementById('templateSelectMenu');
 const templateSelectButton = document.getElementById('templateSelectButton');
 document.addEventListener('DOMContentLoaded', () => {
-
 	// メニューを開く
 	templateSelectButton.addEventListener('click', () => {
 		templateSelectMenu.classList.add('open');
@@ -60,9 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// メニューを閉じる
-	document.getElementById('closetemplateSelectMenu').addEventListener('click', () => {
-		closetemplateSelectMenu();
-	});
+	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
 });
 
 function closetemplateSelectMenu() {

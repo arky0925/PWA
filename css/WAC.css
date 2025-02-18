@@ -685,19 +685,6 @@ textarea:focus {
 	-o-animation: loader 2s linear infinite;
 }
 
-@-webkit-keyframes loader {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-
 @keyframes loader {
 	0% {
 		-webkit-transform: rotate(0deg);
@@ -741,12 +728,13 @@ textarea:focus {
 
 .template-select-header {
 	width: 100%;
+	height: 46px;
 	left: 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px 20px;
-	position: fixed;
+	position: absolute;
 	color: #ffffff;
 	background-color: var(--header-color);
 	z-index: 1;
