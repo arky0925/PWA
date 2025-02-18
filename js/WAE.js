@@ -29,38 +29,41 @@ function changeThemeColor(headerColor, backgroundColor, buttonColor) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	// localStorageからテーマカラーを取得
-	const headerColor = localStorage.getItem('headerColor') || '#C9A7A3'; // デフォルト色
-	const backgroundColor = localStorage.getItem('backgroundColor') || '#fff2f2'; // デフォルト色
-	const buttonColor = localStorage.getItem('buttonColor') || '#FFC4C4'; // デフォルト色
+	const choices = document.querySelectorAll(".choice");
 
-	// カラーを適用
-	changeThemeColor(headerColor, backgroundColor, buttonColor);
-
-	// イベントリスナーの設定
-	document.getElementById('colorCheck1').addEventListener('click', () => {
-		changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
-	});
-	document.getElementById('colorCheck2').addEventListener('click', () => {
-		changeThemeColor('#F44336', '#FFEBEE', '#FF8A80');
-	});
-	document.getElementById('colorCheck3').addEventListener('click', () => {
-		changeThemeColor('#9C27B0', '#E1BEE7', '#EA80FC');
-	});
-	document.getElementById('colorCheck4').addEventListener('click', () => {
-		changeThemeColor('#2196F3', '#E3F2FD', '#82B1FF');
-	});
-	document.getElementById('colorCheck5').addEventListener('click', () => {
-		changeThemeColor('#009688', '#E0F2F1', '#A7FFEB');
-	});
-	document.getElementById('colorCheck6').addEventListener('click', () => {
-		changeThemeColor('#FFEB3B', '#FFFDE7', '#FFFF8D');
-	});
-	document.getElementById('colorCheck7').addEventListener('click', () => {
-		changeThemeColor('#795548', '#EFEBE9', '#8D6E63');
-	});
-	document.getElementById('colorCheck8').addEventListener('click', () => {
-		changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
+	choices.forEach((choice) => {
+		choice.addEventListener("click", function () {
+			choices.forEach((btn) => btn.classList.remove("selected"));
+			this.classList.add("selected");
+			// 色に基づいてテーマを変更
+			const color = this.getAttribute("data-color");
+			switch (color) {
+				case "Red":
+					changeThemeColor('#F44336', '#FFEBEE', '#FF8A80');
+					break;
+				case "Blue":
+					changeThemeColor('#2196F3', '#E3F2FD', '#82B1FF');
+					break;
+				case "Green":
+					changeThemeColor('#009688', '#E0F2F1', '#A7FFEB');
+					break;
+				case "Yellow":
+					changeThemeColor('#FFEB3B', '#FFFDE7', '#FFFF8D');
+					break;
+				case "Orange":
+					changeThemeColor('#FF9800', '#FFF3E0', '#FFE0B2');
+					break;
+				case "Purple":
+					changeThemeColor('#9C27B0', '#E1BEE7', '#EA80FC');
+					break;
+				case "Pink":
+					changeThemeColor('#C9A7A3', '#fff2f2', '#FFC4C4');
+					break;
+				case "Gray":
+					changeThemeColor('#607D8B', '#ECEFF1', '#78909C');
+					break;
+			}
+		});
 	});
 });
 
