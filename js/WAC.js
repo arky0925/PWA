@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbzdvQN-SX6oauQdT3XWL2iRxkK9a1u9hnfSaWycWSToLSRMB1ERHyhIybht1gkMvd8m/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzuITMQnZ7nATbz1fyvLdc-WrYLRO7jhGSQPZrBEEKpuUPXSFSp_GLyjgeToiHOjudn/exec';
 
 const updateModal = document.getElementById('updateModal');
 const modalOverlay = document.getElementById('modalOverlay'); // モーダルオーバーレイを取得

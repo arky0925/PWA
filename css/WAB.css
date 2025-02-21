@@ -1,0 +1,114 @@
+.calendar {
+	width: 100%;
+	max-width: 400px;
+	height: 300px; /* 高さを調整して縦長に */
+	padding-top: 46px;
+}
+
+.days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	margin: 0;
+}
+
+.day {
+	font-size: 12px;
+	text-align: center;
+	background-color: #f0f0f0; /* 曜日の背景色を薄いグレーに */
+	padding: 5px; /* 余白を追加して見やすく */
+}
+
+.date-container {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.date {
+	position: relative; /* 相対位置に設定 */
+	text-align: right; /* 右揃え */
+	cursor: pointer;
+	border: 1px solid #ccc; /* ボックスに枠を追加 */
+	font-size: 12px; /* フォントサイズを小さく */
+	height: 80px; /* ボックスの高さを調整 */
+	background-color: #ffffff; /* 平日の背景色を白に */
+}
+
+.date.today .circle {
+	position: absolute; /* 絶対位置を設定 */
+	width: 20px; /* 丸の直径 */
+	height: 20px; /* 丸の直径 */
+	border-radius: 50%; /* 丸くする */
+	background-color: steelblue; /* 背景色 */
+	top: 0; /* 縦の位置を中央に */
+	right: 0; /* 日付の右側に配置 */
+	display: flex; /* 中央揃え */
+	justify-content: center; /* 中央揃え */
+	align-items: center; /* 中央揃え */
+	color: #ffffff;
+}
+
+/* 隣接ボックスの右側と下側のボーダーを非表示に */
+.date:not(:nth-child(7n)) {
+	border-right: none; /* 右側のボーダーを非表示 */
+}
+
+.date:not(:nth-last-child(-n+7)) {
+	border-bottom: none; /* 下側のボーダーを非表示 */
+}
+
+/* 土日のスタイル */
+.weekend {
+	background-color: rgba(0, 123, 255, 0.1); /* 薄い青の背景をさらに薄く */
+}
+
+.saturday {
+	color: #007bff; /* 土曜日の日付文字色 */
+}
+
+.sunday {
+	color: #dc3545; /* 日曜日の日付文字色 */
+}
+
+/* 薄い文字のスタイル */
+.faded {
+	color: rgba(0, 0, 0, 0.3); /* 薄い文字色 */
+}
+
+.selected-date-info {
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	padding: 10px 20px;
+}
+
+.select-date-box {
+	width: 20px;
+	text-align: center;
+}
+
+.dropdown {
+	display: block; /* 初期状態で表示 */
+	position: fixed;
+	background-color: #ffffff; /* 背景色 */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 影を追加 */
+	width: 100%; /* 幅 */
+	max-height: 0; /* 初期は非表示 */
+	overflow: hidden; /* はみ出しを防ぐ */
+	transition: max-height 0.3s ease-out; /* スライドアニメーション */
+	/* 位置調整 */
+	top: 46px; /* ボタンの下に表示（必要に応じて調整） */
+	right: 0; /* 右からの距離（必要に応じて調整） */
+	text-align: center;
+}
+
+.dropdown.show {
+	max-height: 60px; /* スライドダウンの最大高さ */
+}
+
+.dropdown-menu {
+	text-align: center;
+	width: 80px;
+	margin: 20px 5px;
+	background-color: var(--background-color);
+	border-radius: 4px;
+}
