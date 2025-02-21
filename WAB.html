@@ -12,12 +12,13 @@
 	<script src="master/master.js" defer></script>
 	<script src="master/footer.js" defer></script> <!-- Web Componentのスクリプト -->
 	<script src="master/footerjs.js" defer></script>
+	<script src="master/holiday.js" defer></script>
 	<script src="js/WAB.js" defer></script>
 </head>
 	<header>
 		<span id="prev" class="material-icons">keyboard_double_arrow_left</span>
 		<h2 id="month-year"></h2>
-		<span id="next" class="material-icons">keyboard_double_arrow_right</button>
+		<span id="next" class="material-icons">keyboard_double_arrow_right</span>
 	</header>
 	<div class="calendar">
 		<div class="days">
@@ -29,10 +30,19 @@
 			<div class="day">金</div>
 			<div class="day saturday">土</div>
 		</div>
-		<div id="date-container" class="date-container"></div>
+		<div id="date-container" class="date-container"></div> <!-- カレンダー -->
 		<div id="selected-date-info" class="selected-date-info">
-			<div id="selected-date-text" class="select-date-box"></div>
-			<div id="selected-date-weekday" class="select-date-box"></div>
+			<div id="dayWeek" class="day-week">
+				<div id="selected-date-text"></div>
+				<div id="selected-date-weekday"></div>
+			</div>
+			<div>aa</div>
+			<div class="tools">
+				<span id="today" class="material-icons">today</span>
+				<span id="" class="material-icons">add</span>
+				<span id="" class="material-icons">search</span>
+				<span id="" class="material-icons">settings</span>
+			</div>
 		</div>
 	</div>
 	<div id="dropdowns" class="dropdown">

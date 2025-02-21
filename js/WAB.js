@@ -1,10 +1,10 @@
-// script.js
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
 const selectedDateText = document.getElementById('selected-date-text'); // 日付表示用
 const selectedDateWeekday = document.getElementById('selected-date-weekday'); // 曜日表示用
+const dayWeek = document.getElementById('dayWeek');
 
 let currentDate = new Date(); // 現在の日付を取得
 let selectedDay = currentDate.getDate(); // 選択中の日付を保持
@@ -52,6 +52,13 @@ function renderCalendar() {
 
 		dateDiv.innerText = day;
 
+		// 祝日かどうかをチェック
+		const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+		if (holidays.includes(dateString)) {
+			dateDiv.classList.add('weekend');
+			dateDiv.classList.add('sunday');
+		}
+
 		// 日曜日のスタイルを追加
 		if (dayOfWeek === 0) {
 			dateDiv.classList.add('sunday');
@@ -88,6 +95,15 @@ function renderCalendar() {
 			const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
 			const selectedWeekday = new Date(selectedYear, selectedMonth, selectedDay).getDay();
 			selectedDateWeekday.innerText = `${weekdays[selectedWeekday]}`;
+			if (weekdays[selectedWeekday] === '日' || holidays.includes(dateString)) {
+				dayWeek.classList.add('sunday');
+			} else if (weekdays[selectedWeekday] === '土') {
+				dayWeek.classList.remove('sunday');
+				dayWeek.classList.add('saturday');
+			} else {
+				dayWeek.classList.remove('saturday');
+				dayWeek.classList.remove('sunday');
+			}
 
 			// 選択した日付の背景色を薄い灰色に変更
 			selectedDateDiv.style.backgroundColor = 'lightgray'; // 選択中の日付の背景色
@@ -135,6 +151,11 @@ function renderCalendar() {
 	const initialWeekday = new Date(selectedYear, selectedMonth, selectedDay).getDay();
 	const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
 	selectedDateWeekday.innerText = `${weekdays[initialWeekday]}`; // 選択中の曜日を表示
+	if (weekdays[initialWeekday] === '土') {
+		dayWeek.classList.add('saturday');
+	} else if (weekdays[initialWeekday] === '日') {
+		dayWeek.classList.add('sunday');
+	}
 }
 
 // ボタンのイベントリスナー
@@ -146,6 +167,13 @@ prevButton.addEventListener('click', () => {
 nextButton.addEventListener('click', () => {
 	currentDate.setMonth(currentDate.getMonth() + 1);
 	renderCalendar();
+});
+
+document.getElementById('today').addEventListener('click', () => {
+    const today = new Date();
+    currentDate.setFullYear(today.getFullYear());
+    currentDate.setMonth(today.getMonth());
+    renderCalendar(); // カレンダーを再描画
 });
 
 // 初回カレンダーを描画
