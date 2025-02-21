@@ -112,7 +112,7 @@ body {
 
 .dropdown-menu {
 	text-align: center;
-	width: 80px;
+	width: 100px;
 	margin: 20px 5px;
 	background-color: var(--background-color);
 	border-radius: 4px;
