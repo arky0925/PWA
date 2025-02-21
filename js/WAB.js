@@ -188,6 +188,7 @@ monthSelect.addEventListener('change', () => {
 	const selectedYear = yearSelect.value;
 	monthYear.innerText = `${selectedYear}年 ${selectedMonth + 1}月`;
 	updateCalendar(selectedYear, selectedMonth);
+	dropdowns.classList.remove('show');
 });
 
 yearSelect.addEventListener('change', () => {
