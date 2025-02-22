@@ -176,11 +176,15 @@ function renderCalendar() {
 prevButton.addEventListener('click', () => {
 	currentDate.setMonth(currentDate.getMonth() - 1);
 	renderCalendar();
+	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
+	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
 
 nextButton.addEventListener('click', () => {
 	currentDate.setMonth(currentDate.getMonth() + 1);
 	renderCalendar();
+	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
+	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
 
 document.getElementById('today').addEventListener('click', () => {
@@ -192,6 +196,8 @@ document.getElementById('today').addEventListener('click', () => {
 	selectedMonth = today.getMonth();
 	selectedYear = today.getFullYear();
 	renderCalendar(); // カレンダーを再描画
+	monthSelect.value = today.getMonth(); // 現在の月に設定
+	yearSelect.value = today.getFullYear(); // 現在の年に設定
 });
 
 // 初回カレンダーを描画
