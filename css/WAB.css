@@ -1,6 +1,7 @@
 body {
 	display: flex; /* フレックスボックスを使用 */
 	justify-content: center; /* 水平方向に中央揃え */
+	overflow: hidden;
 }
 
 .material-icons {
