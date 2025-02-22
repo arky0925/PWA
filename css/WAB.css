@@ -24,7 +24,6 @@ body {
 	font-size: 12px;
 	text-align: center;
 	background-color: #f0f0f0; /* 曜日の背景色を薄いグレーに */
-	padding: 5px; /* 余白を追加して見やすく */
 }
 
 .date-container {
