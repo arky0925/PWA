@@ -33,12 +33,15 @@ body {
 
 .date {
 	position: relative; /* 相対位置に設定 */
-	text-align: right; /* 右揃え */
 	cursor: pointer;
 	border: 1px solid #ccc; /* ボックスに枠を追加 */
 	font-size: 12px; /* フォントサイズを小さく */
 	height: 75px; /* ボックスの高さを調整 */
 	background-color: #ffffff; /* 平日の背景色を白に */
+}
+
+.date-wrapper {
+	text-align: right; /* 右揃え */
 }
 
 .date.today .circle {
@@ -91,16 +94,45 @@ body {
 }
 
 .day-week {
-	text-align: center;
 	padding: 0 20px;
+}
+
+.day-week-sub {
+	width: 24px;
+	text-align: center;
+}
+
+.main-schedule {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 0 10px;
+	gap: 5px;
+	color: #ffffff;
+}
+
+.breakfast {
+	padding: 0 5px;
+	background-color: #33cd30;
+	border-radius: 4px;
+}
+
+.lunch {
+	padding: 0 5px;
+	background-color: #efa538;
+	border-radius: 4px;
+}
+
+.dinner {
+	padding: 0 5px;
+	background-color: #5a81e8;
+	border-radius: 4px;
 }
 
 .tools {
 	display: flex;
 	flex-direction: column;
-	text-align: center;
 	padding: 0 20px;
-	margin: 0 0 0 auto;
 	gap: 5px;
 }
 

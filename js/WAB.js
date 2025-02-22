@@ -26,7 +26,14 @@ function renderCalendar() {
 	const prevMonthDays = new Date(year, month, 0).getDate();
 	for (let i = prevMonthDays - firstDay + 1; i <= prevMonthDays; i++) {
 		const dateDiv = document.createElement('div');
-		dateDiv.classList.add('date', 'faded'); // 薄い文字を追加
+		dateDiv.classList.add('date');
+
+		const dateWrapper = document.createElement('div');
+		dateWrapper.classList.add('date-wrapper', 'faded'); // 薄い文字を追加
+		dateWrapper.innerText = i; // 日付を追加
+
+		dateDiv.appendChild(dateWrapper); // 日付を新しい div に追加
+		dateContainer.appendChild(dateDiv);
 
 		// 土日を判定
 		const dayOfWeek = new Date(year, month - 1, i).getDay();
@@ -34,8 +41,6 @@ function renderCalendar() {
 			dateDiv.classList.add('weekend'); // 土日スタイルを追加
 		}
 
-		dateDiv.innerText = i;
-		dateContainer.appendChild(dateDiv);
 	}
 
 	// 今月の日付を表示
@@ -43,25 +48,30 @@ function renderCalendar() {
 		const dateDiv = document.createElement('div');
 		dateDiv.classList.add('date');
 
+		const dateWrapper = document.createElement('div');
+		dateWrapper.classList.add('date-wrapper'); // スタイルを適用するためのクラスを追加
+		dateWrapper.innerText = day; // 日付を追加
+
+		dateDiv.appendChild(dateWrapper); // 日付を新しい div に追加
+		dateContainer.appendChild(dateDiv);
+
 		// 土日を判定してクラスを追加
 		const dayOfWeek = new Date(year, month, day).getDay();
 		if (dayOfWeek === 0 || dayOfWeek === 6) {
 			dateDiv.classList.add('weekend');
-			dateDiv.classList.add('saturday');
+			dateWrapper.classList.add('saturday');
 		}
-
-		dateDiv.innerText = day;
 
 		// 祝日かどうかをチェック
 		const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 		if (holidays.includes(dateString)) {
 			dateDiv.classList.add('weekend');
-			dateDiv.classList.add('sunday');
+			dateWrapper.classList.add('sunday');
 		}
 
 		// 日曜日のスタイルを追加
 		if (dayOfWeek === 0) {
-			dateDiv.classList.add('sunday');
+			dateWrapper.classList.add('sunday');
 		}
 
 		// 今日の日付に丸い矩形を追加
@@ -126,16 +136,20 @@ function renderCalendar() {
 	}
 	for (let i = 1; i <= nextDaysToShow; i++) {
 		const dateDiv = document.createElement('div');
-		dateDiv.classList.add('date', 'faded'); // 薄い文字を追加
+		dateDiv.classList.add('date');
+
+		const dateWrapper = document.createElement('div');
+		dateWrapper.classList.add('date-wrapper', 'faded'); // 薄い文字を追加
+		dateWrapper.innerText = i; // 日付を追加
+
+		dateDiv.appendChild(dateWrapper); // 日付を新しい div に追加
+		dateContainer.appendChild(dateDiv);
 
 		// 土日を判定
 		const dayOfWeek = new Date(year, month + 1, i).getDay();
 		if (dayOfWeek === 0 || dayOfWeek === 6) {
 			dateDiv.classList.add('weekend'); // 土日スタイルを追加
 		}
-
-		dateDiv.innerText = i;
-		dateContainer.appendChild(dateDiv);
 	}
 
 	// 前月の月の日数＋今月の日数が5週間以内を算出
