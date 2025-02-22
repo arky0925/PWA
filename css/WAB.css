@@ -38,7 +38,7 @@ body {
 	cursor: pointer;
 	border: 1px solid #ccc; /* ボックスに枠を追加 */
 	font-size: 12px; /* フォントサイズを小さく */
-	height: 80px; /* ボックスの高さを調整 */
+	height: 75px; /* ボックスの高さを調整 */
 	background-color: #ffffff; /* 平日の背景色を白に */
 }
 
@@ -67,7 +67,7 @@ body {
 
 /* 土日のスタイル */
 .weekend {
-	background-color: rgba(0, 123, 255, 0.1); /* 薄い青の背景をさらに薄く */
+	background-color: #eaeef2; /* 薄い青の背景をさらに薄く */
 }
 
 .saturday {

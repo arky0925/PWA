@@ -142,7 +142,7 @@ function renderCalendar() {
 	if (firstDayAndMonth <= 35) {
 		const dateDivs = document.querySelectorAll('.date');
 		dateDivs.forEach(div => {
-			div.style.height = '96px'; // 高さを設定
+			div.style.height = '90px'; // 高さを設定
 		});
 	}
 
@@ -170,10 +170,14 @@ nextButton.addEventListener('click', () => {
 });
 
 document.getElementById('today').addEventListener('click', () => {
-    const today = new Date();
-    currentDate.setFullYear(today.getFullYear());
-    currentDate.setMonth(today.getMonth());
-    renderCalendar(); // カレンダーを再描画
+	const today = new Date();
+	currentDate.setFullYear(today.getFullYear());
+	currentDate.setMonth(today.getMonth());
+	// 今日の日付を選択中の日付として設定
+	selectedDay = today.getDate();
+	selectedMonth = today.getMonth();
+	selectedYear = today.getFullYear();
+	renderCalendar(); // カレンダーを再描画
 });
 
 // 初回カレンダーを描画
