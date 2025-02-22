@@ -75,7 +75,7 @@ function renderCalendar() {
 		}
 
 		// 今日の日付に丸い矩形を追加
-		if (day === currentDate.getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+		if (day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
 			dateDiv.classList.add('today'); // 今日の日付にクラスを追加
 
 			// 丸い矩形を作成
@@ -174,18 +174,46 @@ function renderCalendar() {
 
 // ボタンのイベントリスナー
 prevButton.addEventListener('click', () => {
-	currentDate.setMonth(currentDate.getMonth() - 1);
+	changeMonth(-1); // 1カ月前に遷移
 	renderCalendar();
 	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
 
 nextButton.addEventListener('click', () => {
-	currentDate.setMonth(currentDate.getMonth() + 1);
+	changeMonth(1); // 1カ月後に遷移
 	renderCalendar();
 	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
+
+function changeMonth(delta) {
+	const newMonth = currentDate.getMonth() + delta; // 新しい月を計算
+	const newYear = currentDate.getFullYear() + Math.floor(newMonth / 12); // 年を調整
+	const adjustedMonth = (newMonth + 12) % 12; // 0-11の範囲に調整
+
+	// 年の調整
+	if (newMonth < 0) {
+		currentDate.setFullYear(currentDate.getFullYear() - 1); // 前の年に移動
+		currentDate.setMonth(11); // 12月に設定
+	} else if (newMonth > 11) {
+		currentDate.setFullYear(currentDate.getFullYear() + 1); // 次の年に移動
+		currentDate.setMonth(0); // 1月に設定
+	} else {
+		currentDate.setMonth(adjustedMonth);
+	}
+
+	// 新しい月の最終日を取得
+	const lastDayOfNewMonth = new Date(newYear, adjustedMonth + 1, 0).getDate();
+
+	// 現在の日付を保持し、変更する
+	if (currentDate.getDate() > lastDayOfNewMonth) {
+		currentDate.setDate(lastDayOfNewMonth); // 最終日に設定
+	}
+
+	// 月を設定
+	currentDate.setMonth(adjustedMonth); // 月を変更
+}
 
 let startX; // タッチ開始位置
 let endX; // タッチ終了位置
@@ -204,12 +232,12 @@ dateContainer.addEventListener('touchend', (event) => {
 // スワイプを処理する関数
 function handleSwipe() {
 	if (startX > endX + 50) {
-		currentDate.setMonth(currentDate.getMonth() + 1);
+		changeMonth(1); // 1カ月後に遷移
 		renderCalendar();
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 	} else if (startX < endX - 50) {
-		currentDate.setMonth(currentDate.getMonth() - 1);
+		changeMonth(-1); // 1カ月前に遷移
 		renderCalendar();
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
@@ -245,7 +273,7 @@ for (let month = 0; month < 12; month++) {
 }
 
 // 年の選択肢を生成
-const currentYear = new Date().getFullYear();
+const currentYear = currentDate.getFullYear();
 for (let i = currentYear - 10; i <= currentYear + 10; i++) {
 	const option = document.createElement('option');
 	option.value = i;
@@ -254,9 +282,9 @@ for (let i = currentYear - 10; i <= currentYear + 10; i++) {
 }
 
 // 初期表示の設定
-monthSelect.value = new Date().getMonth(); // 現在の月を選択
+monthSelect.value = currentDate.getMonth(); // 現在の月を選択
 yearSelect.value = currentYear; // 現在の年を選択
-monthYear.innerText = `${currentYear}年 ${new Date().getMonth() + 1}月`; // 初期表示
+monthYear.innerText = `${currentYear}年 ${currentDate.getMonth() + 1}月`; // 初期表示
 
 // 年月をクリックしたときにドロップダウンを表示
 monthYear.addEventListener('click', () => {
