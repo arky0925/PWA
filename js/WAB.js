@@ -187,6 +187,35 @@ nextButton.addEventListener('click', () => {
 	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
 
+let startX; // タッチ開始位置
+let endX; // タッチ終了位置
+
+// タッチ開始イベント
+dateContainer.addEventListener('touchstart', (event) => {
+	startX = event.touches[0].clientX; // タッチ開始位置を取得
+});
+
+// タッチ終了イベント
+dateContainer.addEventListener('touchend', (event) => {
+	endX = event.changedTouches[0].clientX; // タッチ終了位置を取得
+	handleSwipe(); // スワイプを処理
+});
+
+// スワイプを処理する関数
+function handleSwipe() {
+	if (startX > endX + 50) {
+		currentDate.setMonth(currentDate.getMonth() + 1);
+		renderCalendar();
+		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
+		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
+	} else if (startX < endX - 50) {
+		currentDate.setMonth(currentDate.getMonth() + 1);
+		renderCalendar();
+		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
+		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
+	}
+}
+
 document.getElementById('today').addEventListener('click', () => {
 	const today = new Date();
 	currentDate.setFullYear(today.getFullYear());
