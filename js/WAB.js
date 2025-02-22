@@ -209,7 +209,7 @@ function handleSwipe() {
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 	} else if (startX < endX - 50) {
-		currentDate.setMonth(currentDate.getMonth() + 1);
+		currentDate.setMonth(currentDate.getMonth() - 1);
 		renderCalendar();
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
