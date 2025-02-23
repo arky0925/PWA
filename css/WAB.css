@@ -71,8 +71,8 @@ body {
 	height: 18px; /* 丸の直径 */
 	border-radius: 50%; /* 丸くする */
 	background-color: #4682b4; /* 背景色 */
-	top: 0; /* 縦の位置を中央に */
-	right: 0; /* 日付の右側に配置 */
+	top: 1px; /* 縦の位置を中央に */
+	right: 1px; /* 日付の右側に配置 */
 	display: flex; /* 中央揃え */
 	justify-content: center; /* 中央揃え */
 	align-items: center; /* 中央揃え */
