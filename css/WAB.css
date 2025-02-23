@@ -67,8 +67,8 @@ body {
 
 .date.today .circle {
 	position: absolute; /* 絶対位置を設定 */
-	width: 18px; /* 丸の直径 */
-	height: 18px; /* 丸の直径 */
+	width: 16px; /* 丸の直径 */
+	height: 16px; /* 丸の直径 */
 	border-radius: 50%; /* 丸くする */
 	background-color: #4682b4; /* 背景色 */
 	top: 1px; /* 縦の位置を中央に */
