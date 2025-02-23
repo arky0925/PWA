@@ -150,6 +150,9 @@ function renderCalendar() {
 				dayWeek.classList.remove('sunday');
 			}
 
+			// その日のイベントを表示
+			displayEventsForSelectedDate(dateString);
+
 			// 選択した日付の背景色を薄い灰色に変更
 			selectedDateDiv.style.backgroundColor = 'lightgray'; // 選択中の日付の背景色
 		});
@@ -162,6 +165,30 @@ function renderCalendar() {
 
 		dateContainer.appendChild(dateDiv);
 	}
+
+// イベントを表示する関数
+function displayEventsForSelectedDate(dateString) {
+	// .main-schedule 内のイベントをクリア
+	const mainSchedule = document.querySelector('.main-schedule');
+	mainSchedule.innerHTML = ''; // 以前のイベントをクリア
+
+	// 選択した日付のイベントをフィルタリング
+	const dayEvents = events.filter(event => event.date === dateString);
+
+	// イベントがある場合、表示
+	if (dayEvents.length > 0) {
+		dayEvents.forEach(({ name, style }) => {
+			const eventDiv = document.createElement('div');
+			eventDiv.classList.add('event-main', style); // スタイルを追加
+			eventDiv.innerHTML = `<span>${name}</span>`; // イベント名を設定
+			mainSchedule.appendChild(eventDiv); // .main-schedule に追加
+		});
+	} else {
+		const noEventDiv = document.createElement('div');
+		noEventDiv.innerText = 'イベントはありません。';
+		mainSchedule.appendChild(noEventDiv);
+	}
+}
 
 	// 次月の日付を表示
 	let firstDayAndMonth = firstDay + daysInMonth
@@ -205,6 +232,9 @@ function renderCalendar() {
 	} else if (weekdays[initialWeekday] === '日') {
 		dayWeek.classList.add('sunday');
 	}
+	// 初期表示時に現在の日付のイベントを表示
+	const initialDateString = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
+	displayEventsForSelectedDate(initialDateString);
 }
 
 // ボタンのイベントリスナー
