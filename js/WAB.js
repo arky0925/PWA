@@ -23,7 +23,7 @@ const events = [
 	{ date: '2025-02-14', name: 'バレンタインデー', style: 'dinner' },
 	{ date: '2025-02-21', name: 'イベント3', style: 'dinner' },
 	{ date: '2025-02-22', name: 'イベント3', style: 'dinner' },
-	{ date: '2025-02-23', name: 'イベント3', style: 'dinner' },
+	{ date: '2025-02-24', name: 'イベント3', style: 'dinner' },
 ];
 
 function renderCalendar() {
