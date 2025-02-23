@@ -12,6 +12,20 @@ let selectedMonth = currentDate.getMonth(); // 選択中の月を保持
 let selectedYear = currentDate.getFullYear(); // 選択中の年を保持
 let selectedDateDiv = null; // 選択中の日付の要素を保持
 
+const events = [
+	{ date: '2025-02-01', name: '新年会', style: 'breakfast' },
+	{ date: '2025-02-01', name: 'あああ', style: 'lunch' },
+	{ date: '2025-02-01', name: 'あああ', style: 'dinner' },
+	{ date: '2025-02-11', name: 'バレンタインデー', style: 'dinner' },
+	{ date: '2025-02-12', name: 'バレンタインデー', style: 'dinner' },
+	{ date: '2025-02-13', name: 'バレンタインデー', style: 'dinner' },
+	{ date: '2025-02-14', name: 'バレンタインデー', style: 'dinner' },
+	{ date: '2025-02-14', name: 'バレンタインデー', style: 'dinner' },
+	{ date: '2025-02-21', name: 'イベント3', style: 'dinner' },
+	{ date: '2025-02-22', name: 'イベント3', style: 'dinner' },
+	{ date: '2025-02-23', name: 'イベント3', style: 'dinner' },
+];
+
 function renderCalendar() {
 	dateContainer.innerHTML = '';
 	const year = currentDate.getFullYear();
@@ -45,6 +59,7 @@ function renderCalendar() {
 
 	// 今月の日付を表示
 	for (let day = 1; day <= daysInMonth; day++) {
+		const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 		const dateDiv = document.createElement('div');
 		dateDiv.classList.add('date');
 
@@ -63,7 +78,6 @@ function renderCalendar() {
 		}
 
 		// 祝日かどうかをチェック
-		const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 		if (holidays.includes(dateString)) {
 			dateDiv.classList.add('weekend');
 			dateWrapper.classList.add('sunday');
@@ -86,10 +100,26 @@ function renderCalendar() {
 				circleDiv.style.backgroundColor = '#d10000';
 			}
 
-
 			// 本日の日付を追加
 			circleDiv.innerText = day; // 日付を丸の中に設定
 			dateDiv.appendChild(circleDiv); // 日付の要素に追加
+		}
+
+		// イベントがあるかどうかをチェック
+		const dayEvents = events.filter(event => event.date === dateString);
+		if (dayEvents.length > 0) {
+			const eventListDiv = document.createElement('div'); // イベントリストを作成
+			eventListDiv.classList.add('event-list'); // イベントリスト用のクラスを追加
+
+			// イベントをループして表示
+			dayEvents.forEach(({ name, style }) => {
+				const eventDiv = document.createElement('div');
+				eventDiv.classList.add('event', style); // スタイルを追加
+				eventDiv.innerText = name; // イベントの内容を表示
+				eventListDiv.appendChild(eventDiv); // イベントリストに追加
+			});
+
+			dateDiv.appendChild(eventListDiv); // 日付の div にイベントリストを追加
 		}
 
 		dateDiv.addEventListener('click', () => {

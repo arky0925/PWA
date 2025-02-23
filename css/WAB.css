@@ -53,6 +53,14 @@ body {
 	padding-right: 3px;
 }
 
+.event-list {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	margin: 1px 1px 0 2px;
+	font-size: 10px
+}
+
 .date.today .circle {
 	position: absolute; /* 絶対位置を設定 */
 	width: 20px; /* 丸の直径 */
@@ -121,22 +129,21 @@ body {
 	font-size: 14px;
 }
 
-.breakfast {
+.event {
 	padding: 0 5px;
-	background-color: #33cd30;
 	border-radius: 4px;
+}
+
+.breakfast {
+	background-color: #33cd30;
 }
 
 .lunch {
-	padding: 0 5px;
 	background-color: #efa538;
-	border-radius: 4px;
 }
 
 .dinner {
-	padding: 0 5px;
 	background-color: #5a81e8;
-	border-radius: 4px;
 }
 
 .tools {
