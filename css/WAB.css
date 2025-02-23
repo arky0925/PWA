@@ -58,7 +58,7 @@ body {
 	width: 20px; /* 丸の直径 */
 	height: 20px; /* 丸の直径 */
 	border-radius: 50%; /* 丸くする */
-	background-color: steelblue; /* 背景色 */
+	background-color: #4682b4; /* 背景色 */
 	top: 0; /* 縦の位置を中央に */
 	right: 0; /* 日付の右側に配置 */
 	display: flex; /* 中央揃え */

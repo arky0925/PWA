@@ -81,6 +81,11 @@ function renderCalendar() {
 			// 丸い矩形を作成
 			const circleDiv = document.createElement('div');
 			circleDiv.classList.add('circle'); // 丸のクラスを追加
+			
+			if (dateWrapper.classList.contains('sunday')) {
+				circleDiv.style.backgroundColor = '#d10000';
+			}
+
 
 			// 本日の日付を追加
 			circleDiv.innerText = day; // 日付を丸の中に設定
