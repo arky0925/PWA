@@ -15,6 +15,12 @@ body {
 	padding-top: 46px;
 }
 
+.calendars {
+	position: absolute; /* 絶対位置を設定 */
+	width: 100%; /* 幅を100%に設定 */
+	transition: transform 0.3s ease; /* スライドのトランジションを設定 */
+}
+
 .days {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
@@ -43,6 +49,8 @@ body {
 
 .date-wrapper {
 	text-align: right; /* 右揃え */
+	height: 20px;
+	padding-right: 3px;
 }
 
 .date.today .circle {
