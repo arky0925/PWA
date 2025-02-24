@@ -166,29 +166,106 @@ function renderCalendar() {
 		dateContainer.appendChild(dateDiv);
 	}
 
-// イベントを表示する関数
-function displayEventsForSelectedDate(dateString) {
-	// .main-schedule 内のイベントをクリア
-	const mainSchedule = document.querySelector('.main-schedule');
-	mainSchedule.innerHTML = ''; // 以前のイベントをクリア
-
-	// 選択した日付のイベントをフィルタリング
-	const dayEvents = events.filter(event => event.date === dateString);
-
-	// イベントがある場合、表示
-	if (dayEvents.length > 0) {
-		dayEvents.forEach(({ name, style }) => {
-			const eventDiv = document.createElement('div');
-			eventDiv.classList.add('event-main', style); // スタイルを追加
-			eventDiv.innerHTML = `<span>${name}</span>`; // イベント名を設定
-			mainSchedule.appendChild(eventDiv); // .main-schedule に追加
-		});
-	} else {
-		const noEventDiv = document.createElement('div');
-		noEventDiv.innerText = 'イベントはありません。';
-		mainSchedule.appendChild(noEventDiv);
+	// イベントを表示する関数
+	function displayEventsForSelectedDate(dateString) {
+		// .main-schedule 内のイベントをクリア
+		const mainSchedule = document.getElementById('main-schedule');
+		mainSchedule.innerHTML = ''; // 以前のイベントをクリア
+	
+		// 選択した日付のイベントをフィルタリング
+		const dayEvents = events.filter(event => event.date === dateString);
+	
+		// イベントがある場合、表示
+		if (dayEvents.length > 0) {
+			dayEvents.forEach(({ name, style }) => {
+				const eventDiv = document.createElement('div');
+				eventDiv.classList.add('event-main', style); // スタイルを追加
+				eventDiv.innerHTML = `<span>${name}</span>`; // イベント名を設定
+				// クリックイベントの追加
+				eventDiv.addEventListener('click', (event) => {
+					event.stopPropagation(); // 親要素のクリックイベントを防ぐ
+					showPopup(event, dateString, name); // ポップアップを表示
+				});
+				mainSchedule.appendChild(eventDiv); // .main-schedule に追加
+			});
+		}
 	}
-}
+
+	// ポップアップを表示する関数
+	function showPopup(event, dateString, eventName) {
+		// 以前のポップアップを削除
+		const existingPopup = document.querySelector('.popup');
+		if (existingPopup) {
+			existingPopup.remove();
+		}
+
+		// 日付をDateオブジェクトに変換
+		const date = new Date(dateString);
+		const formattedDate = formatDate(date); // 日付をフォーマット
+
+		// 新しいポップアップを作成
+		const popup = document.createElement('div');
+		popup.classList.add('popup');
+
+		// 選択されたイベント名を<span>で囲んで表示
+		const eventText = document.createElement('h4');
+		eventText.innerText = eventName; // イベント名を設定
+		popup.appendChild(eventText); // ポップアップに追加
+
+		// 日付を<span>で囲んで表示
+		const dateText = document.createElement('span');
+		dateText.innerText = formattedDate; // 日付を設定
+		dateText.classList.add('date-text'); // スタイル用クラスを追加
+		popup.appendChild(dateText); // ポップアップに追加
+
+		// 吹き出しの矢印を作成
+		const arrow = document.createElement('div');
+		arrow.classList.add('popup-arrow');
+		popup.appendChild(arrow);
+
+		// ポップアップの位置を設定
+		document.body.appendChild(popup);
+		const rect = event.currentTarget.getBoundingClientRect(); // イベント項目の位置を取得
+
+		// ポップアップの高さを取得
+		const popupHeight = popup.offsetHeight; // ポップアップの高さ
+
+		// 中心位置を計算
+		const left = rect.left + 30;
+		const top = rect.top - popupHeight - arrow.offsetHeight - 5; // 上に矢印の高さと5pxの余白を持たせる
+
+		// ポップアップのスタイルを設定
+		popup.style.left = `${left}px`;
+		popup.style.top = `${top}px`;
+
+		// フェードインのアニメーションを適用
+		setTimeout(() => {
+			popup.classList.add('show'); // アニメーションを開始
+		}, 10); // 少し遅延を入れることでアニメーションが適用される
+
+		// ドキュメント全体にクリックイベントを追加
+		document.addEventListener('click', (e) => {
+			// クリック先がポップアップ内でない場合
+			if (!popup.contains(e.target)) {
+				// フェードアウトのアニメーションを開始
+				popup.classList.remove('show');
+				setTimeout(() => {
+					popup.remove(); // ポップアップを非表示にする
+				}, 300); // アニメーションの持続時間に合わせて遅延を設定
+				document.removeEventListener('click', arguments.callee); // イベントリスナーを削除
+			}
+		});
+	}
+
+	function formatDate(date) {
+		const year = date.getFullYear(); // 年を取得
+		const month = date.getMonth() + 1; // 月を取得（0から始まるため+1）
+		const day = date.getDate(); // 日を取得
+		const options = { weekday: 'short' }; // 曜日のオプション
+		const weekDay = new Intl.DateTimeFormat('ja-JP', options).format(date); // 曜日を取得
+
+		return `${year}年${month}月${day}日(${weekDay})`; // フォーマットを整える
+	}
 
 	// 次月の日付を表示
 	let firstDayAndMonth = firstDay + daysInMonth
