@@ -95,7 +95,7 @@ function renderCalendar() {
 			// 丸い矩形を作成
 			const circleDiv = document.createElement('div');
 			circleDiv.classList.add('circle'); // 丸のクラスを追加
-			
+
 			if (dateWrapper.classList.contains('sunday')) {
 				circleDiv.style.backgroundColor = '#d10000';
 			}
@@ -171,10 +171,10 @@ function renderCalendar() {
 		// .main-schedule 内のイベントをクリア
 		const mainSchedule = document.getElementById('main-schedule');
 		mainSchedule.innerHTML = ''; // 以前のイベントをクリア
-	
+
 		// 選択した日付のイベントをフィルタリング
 		const dayEvents = events.filter(event => event.date === dateString);
-	
+
 		// イベントがある場合、表示
 		if (dayEvents.length > 0) {
 			dayEvents.forEach(({ name, style }) => {
@@ -193,66 +193,45 @@ function renderCalendar() {
 
 	// ポップアップを表示する関数
 	function showPopup(event, dateString, eventName) {
-		// 以前のポップアップを削除
-		const existingPopup = document.querySelector('.popup');
-		if (existingPopup) {
-			existingPopup.remove();
-		}
+		const popupContainer = document.getElementById('popup-container');
+		const popupArrow = document.getElementById('popup-arrow');
+		const popupMark = document.getElementById('popup-mark');
+
+		const buttonColor = window.getComputedStyle(event.currentTarget).backgroundColor;
+		popupMark.style.backgroundColor = buttonColor; // 背景色を設定
 
 		// 日付をDateオブジェクトに変換
 		const date = new Date(dateString);
 		const formattedDate = formatDate(date); // 日付をフォーマット
 
-		// 新しいポップアップを作成
-		const popup = document.createElement('div');
-		popup.classList.add('popup');
+		document.getElementById('event-name').innerHTML = eventName; // イベント名を設定
+		document.getElementById('event-date').innerHTML = formattedDate; // 日付を設定
 
-		// 選択されたイベント名を<span>で囲んで表示
-		const eventText = document.createElement('h4');
-		eventText.innerText = eventName; // イベント名を設定
-		popup.appendChild(eventText); // ポップアップに追加
-
-		// 日付を<span>で囲んで表示
-		const dateText = document.createElement('span');
-		dateText.innerText = formattedDate; // 日付を設定
-		dateText.classList.add('date-text'); // スタイル用クラスを追加
-		popup.appendChild(dateText); // ポップアップに追加
-
-		// 吹き出しの矢印を作成
-		const arrow = document.createElement('div');
-		arrow.classList.add('popup-arrow');
-		popup.appendChild(arrow);
-
-		// ポップアップの位置を設定
-		document.body.appendChild(popup);
 		const rect = event.currentTarget.getBoundingClientRect(); // イベント項目の位置を取得
 
 		// ポップアップの高さを取得
-		const popupHeight = popup.offsetHeight; // ポップアップの高さ
+		const popupHeight = popupContainer.offsetHeight; // ポップアップの高さ
+		const arrowHeight = popupArrow.offsetHeight; // ポップアップの高さ
 
 		// 中心位置を計算
 		const left = rect.left + 30;
-		const top = rect.top - popupHeight - arrow.offsetHeight - 5; // 上に矢印の高さと5pxの余白を持たせる
+		const top = rect.top - popupHeight - arrowHeight - 4; // 上に矢印の高さと4pxの余白を持たせる
 
 		// ポップアップのスタイルを設定
-		popup.style.left = `${left}px`;
-		popup.style.top = `${top}px`;
+		popupContainer.style.left = `${left}px`;
+		popupContainer.style.top = `${top}px`;
 
 		// フェードインのアニメーションを適用
 		setTimeout(() => {
-			popup.classList.add('show'); // アニメーションを開始
+			popupContainer.classList.add('show'); // アニメーションを開始
 		}, 10); // 少し遅延を入れることでアニメーションが適用される
 
 		// ドキュメント全体にクリックイベントを追加
-		document.addEventListener('click', (e) => {
+		document.addEventListener('click', (event) => {
 			// クリック先がポップアップ内でない場合
-			if (!popup.contains(e.target)) {
+			if (!popupContainer.contains(event.target)) {
 				// フェードアウトのアニメーションを開始
-				popup.classList.remove('show');
-				setTimeout(() => {
-					popup.remove(); // ポップアップを非表示にする
-				}, 300); // アニメーションの持続時間に合わせて遅延を設定
-				document.removeEventListener('click', arguments.callee); // イベントリスナーを削除
+				popupContainer.classList.remove('show');
 			}
 		});
 	}
