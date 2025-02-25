@@ -54,7 +54,6 @@ function renderCalendar() {
 		if (dayOfWeek === 0 || dayOfWeek === 6) {
 			dateDiv.classList.add('weekend'); // 土日スタイルを追加
 		}
-
 	}
 
 	// 今月の日付を表示
@@ -196,6 +195,8 @@ function renderCalendar() {
 		const popupContainer = document.getElementById('popup-container');
 		const popupArrow = document.getElementById('popup-arrow');
 		const popupMark = document.getElementById('popup-mark');
+		
+		popupContainer.style.display = 'flex'; // プルダウンを表示
 
 		const buttonColor = window.getComputedStyle(event.currentTarget).backgroundColor;
 		popupMark.style.backgroundColor = buttonColor; // 背景色を設定
@@ -222,16 +223,16 @@ function renderCalendar() {
 		popupContainer.style.top = `${top}px`;
 
 		// フェードインのアニメーションを適用
-		setTimeout(() => {
-			popupContainer.classList.add('show'); // アニメーションを開始
-		}, 10); // 少し遅延を入れることでアニメーションが適用される
+		gsap.to(popupContainer, { opacity: 1, duration: 0.2 });
 
 		// ドキュメント全体にクリックイベントを追加
 		document.addEventListener('click', (event) => {
 			// クリック先がポップアップ内でない場合
 			if (!popupContainer.contains(event.target)) {
 				// フェードアウトのアニメーションを開始
-				popupContainer.classList.remove('show');
+				gsap.to(popupContainer, { opacity: 0, duration: 0.2, onComplete: () => {
+					popupContainer.style.display = 'none'; // プルダウンを非表示
+				}});
 			}
 		});
 	}
