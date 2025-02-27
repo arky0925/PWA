@@ -1,3 +1,5 @@
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwDhNygFoMx3myA4tzk9q65LARHNnB-Y8pbbogX5o1w8K6gYz3cebQd3yGg7OnhDeEL/exec';
+
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
 const prevButton = document.getElementById('prev');
@@ -12,21 +14,58 @@ let selectedMonth = currentDate.getMonth(); // 選択中の月を保持
 let selectedYear = currentDate.getFullYear(); // 選択中の年を保持
 let selectedDateDiv = null; // 選択中の日付の要素を保持
 
-const events = [
-	{ date: '2025-02-01', name: '新年会', style: 'breakfast' },
-	{ date: '2025-02-01', name: 'あああ', style: 'lunch' },
-	{ date: '2025-02-01', name: 'あああ', style: 'dinner' },
-	{ date: '2025-02-11', name: 'バレンタインデー', style: 'dinner' },
-	{ date: '2025-02-12', name: 'バレンタインデー', style: 'dinner' },
-	{ date: '2025-02-13', name: 'バレンタインデー', style: 'dinner' },
-	{ date: '2025-02-14', name: 'バレンタインデー', style: 'dinner' },
-	{ date: '2025-02-14', name: 'バレンタインデー', style: 'dinner' },
-	{ date: '2025-02-21', name: 'イベント3', style: 'dinner' },
-	{ date: '2025-02-22', name: 'イベント3', style: 'dinner' },
-	{ date: '2025-02-24', name: 'イベント3', style: 'dinner' },
-];
+window.onload = function() {
+	fetchCalendarData();
+};
 
-function renderCalendar() {
+function fetchCalendarData() {
+	const chacheCalendarData = localStorage.getItem('calendarData');
+	const action = 'calendarGet';
+
+	const arrayNone = [];
+	renderCalendar(arrayNone); // ロード中画面
+
+	if (chacheCalendarData) {
+		// キャッシュが存在する場合
+		const events = chacheCalendarData ? JSON.parse(chacheCalendarData) : [];
+		renderCalendar(fixDates(events)); // 初回カレンダーを描画
+	} else {
+		// キャッシュがない場合はスプレッドシートからデータを取得
+		fetch(`${scriptURL}?action=${action}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
+			})
+			.then(data => {
+				// キャッシュにデータを保存
+				localStorage.setItem('calendarData', JSON.stringify(data));
+				const events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
+				renderCalendar(fixDates(events)); // 初回カレンダーを描画
+				console.log(fixDates(events))
+			})
+			.catch(error => console.error('Error!', error.message))
+	}
+}
+
+function fixDates(data) {
+	return data.map(item => {
+		const date = new Date(item.date);
+		// 日本のタイムゾーン（UTC+9）に変換
+		const localDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+
+		// 修正後の日付をISO形式でフォーマット
+		const formattedDate = localDate.toISOString().split('T')[0]; // "YYYY-MM-DD"形式
+
+		return {
+			...item,
+			date: formattedDate // 修正した日付を設定
+		};
+	});
+}
+
+function renderCalendar(events) {
 	dateContainer.innerHTML = '';
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
@@ -111,10 +150,10 @@ function renderCalendar() {
 			eventListDiv.classList.add('event-list'); // イベントリスト用のクラスを追加
 
 			// イベントをループして表示
-			dayEvents.forEach(({ name, style }) => {
+			dayEvents.forEach(({ display, style }) => {
 				const eventDiv = document.createElement('div');
 				eventDiv.classList.add('event', style); // スタイルを追加
-				eventDiv.innerText = name; // イベントの内容を表示
+				eventDiv.innerText = display; // イベントの内容を表示
 				eventListDiv.appendChild(eventDiv); // イベントリストに追加
 			});
 
@@ -176,14 +215,14 @@ function renderCalendar() {
 
 		// イベントがある場合、表示
 		if (dayEvents.length > 0) {
-			dayEvents.forEach(({ name, style }) => {
+			dayEvents.forEach(({ display, style }) => {
 				const eventDiv = document.createElement('div');
 				eventDiv.classList.add('event-main', style); // スタイルを追加
-				eventDiv.innerHTML = `<span>${name}</span>`; // イベント名を設定
+				eventDiv.innerHTML = `<span>${display}</span>`; // イベント名を設定
 				// クリックイベントの追加
 				eventDiv.addEventListener('click', (event) => {
 					event.stopPropagation(); // 親要素のクリックイベントを防ぐ
-					showPopup(event, dateString, name); // ポップアップを表示
+					showPopup(event, dateString, display); // ポップアップを表示
 				});
 				mainSchedule.appendChild(eventDiv); // .main-schedule に追加
 			});
@@ -297,14 +336,14 @@ function renderCalendar() {
 // ボタンのイベントリスナー
 prevButton.addEventListener('click', () => {
 	changeMonth(-1); // 1カ月前に遷移
-	renderCalendar();
+	fetchCalendarData();
 	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
 
 nextButton.addEventListener('click', () => {
 	changeMonth(1); // 1カ月後に遷移
-	renderCalendar();
+	fetchCalendarData();
 	monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 	yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 });
@@ -355,12 +394,12 @@ dateContainer.addEventListener('touchend', (event) => {
 function handleSwipe() {
 	if (startX > endX + 50) {
 		changeMonth(1); // 1カ月後に遷移
-		renderCalendar();
+		fetchCalendarData();
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 	} else if (startX < endX - 50) {
 		changeMonth(-1); // 1カ月前に遷移
-		renderCalendar();
+		fetchCalendarData();
 		monthSelect.value = currentDate.getMonth(); // 現在の月に設定
 		yearSelect.value = currentDate.getFullYear(); // 現在の年に設定
 	}
@@ -374,13 +413,10 @@ document.getElementById('today').addEventListener('click', () => {
 	selectedDay = today.getDate();
 	selectedMonth = today.getMonth();
 	selectedYear = today.getFullYear();
-	renderCalendar(); // カレンダーを再描画
+	fetchCalendarData();
 	monthSelect.value = today.getMonth(); // 現在の月に設定
 	yearSelect.value = today.getFullYear(); // 現在の年に設定
 });
-
-// 初回カレンダーを描画
-renderCalendar();
 
 const monthSelect = document.getElementById('month-select');
 const yearSelect = document.getElementById('year-select');
@@ -440,5 +476,5 @@ document.addEventListener('click', (event) => {
 function updateCalendar(selectedYear, selectedMonth) {
 	currentDate.setFullYear(selectedYear);
 	currentDate.setMonth(selectedMonth);
-	renderCalendar();
+	fetchCalendarData();
 }
