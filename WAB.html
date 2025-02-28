@@ -52,9 +52,9 @@
 					<h4 id="event-name"></h4>
 					<span id="event-date"></span>
 					<div class="popup-icon">
-						<span id="" class="material-icons">edit_square</span>
+						<span id="" class="material-icons">edit</span>
 						<span id="" class="material-icons">content_copy</span>
-						<span id="" class="material-icons">delete</span>
+						<span id="deleteButton" class="material-icons">delete_outline</span>
 					</div>
 				</div>
 			</div>
@@ -64,6 +64,16 @@
 	<div id="dropdowns" class="dropdown">
 		<select id="year-select" class="dropdown-menu"></select>
 		<select id="month-select" class="dropdown-menu"></select>
+	</div>
+	<div id="modalOverlay" class="overlay"></div> <!-- モーダルオーバーレイ -->
+	<!-- モーダルウィンドウ(削除確認) -->
+	<div id="deleteModal" class="delete-modal">
+		<button id="deleteDo" class="delete-check">
+			データを削除
+		</button>
+		<button id="deleteCancel" class="delete-check">
+			キャンセル
+		</button >
 	</div>
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </html>

@@ -311,7 +311,6 @@ span.delete-icon, .update-icon, button {
 	width: 240px; /* 横幅 */
 	margin-top: 10px; /* 上部のマージン */
 	cursor: pointer; /* カーソルをポインターに */
-	transition: background-color 0.3s ease, transform 0.1s ease; /* ホバー時のトランジション */
 }
 
 .delete-check-cancel {
@@ -325,11 +324,6 @@ span.delete-icon, .update-icon, button {
 	width: 240px; /* 横幅 */
 	margin-top: 10px; /* 上部のマージン */
 	cursor: pointer; /* カーソルをポインターに */
-	transition: background-color 0.3s ease, transform 0.1s ease; /* ホバー時のトランジション */
-}
-
-.delete-check-do:active, .delete-check-do:cancel {
-	transform: scale(0.95); /* クリック時の縮小効果 */
 }
 
 /* オーバーレイのスタイル */

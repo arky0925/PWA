@@ -36,7 +36,7 @@ class MyFooter extends HTMLElement {
 											</button>
 										</li>
 										<li>
-											<button id="couponButton" class="round-button material-icons gallery" style="--round-button-active-color: #2962ff" data-translate-value="1" data-color="blue">
+											<button id="couponButton" class="round-button material-icons" style="--round-button-active-color: #2962ff" data-translate-value="1" data-color="blue">
 												payment
 											</button>
 										</li>
@@ -46,7 +46,7 @@ class MyFooter extends HTMLElement {
 											</button>
 										</li>
 										<li>
-											<button id="stampButton" class="round-button material-icons" style="--round-button-active-color: #aa00ff" data-translate-value="3" data-color="purple">
+											<button id="stampButton" class="round-button material-icons gallery" style="--round-button-active-color: #aa00ff" data-translate-value="3" data-color="purple">
 												local_activity
 											</button>
 										</li>

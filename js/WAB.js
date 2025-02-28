@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwDhNygFoMx3myA4tzk9q65LARHNnB-Y8pbbogX5o1w8K6gYz3cebQd3yGg7OnhDeEL/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz7JzJzNzkAhkidXWHrjjP5k298GJjJJVNN6xrMEOLQNyd-LxnzyA4AUrByTM58EdXu/exec';
 
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
@@ -215,14 +215,14 @@ function renderCalendar(events) {
 
 		// イベントがある場合、表示
 		if (dayEvents.length > 0) {
-			dayEvents.forEach(({ display, style }) => {
+			dayEvents.forEach(({ id, display, style }) => {
 				const eventDiv = document.createElement('div');
 				eventDiv.classList.add('event-main', style); // スタイルを追加
 				eventDiv.innerHTML = `<span>${display}</span>`; // イベント名を設定
 				// クリックイベントの追加
 				eventDiv.addEventListener('click', (event) => {
 					event.stopPropagation(); // 親要素のクリックイベントを防ぐ
-					showPopup(event, dateString, display); // ポップアップを表示
+					showPopup(event, dateString, id, display); // ポップアップを表示
 				});
 				mainSchedule.appendChild(eventDiv); // .main-schedule に追加
 			});
@@ -230,7 +230,7 @@ function renderCalendar(events) {
 	}
 
 	// ポップアップを表示する関数
-	function showPopup(event, dateString, eventName) {
+	function showPopup(event, dateString, id, display) {
 		const popupContainer = document.getElementById('popup-container');
 		const popupArrow = document.getElementById('popup-arrow');
 		const popupMark = document.getElementById('popup-mark');
@@ -244,7 +244,7 @@ function renderCalendar(events) {
 		const date = new Date(dateString);
 		const formattedDate = formatDate(date); // 日付をフォーマット
 
-		document.getElementById('event-name').innerHTML = eventName; // イベント名を設定
+		document.getElementById('event-name').innerHTML = display; // イベント名を設定
 		document.getElementById('event-date').innerHTML = formattedDate; // 日付を設定
 
 		const rect = event.currentTarget.getBoundingClientRect(); // イベント項目の位置を取得
@@ -267,13 +267,17 @@ function renderCalendar(events) {
 		// ドキュメント全体にクリックイベントを追加
 		document.addEventListener('click', (event) => {
 			// クリック先がポップアップ内でない場合
-			if (!popupContainer.contains(event.target)) {
+			if (!popupContainer.contains(event.target) && !modalOverlay.contains(event.target) && ![deleteModal, deleteCancel].includes(event.target)) {
 				// フェードアウトのアニメーションを開始
 				gsap.to(popupContainer, { opacity: 0, duration: 0.2, onComplete: () => {
 					popupContainer.style.display = 'none'; // プルダウンを非表示
 				}});
 			}
 		});
+
+		// idのデータを持たせる
+		const deleteButton = document.getElementById('deleteButton');
+		deleteButton.setAttribute('data-info', id); // data-info を更新
 	}
 
 	function formatDate(date) {
@@ -478,3 +482,67 @@ function updateCalendar(selectedYear, selectedMonth) {
 	currentDate.setMonth(selectedMonth);
 	fetchCalendarData();
 }
+
+const deleteButton = document.getElementById('deleteButton');
+const deleteModal = document.getElementById('deleteModal');
+const modalOverlay = document.getElementById('modalOverlay');
+const deleteDo = document.getElementById('deleteDo');
+const deleteCancel = document.getElementById('deleteCancel');
+
+deleteButton.addEventListener('click', deleteModalShow);
+deleteDo.addEventListener('click', deleteModalClose);
+deleteCancel.addEventListener('click', deleteModalClose);
+modalOverlay.addEventListener('click', deleteModalClose);
+
+function deleteModalShow() {
+	deleteModal.style.display = 'flex'; // モーダルを表示
+	timer = setTimeout(() => {
+		deleteModal.classList.add('open');
+	}, 1);
+	modalOverlay.style.display = 'block'; // オーバーレイを表示
+	gsap.to(modalOverlay, { opacity: 1, duration: 0.3 });
+}
+
+function deleteModalClose() {
+	deleteModal.classList.remove('open');
+	timer = setTimeout(() => {
+		deleteModal.style.display = 'none'; // モーダルを表示
+	}, 300);
+	gsap.to(modalOverlay, { opacity: 0, duration: 0.3, onComplete: () => {
+		modalOverlay.style.display = 'none'; // オーバーレイを表示
+	}});
+}
+
+deleteDo.addEventListener('click',  () => {
+	const action = 'deleteCalendar';
+	const id = deleteButton.getAttribute('data-info');
+	let events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
+
+	// 対象の行を削除
+	events = events.filter(event => event.id != id); // ID が一致しない行だけを残す
+	localStorage.setItem('calendarData', JSON.stringify(events)); // 更新されたデータを localStorage に保存
+
+	renderCalendar(fixDates(events));
+
+	fetch(scriptURL, {
+		method: 'POST', // POSTメソッドを指定
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: new URLSearchParams({
+			action: action, id: id
+		}),
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		console.log('Delete successful:', data);
+	})
+	.catch(error => {
+		console.error('Error deleting record:', error);
+	});
+});
