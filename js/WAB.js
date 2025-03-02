@@ -603,5 +603,5 @@ function closetemplateSelectMenu() {
         document.getElementById('formattedDate').addEventListener('click', function() {
             const dateInput = document.getElementById('dateInput');
             dateInput.style.display = 'block'; // 表示する
-            dateInput.click(); // フォーカスを当てる
+            dateInput.focus(); // フォーカスを当てる
         });
