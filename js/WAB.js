@@ -548,11 +548,11 @@ deleteDo.addEventListener('click',  () => {
 });
 
 document.querySelectorAll('.text-node').forEach(textarea => {
-	textarea.style.height = '16px'; // 初期表示時の高さを16pxに設定
+	textarea.style.height = '18px'; // 初期表示時の高さを16pxに設定
     textarea.addEventListener('input', function () {
-        // 1行目が入力中の場合は高さを16pxに固定
+        // 1行目が入力中の場合は高さを18pxに固定
         if (this.value.split('\n').length === 1) {
-            this.style.height = '16px'; // 1行目が入力中のため16pxに設定
+            this.style.height = '18px'; // 1行目が入力中のため16pxに設定
         } else {
             this.style.height = 'auto'; // 初期化
             this.style.height = this.scrollHeight + 'px'; // 内容に応じて高さを設定
@@ -576,3 +576,29 @@ document.addEventListener('DOMContentLoaded', () => {
 function closetemplateSelectMenu() {
 	templateSelectMenu.classList.remove('open');
 }
+
+document.getElementById('formattedDate').addEventListener('click', function() {
+            document.getElementById('dateInput').focus(); // focusを当てる
+            document.getElementById('dateInput').click(); // クリックイベントを発火
+});
+
+document.getElementById('dateInput').addEventListener('change', function() {
+    const dateValue = this.value;
+
+    // 日付が選択されているか確認
+    if (dateValue) {
+        const date = new Date(dateValue);
+        
+        // フォーマットを作成
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // 月は0から始まるため +1
+        const day = date.getDate();
+        const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+        const shortWeekday = weekdays[date.getDay()]; // 短い曜日
+
+        const formattedDate = `${year}年${month}月${day}日(${shortWeekday})`;
+
+        // フォーマットされた日付を表示
+        document.getElementById('formattedDate').textContent = formattedDate;
+    }
+});
