@@ -577,28 +577,31 @@ function closetemplateSelectMenu() {
 	templateSelectMenu.classList.remove('open');
 }
 
-document.getElementById('formattedDate').addEventListener('click', function() {
-            document.getElementById('dateInput').focus(); // focusを当てる
-            document.getElementById('dateInput').click(); // クリックイベントを発火
-});
+        // 日付選択イベントのリスナー
+        document.getElementById('dateInput').addEventListener('change', function() {
+            const dateValue = this.value;
 
-document.getElementById('dateInput').addEventListener('change', function() {
-    const dateValue = this.value;
+            // 日付が選択されているか確認
+            if (dateValue) {
+                const date = new Date(dateValue);
+                
+                // フォーマットを作成
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1; // 月は0から始まるため +1
+                const day = date.getDate();
+                const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+                const shortWeekday = weekdays[date.getDay()]; // 短い曜日
 
-    // 日付が選択されているか確認
-    if (dateValue) {
-        const date = new Date(dateValue);
+                const formattedDate = `${year}年${month}月${day}日(${shortWeekday})`;
+
+                // フォーマットされた日付を表示
+                document.getElementById('formattedDate').textContent = formattedDate;
+            }
+        });
         
-        // フォーマットを作成
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1; // 月は0から始まるため +1
-        const day = date.getDate();
-        const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
-        const shortWeekday = weekdays[date.getDay()]; // 短い曜日
-
-        const formattedDate = `${year}年${month}月${day}日(${shortWeekday})`;
-
-        // フォーマットされた日付を表示
-        document.getElementById('formattedDate').textContent = formattedDate;
-    }
-});
+        // formattedDateをクリックしたときにdateInputを表示
+        document.getElementById('formattedDate').addEventListener('click', function() {
+            const dateInput = document.getElementById('dateInput');
+            dateInput.style.display = 'block'; // 表示する
+            dateInput.click(); // フォーカスを当てる
+        });
