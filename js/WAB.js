@@ -546,3 +546,33 @@ deleteDo.addEventListener('click',  () => {
 		console.error('Error deleting record:', error);
 	});
 });
+
+document.querySelectorAll('.text-node').forEach(textarea => {
+	textarea.style.height = '16px'; // 初期表示時の高さを16pxに設定
+    textarea.addEventListener('input', function () {
+        // 1行目が入力中の場合は高さを16pxに固定
+        if (this.value.split('\n').length === 1) {
+            this.style.height = '16px'; // 1行目が入力中のため16pxに設定
+        } else {
+            this.style.height = 'auto'; // 初期化
+            this.style.height = this.scrollHeight + 'px'; // 内容に応じて高さを設定
+        }
+    });
+});
+
+// テンプレート選択メニュー開閉
+const templateSelectMenu = document.getElementById('templateSelectMenu');
+const templateSelectButton = document.getElementById('templateSelectButton');
+document.addEventListener('DOMContentLoaded', () => {
+	// メニューを開く
+	templateSelectButton.addEventListener('click', () => {
+		templateSelectMenu.classList.add('open');
+	});
+
+	// メニューを閉じる
+	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
+});
+
+function closetemplateSelectMenu() {
+	templateSelectMenu.classList.remove('open');
+}

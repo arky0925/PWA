@@ -308,3 +308,88 @@ body {
 	z-index: 200; /* オーバーレイをモーダルの下に表示 */
 	opacity: 0;
 }
+
+/* テンプレート選択メニュー */
+.template-select-menu {
+	position: fixed;
+	top: 200%;
+	right: 0; /* 初期状態では画面外 */
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	color: #000000;
+	transition: top 0.3s ease-in-out;
+	z-index: 250;
+	overflow-y: auto; /* 縦方向のスクロールを有効に */
+}
+
+.template-select-menu.open {
+	top: 0;
+}
+
+.template-select-header {
+	width: 100%;
+	height: 46px;
+	left: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	position: absolute;
+	color: #ffffff;
+	background-color: var(--header-color);
+	z-index: 1;
+}
+
+.template-select-header span {
+	cursor: pointer;
+}
+
+.center {
+	position: absolute; /* 中央揃えのため絶対配置 */
+	left: 50%; /* 左から50% */
+	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
+	text-align: center; /* 中央揃え */
+	font-weight: 900; /* 太字 */
+}
+
+.meal-form {
+	background-color: #ffffff; /* 背景色 */
+	padding-top: 46px;
+}
+
+.meal-form ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.meal-form li {
+	display: flex; /* フレックスボックスを使って項目を横に並べる */
+	align-items: center; /* 縦方向の中央揃え */
+	border-bottom: 1px solid #e0e0e0; /* 各項目の下に境目の線を追加 */
+	height: auto; /* 高さを自動に設定 */
+	padding: 20px;
+}
+
+.meal-form li:last-child {
+	border-bottom: none; /* 最後の項目には境目の線を表示しない */
+}
+
+.meal-form li .material-icons {
+	margin-right: 20px;
+}
+
+.text-node {
+	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
+	overflow-wrap: break-word; /* 単語の途切れを許可 */
+	word-wrap: break-word; /* 古いブラウザのサポート */
+	hyphens: auto; /* ハイフネーションを自動にする */
+	text-align: left;
+	height: auto; /* 高さを自動に設定 */
+	min-height: 16px; /* 最小の高さを設定 */
+	font-size: 16px;
+	border: none;
+	outline: none;
+	resize: none; /* ユーザーによるサイズ変更を無効にする */
+}

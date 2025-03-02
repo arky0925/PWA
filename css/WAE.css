@@ -222,15 +222,15 @@
 }
 
 .toggle-label:before {
-position: absolute;
-content: "";
-height: 26px;
-width: 26px;
-left: 4px;
-bottom: 4px;
-background-color: white; /* 丸の色 */
-border-radius: 50%; /* 丸くする */
-transition: transform 0.2s;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white; /* 丸の色 */
+	border-radius: 50%; /* 丸くする */
+	transition: transform 0.2s;
 }
 
 /* チェックされたときのスタイル */

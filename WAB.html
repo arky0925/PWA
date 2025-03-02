@@ -40,7 +40,7 @@
 			<div id="main-schedule" class="main-schedule"></div>
 			<div class="tools">
 				<span id="today" class="material-icons">today</span>
-				<span id="" class="material-icons">add</span>
+				<span id="templateSelectButton" class="material-icons">add</span>
 				<span id="" class="material-icons">search</span>
 				<span id="" class="material-icons">settings</span>
 			</div>
@@ -74,6 +74,32 @@
 		<button id="deleteCancel" class="delete-check">
 			キャンセル
 		</button >
+	</div>
+	<!-- 新規追加メニュー -->
+	<div id="templateSelectMenu" class="template-select-menu">
+		<div class="template-select-header">
+			<span id="closetemplateSelectMenu" class="material-icons">highlight_off</span>
+			<div class="center"></div>
+			<button type="submit" class="submit-button">保存</button>
+		</div>
+		<div>
+			<form class="meal-form">
+				<ul>
+					<li>
+						<span class="material-icons">dark_mode</span>
+						<textarea class="text-node" placeholder="料理" required></textarea>
+					</li>
+					<li>
+						<span class="material-icons">lock_outline</span>
+						<input type="date" id="dateInput" class="text-node" required>
+					</li>
+					<li>
+						<span class="material-icons">update</span>
+						<textarea class="text-node" placeholder="料理" required></textarea>
+					</li>
+				</ul>
+			</form>
+		</div>
 	</div>
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </html>
