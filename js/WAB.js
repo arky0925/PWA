@@ -602,6 +602,5 @@ function closetemplateSelectMenu() {
         // formattedDateをクリックしたときにdateInputを表示
         document.getElementById('formattedDate').addEventListener('click', function() {
             const dateInput = document.getElementById('dateInput');
-            dateInput.style.display = 'block'; // 表示する
             dateInput.focus(); // フォーカスを当てる
         });
