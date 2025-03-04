@@ -395,6 +395,6 @@ body {
 	padding-left: 10px;
 }
 
-.date-input-wrapper {
-    opacity: 0;
+.option-hidden {
+	opacity: 0;
 }
