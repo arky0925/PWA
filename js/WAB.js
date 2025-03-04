@@ -194,7 +194,10 @@ function renderCalendar(events) {
 			// 選択した日付の背景色を薄い灰色に変更
 			selectedDateDiv.style.backgroundColor = 'lightgray'; // 選択中の日付の背景色
 
+			// 選択した日付に設定
 			dateInput.value = dateString; // 選択した日付をdateInputに設定
+			updateFormattedDate(dateString);
+			dateInput.setAttribute('data-info', dateString); // data-info を更新
 		});
 
 		// 選択中の日付の背景色を維持
@@ -337,6 +340,11 @@ function renderCalendar(events) {
 	// 初期表示時に現在の日付のイベントを表示
 	const initialDateString = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
 	displayEventsForSelectedDate(initialDateString);
+	
+	// 現在の日付に設定
+	dateInput.value = initialDateString; // dateInputに選択した日付を設定
+	updateFormattedDate(initialDateString);
+	dateInput.setAttribute('data-info', initialDateString);
 }
 
 // ボタンのイベントリスナー
@@ -549,25 +557,15 @@ deleteDo.addEventListener('click',  () => {
 	});
 });
 
-document.querySelectorAll('.text-node').forEach(textarea => {
-	textarea.style.height = '18px'; // 初期表示時の高さを16pxに設定
-    textarea.addEventListener('input', function () {
-        // 1行目が入力中の場合は高さを18pxに固定
-        if (this.value.split('\n').length === 1) {
-            this.style.height = '18px'; // 1行目が入力中のため16pxに設定
-        } else {
-            this.style.height = 'auto'; // 初期化
-            this.style.height = this.scrollHeight + 'px'; // 内容に応じて高さを設定
-        }
-    });
-});
-
 // テンプレート選択メニュー開閉
 const templateSelectMenu = document.getElementById('templateSelectMenu');
 const templateSelectButton = document.getElementById('templateSelectButton');
 document.addEventListener('DOMContentLoaded', () => {
 	// メニューを開く
 	templateSelectButton.addEventListener('click', () => {
+		const dateString = dateInput.getAttribute('data-info');
+		dateInput.value = dateString;
+		updateFormattedDate(dateString);
 		templateSelectMenu.classList.add('open');
 	});
 
@@ -575,34 +573,49 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
 });
 
+document.querySelectorAll('.text-node').forEach(textarea => {
+	textarea.style.height = '18px'; // 初期表示時の高さを16pxに設定
+	textarea.addEventListener('input', function () {
+		// 1行目が入力中の場合は高さを18pxに固定
+		if (this.value.split('\n').length === 1) {
+			this.style.height = '18px'; // 1行目が入力中のため16pxに設定
+		} else {
+			this.style.height = 'auto'; // 初期化
+			this.style.height = this.scrollHeight + 'px'; // 内容に応じて高さを設定
+		}
+	});
+});
+
 const dateInput = document.getElementById('dateInput');
 function closetemplateSelectMenu() {
 	templateSelectMenu.classList.remove('open');
 }
 
-        // 日付選択イベントのリスナー
-        document.getElementById('dateInput').addEventListener('change', function() {
-            const dateValue = this.value;
+// 日付選択イベントのリスナー
+dateInput.addEventListener('change', function() {
+	updateFormattedDate(this.value); // 直接関数を呼び出す
+});
 
-            // 日付が選択されているか確認
-            if (dateValue) {
-                const date = new Date(dateValue);
-                
-                // フォーマットを作成
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1; // 月は0から始まるため +1
-                const day = date.getDate();
-                const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
-                const shortWeekday = weekdays[date.getDay()]; // 短い曜日
+// フォーマットを更新する関数
+function updateFormattedDate(dateValue) {
+	if (dateValue) {
+		const date = new Date(dateValue);
+		
+		// フォーマットを作成
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1; // 月は0から始まるため +1
+		const day = date.getDate();
+		const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+		const shortWeekday = weekdays[date.getDay()]; // 短い曜日
 
-                const formattedDate = `${year}年${month}月${day}日(${shortWeekday})`;
+		const formattedDate = `${year}年${month}月${day}日(${shortWeekday})`;
 
-                // フォーマットされた日付を表示
-                document.getElementById('formattedDate').textContent = formattedDate;
-            }
-        });
-        
-        // formattedDateをクリックしたときにdateInputを表示
-        document.getElementById('formattedDate').addEventListener('click', function() {
-            dateInput.focus(); // フォーカスを当てる
-        });
+		// フォーマットされた日付を表示
+		document.getElementById('formattedDate').textContent = formattedDate;
+	}
+}
+
+// formattedDateをクリックしたときにdateInputを表示
+document.getElementById('formattedDate').addEventListener('click', function() {
+	dateInput.focus(); // フォーカスを当てる
+});
