@@ -393,6 +393,8 @@ body {
 	outline: none;
 	resize: none; /* ユーザーによるサイズ変更を無効にする */
 	padding-left: 10px;
+	display:flex;
+	align-items:center;
 }
 
 .option-hidden {
