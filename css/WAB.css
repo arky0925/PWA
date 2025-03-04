@@ -396,28 +396,5 @@ body {
 }
 
 .date-input-wrapper {
-    position: relative; /* 子要素の絶対位置を基準にするために相対配置 */
-}
-
-.date-input-wrapper input[type="date"] {
-    position: absolute; /* 矩形の上に配置 */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0; /* 完全に透明にして見えないようにする */
-    cursor: pointer; /* カーソルをポインタに */
-}
-
-.date-input-wrapper::before {
-    content: ""; /* 擬似要素のための空コンテンツ */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff; /* 白い背景 */
-    border: 1px solid #e0e0e0; /* ボーダーの設定 */
-    border-radius: 4px; /* ボーダーを丸くする */
-    z-index: 1; /* 入力要素よりも上に表示 */
+    opacity: 0;
 }
