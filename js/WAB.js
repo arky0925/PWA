@@ -193,6 +193,8 @@ function renderCalendar(events) {
 
 			// 選択した日付の背景色を薄い灰色に変更
 			selectedDateDiv.style.backgroundColor = 'lightgray'; // 選択中の日付の背景色
+
+			dateInput.value = dateString; // 選択した日付をdateInputに設定
 		});
 
 		// 選択中の日付の背景色を維持
@@ -573,6 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
 });
 
+const dateInput = document.getElementById('dateInput');
 function closetemplateSelectMenu() {
 	templateSelectMenu.classList.remove('open');
 }
@@ -601,6 +604,5 @@ function closetemplateSelectMenu() {
         
         // formattedDateをクリックしたときにdateInputを表示
         document.getElementById('formattedDate').addEventListener('click', function() {
-            const dateInput = document.getElementById('dateInput');
             dateInput.focus(); // フォーカスを当てる
         });
