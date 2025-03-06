@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbz7JzJzNzkAhkidXWHrjjP5k298GJjJJVNN6xrMEOLQNyd-LxnzyA4AUrByTM58EdXu/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbx0vIY8xo_b49hcqsbW29B2uCahBi0AyJQnUD3ry2ITCUEp_iuzhhjyc4OossI03yfg/exec';
 
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
@@ -149,10 +149,21 @@ function renderCalendar(events) {
 			const eventListDiv = document.createElement('div'); // イベントリストを作成
 			eventListDiv.classList.add('event-list'); // イベントリスト用のクラスを追加
 
+			// ソート順を定義
+			const sortOrder = ['breakfast', 'lunch', 'dinner', 'tea-time'];
+			// dayEventsをカスタムソート
+			dayEvents.sort((a, b) => {
+				return sortOrder.indexOf(a.style) - sortOrder.indexOf(b.style);
+			});
+
 			// イベントをループして表示
-			dayEvents.forEach(({ display, style }) => {
+			dayEvents.forEach(({ display, style, takeout }) => {
 				const eventDiv = document.createElement('div');
-				eventDiv.classList.add('event', style); // スタイルを追加
+				if (takeout === true) {
+					eventDiv.classList.add('event', 'takeout'); // スタイルを追加
+				} else {
+					eventDiv.classList.add('event', style); // スタイルを追加
+				}
 				eventDiv.innerText = display; // イベントの内容を表示
 				eventListDiv.appendChild(eventDiv); // イベントリストに追加
 			});
@@ -218,11 +229,22 @@ function renderCalendar(events) {
 		// 選択した日付のイベントをフィルタリング
 		const dayEvents = events.filter(event => event.date === dateString);
 
+		// ソート順を定義
+		const sortOrder = ['breakfast', 'lunch', 'dinner', 'tea-time'];
+		// dayEventsをカスタムソート
+		dayEvents.sort((a, b) => {
+			return sortOrder.indexOf(a.style) - sortOrder.indexOf(b.style);
+		});
+
 		// イベントがある場合、表示
 		if (dayEvents.length > 0) {
-			dayEvents.forEach(({ id, display, style }) => {
+			dayEvents.forEach(({ id, display, style, takeout }) => {
 				const eventDiv = document.createElement('div');
-				eventDiv.classList.add('event-main', style); // スタイルを追加
+				if (takeout === true) {
+					eventDiv.classList.add('event-main', 'takeout'); // スタイルを追加
+				} else {
+					eventDiv.classList.add('event-main', style); // スタイルを追加
+				}
 				eventDiv.innerHTML = `<span>${display}</span>`; // イベント名を設定
 				// クリックイベントの追加
 				eventDiv.addEventListener('click', (event) => {
@@ -618,4 +640,75 @@ function updateFormattedDate(dateValue) {
 // formattedDateをクリックしたときにdateInputを表示
 document.getElementById('formattedDate').addEventListener('click', function() {
 	dateInput.focus(); // フォーカスを当てる
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateVisibility();
+
+    const radioButtons = document.querySelectorAll('input[name="meal"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', updateVisibility);
+    });
+
+    function updateVisibility() {
+        const selectedValue = document.querySelector('input[name="meal"]:checked').value;
+        const conditionalItems = document.querySelectorAll('.conditional-item');
+        const mealItems = document.querySelectorAll('.meal-item');
+
+        if (selectedValue === 'tea-time') {
+            conditionalItems.forEach(item => {
+                item.style.display = 'none'; // 非表示
+            });
+            mealItems.forEach(item => {
+                item.style.display = 'flex'; // aaaは表示
+            });
+        } else {
+            conditionalItems.forEach(item => {
+                item.style.display = 'flex'; // 表示
+            });
+            mealItems.forEach(item => {
+                item.style.display = 'none'; // aaaは非表示
+            });
+        }
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	const checkbox = document.getElementById('takeoutCheckbox');
+	const radioButtons = document.querySelectorAll('input[name="meal"]');
+
+	// チェックボックスの状態が変わったとき
+	checkbox.addEventListener('change', function() {
+		radioButtons.forEach(radio => {
+			const span = radio.nextElementSibling; // ラジオボタンに対応する<span>を取得
+			if (this.checked) {
+				// チェックボックスがオンの場合
+				if (radio.checked) {
+					span.style.backgroundColor = '#f1c40f'; // 背景色を黄色にする
+				} else {
+					span.style.backgroundColor = ''; // 他のラジオボタンは元に戻す
+				}
+			} else {
+				// チェックボックスがオフの場合
+				span.style.backgroundColor = ''; // 背景色を元に戻す
+			}
+		});
+	});
+
+	// ラジオボタンの変更イベントを監視
+	radioButtons.forEach(radio => {
+		radio.addEventListener('change', function() {
+			// 全てのラジオボタンの背景色をリセット
+			radioButtons.forEach(btn => {
+				const span = btn.nextElementSibling; // ラジオボタンに対応する<span>を取得
+				span.style.backgroundColor = ''; // すべての<span>を白に戻す
+			});
+
+			const span = this.nextElementSibling; // 選択されたラジオボタンの<span>を取得
+			if (checkbox.checked) {
+				span.style.backgroundColor = '#f1c40f'; // チェックボックスがオンの場合
+			}
+		});
+	});
 });

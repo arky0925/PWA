@@ -86,37 +86,74 @@
 			<form class="meal-form">
 				<ul>
 					<li>
-						<span class="material-icons">dark_mode</span>
-						<textarea class="text-node" placeholder="料理" required></textarea>
+						<span class="material-icons">circle</span>
+						<textarea class="text-node" placeholder="メイン" required></textarea>
 					</li>
 					<li>
-						<span class="material-icons">lock_outline</span>
+						<span class="material-icons">date_range</span>
 						<div id="formattedDate" class="text-node"></div>
 						<input type="date" id="dateInput" class="option-hidden" required>
 					</li>
 					<li>
 						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="主食" required></textarea>
+    <div class="radio-group">
+        <label class="radio-breakfast">
+            <input type="radio" name="meal" value="breakfast" checked>
+            <span>朝食</span>
+        </label>
+        <label class="radio-lunch">
+            <input type="radio" name="meal" value="lunch">
+            <span>昼食</span>
+        </label>
+        <label class="radio-dinner">
+            <input type="radio" name="meal" value="dinner" checked>
+            <span>夕食</span>
+        </label>
+        <label class="radio-tea-time">
+            <input type="radio" name="meal" value="tea-time">
+            <span>間食</span>
+        </label>
+        <label>
+            <input type="checkbox" id="takeoutCheckbox">
+            外食
+        </label>
+    </div>
+					</li>
+					<li class="conditional-item">
+						<span class="material-icons">rice_bowl</span>
+						<textarea class="text-node" placeholder="主食"></textarea>
+					</li>
+					<li class="conditional-item">
+						<span class="material-icons">set_meal</span>
+						<textarea class="text-node" placeholder="主菜"></textarea>
+					</li>
+					<li class="conditional-item">
+						<span class="material-icons">kebab_dining</span>
+						<textarea class="text-node" placeholder="副菜"></textarea>
+					</li>
+					<li class="conditional-item">
+						<span class="material-icons">soup_kitchen</span>
+						<textarea class="text-node" placeholder="汁物"></textarea>
+					</li>
+					<li class="meal-item">
+						<span class="material-icons">icecream</span>
+						<textarea class="text-node" placeholder="おやつ"></textarea>
 					</li>
 					<li>
-						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="主菜" required></textarea>
+						<span class="material-icons">local_cafe</span>
+						<textarea class="text-node" placeholder="飲み物"></textarea>
+					</li>
+					<li class="conditional-item">
+						<span class="material-icons">cake</span>
+						<textarea class="text-node" placeholder="デザート"></textarea>
 					</li>
 					<li>
-						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="副菜" required></textarea>
+						<span class="material-icons">restaurant</span>
+						<textarea class="text-node" placeholder="その他"></textarea>
 					</li>
 					<li>
-						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="汁物" required></textarea>
-					</li>
-					<li>
-						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="その他" required></textarea>
-					</li>
-					<li>
-						<span class="material-icons">update</span>
-						<textarea class="text-node" placeholder="メモ" required></textarea>
+						<span class="material-icons">edit_note</span>
+						<textarea class="text-node" placeholder="メモ"></textarea>
 					</li>
 				</ul>
 			</form>
