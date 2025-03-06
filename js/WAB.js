@@ -643,34 +643,34 @@ document.getElementById('formattedDate').addEventListener('click', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    updateVisibility();
+	updateVisibility();
 
-    const radioButtons = document.querySelectorAll('input[name="meal"]');
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', updateVisibility);
-    });
+	const radioButtons = document.querySelectorAll('input[name="meal"]');
+	radioButtons.forEach(radio => {
+		radio.addEventListener('change', updateVisibility);
+	});
 
-    function updateVisibility() {
-        const selectedValue = document.querySelector('input[name="meal"]:checked').value;
-        const conditionalItems = document.querySelectorAll('.conditional-item');
-        const mealItems = document.querySelectorAll('.meal-item');
+	function updateVisibility() {
+		const selectedValue = document.querySelector('input[name="meal"]:checked').value;
+		const conditionalItems = document.querySelectorAll('.conditional-item');
+		const mealItems = document.querySelectorAll('.meal-item');
 
-        if (selectedValue === 'tea-time') {
-            conditionalItems.forEach(item => {
-                item.style.display = 'none'; // 非表示
-            });
-            mealItems.forEach(item => {
-                item.style.display = 'flex'; // aaaは表示
-            });
-        } else {
-            conditionalItems.forEach(item => {
-                item.style.display = 'flex'; // 表示
-            });
-            mealItems.forEach(item => {
-                item.style.display = 'none'; // aaaは非表示
-            });
-        }
-    }
+		if (selectedValue === 'tea-time') {
+			conditionalItems.forEach(item => {
+				item.style.display = 'none'; // 非表示
+			});
+			mealItems.forEach(item => {
+				item.style.display = 'flex'; // aaaは表示
+			});
+		} else {
+			conditionalItems.forEach(item => {
+				item.style.display = 'flex'; // 表示
+			});
+			mealItems.forEach(item => {
+				item.style.display = 'none'; // aaaは非表示
+			});
+		}
+	}
 });
 
 
