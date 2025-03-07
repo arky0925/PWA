@@ -595,18 +595,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
 });
 
-document.querySelectorAll('.text-node').forEach(textarea => {
-	textarea.style.height = '18px'; // 初期表示時の高さを16pxに設定
-	textarea.addEventListener('input', function () {
-		// 1行目が入力中の場合は高さを18pxに固定
-		if (this.value.split('\n').length === 1) {
-			this.style.height = '18px'; // 1行目が入力中のため16pxに設定
-		} else {
-			this.style.height = 'auto'; // 初期化
-			this.style.height = this.scrollHeight + 'px'; // 内容に応じて高さを設定
-		}
-	});
-});
+//document.addEventListener('DOMContentLoaded', () => {
+//	document.querySelectorAll('.text-node').forEach(textarea => {
+//		textarea.addEventListener('input', () => {
+//			textarea.style.height = 'auto'; // 高さをリセット
+//			textarea.style.height = `${textarea.scrollHeight}px`; // 内容に応じて高さを設定
+//		});
+//
+//		textarea.addEventListener('keydown', (event) => {
+//			if (event.key === 'Enter') {
+//				event.preventDefault(); // デフォルトのエンターキー動作を防ぐ
+//				document.activeElement.blur(); // フォーカスを外す
+//			}
+//		});
+//
+//		textarea.dispatchEvent(new Event('input')); // 初期高さを設定
+//	});
+//});
 
 const dateInput = document.getElementById('dateInput');
 function closetemplateSelectMenu() {
@@ -653,21 +658,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	function updateVisibility() {
 		const selectedValue = document.querySelector('input[name="meal"]:checked').value;
 		const conditionalItems = document.querySelectorAll('.conditional-item');
-		const mealItems = document.querySelectorAll('.meal-item');
+		const mealItems = document.querySelectorAll('.meal-Item');
 
 		if (selectedValue === 'tea-time') {
 			conditionalItems.forEach(item => {
-				item.style.display = 'none'; // 非表示
+				item.classList.add('hidden'); // hiddenクラスを追加
 			});
 			mealItems.forEach(item => {
-				item.style.display = 'flex'; // aaaは表示
+				item.classList.remove('hidden'); // hiddenクラスを削除
 			});
 		} else {
 			conditionalItems.forEach(item => {
-				item.style.display = 'flex'; // 表示
+				item.classList.remove('hidden'); // hiddenクラスを削除
 			});
 			mealItems.forEach(item => {
-				item.style.display = 'none'; // aaaは非表示
+				item.classList.add('hidden'); // hiddenクラスを追加
 			});
 		}
 	}
@@ -712,3 +717,69 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+	// すべてのアイコンを取得
+	const icons = document.querySelectorAll('.conditional-item .material-icons');
+
+	// プレースホルダーのマッピング
+	const placeholders = {
+		'rice_bowl': '主食',
+		'set_meal': '主菜',
+		'kebab_dining': '副菜',
+		'soup_kitchen': '汁物',
+		'icecream': 'おやつ',
+		'local_cafe': '飲み物',
+		'cake': 'デザート',
+	};
+
+	icons.forEach(icon => {
+		// 各アイコンにクリックイベントリスナーを追加
+		icon.addEventListener('click', function() {
+			const aaaDiv = this.nextElementSibling; // 次の兄弟要素（div.aaa）を取得
+
+			// 仕切りを作成
+			const separator = document.createElement('div');
+			separator.className = 'separator'; // 仕切りのクラスを追加
+
+			// 新しいテキストエリアを作成
+			const newTextarea = document.createElement('textarea');
+			newTextarea.className = 'text-node'; // クラスを追加
+			newTextarea.rows = '1'; // 行の数
+
+			// アイコンの名前に基づいてプレースホルダーを設定
+			const iconName = this.textContent.trim(); // アイコンのテキストを取得
+			newTextarea.placeholder = placeholders[iconName] || '追加のテキスト'; // プレースホルダーを設定
+
+			// 新しいテキストエリアと仕切りをaaaのdivに追加
+			aaaDiv.appendChild(separator);
+			aaaDiv.appendChild(newTextarea);
+
+			// 新しいテキストエリアにイベントリスナーを追加
+			addTextareaEventListeners(newTextarea);
+		});
+	});
+
+	// 初期のテキストエリアにもイベントリスナーを追加
+	const initialTextareas = document.querySelectorAll('.text-node');
+	initialTextareas.forEach(textarea => {
+		addTextareaEventListeners(textarea);
+	});
+});
+
+// テキストエリアにイベントリスナーを追加する関数
+function addTextareaEventListeners(textarea) {
+	textarea.addEventListener('input', () => {
+		textarea.style.height = 'auto'; // 高さをリセット
+		textarea.style.height = `${textarea.scrollHeight}px`; // 内容に応じて高さを設定
+	});
+
+	textarea.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault(); // デフォルトのエンターキー動作を防ぐ
+			document.activeElement.blur(); // フォーカスを外す
+		}
+	});
+
+	textarea.dispatchEvent(new Event('input')); // 初期高さを設定
+}

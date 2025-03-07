@@ -382,14 +382,26 @@ body {
 	margin-right: 20px;
 }
 
+.aaa {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.separator {
+	height: 1px; /* 仕切りの高さ */
+	background-color: #ccc; /* 仕切りの色 */
+	margin: 10px 0; /* 上下のマージン */
+}
+
 .text-node {
 	flex-grow: 1; /* テキストを左に寄せるためにフレックスボックスの成長を設定 */
+	overflow: hidden;
 	overflow-wrap: break-word; /* 単語の途切れを許可 */
 	word-wrap: break-word; /* 古いブラウザのサポート */
 	hyphens: auto; /* ハイフネーションを自動にする */
 	text-align: left;
-	height: auto; /* 高さを自動に設定 */
-	min-height: 16px; /* 最小の高さを設定 */
+	width: 100%;
 	font-size: 16px;
 	border: none;
 	outline: none;
@@ -399,53 +411,71 @@ body {
 	align-items:center;
 }
 
+.text-node-date {
+	width: 100%;
+	font-size: 16px;
+	padding-left: 10px;
+}
+
 .option-hidden {
 	opacity: 0;
 }
 
 .radio-group {
-    display: flex; /* 横並びにする */
-    align-items: center; /* 縦方向の中央揃え */
-    gap: 10px;
-    padding-left: 10px;
+	display: flex; /* 横並びにする */
+	align-items: center; /* 縦方向の中央揃え */
+	gap: 10px;
+	padding-left: 10px;
 }
 
 .radio-group label {
 	cursor: pointer; /* マウスカーソルをポインターに */
-    color: #333; /* テキストの色を統一 */
+	color: #333; /* テキストの色を統一 */
 }
 
 /* ラジオボタンのスタイル */
 input[type="radio"] {
-    display: none; /* デフォルトのラジオボタンを非表示 */
+	display: none; /* デフォルトのラジオボタンを非表示 */
 }
 
 /* 各ラジオボタンに対応するスタイル */
 .radio-breakfast input[type="radio"]:checked + span {
-    background-color: #33cd30; /* 選択された場合の背景色（赤） */
-    color: white; /* テキストの色（白） */
+	background-color: #33cd30; /* 選択された場合の背景色（赤） */
+	color: white; /* テキストの色（白） */
 }
 
 .radio-lunch input[type="radio"]:checked + span {
-    background-color: #efa538; /* 選択された場合の背景色（青） */
-    color: white; /* テキストの色（白） */
+	background-color: #efa538; /* 選択された場合の背景色（青） */
+	color: white; /* テキストの色（白） */
 }
 
 .radio-dinner input[type="radio"]:checked + span {
-    background-color: #5a81e8; /* 選択された場合の背景色（緑） */
-    color: white; /* テキストの色（白） */
+	background-color: #5a81e8; /* 選択された場合の背景色（緑） */
+	color: white; /* テキストの色（白） */
 }
 
 .radio-tea-time input[type="radio"]:checked + span {
-    background-color: #f27dd9; /* 選択された場合の背景色（緑） */
-    color: white; /* テキストの色（白） */
+	background-color: #f27dd9; /* 選択された場合の背景色（緑） */
+	color: white; /* テキストの色（白） */
 }
 
 /* スタイルを適用するためのスパン */
 .radio-group span {
-    padding: 10px 10px; /* パディング */
-    border-radius: 5px; /* 角を丸くする */
-    border: 1px solid #ccc; /* 枠線 */
-    transition: background-color 0.3s; /* 背景色の遷移 */
-    font-size: 14px;
+	padding: 10px 10px; /* パディング */
+	border-radius: 5px; /* 角を丸くする */
+	border: 1px solid #ccc; /* 枠線 */
+	transition: background-color 0.3s; /* 背景色の遷移 */
+	font-size: 14px;
+}
+
+.conditional-item, .sss {
+	opacity: 1; /* 不透明度を設定 */
+	overflow: hidden; /* オーバーフローを隠す */
+}
+
+.hidden {
+	max-height: 0; /* 高さを0に */
+	opacity: 0; /* 不透明度を0に */
+	padding: 0 !important; /* パディングを0に */
+	pointer-events: none; /* クリックイベントを無効に */
 }
