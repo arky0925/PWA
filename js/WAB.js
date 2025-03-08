@@ -582,6 +582,9 @@ deleteDo.addEventListener('click',  () => {
 // テンプレート選択メニュー開閉
 const templateSelectMenu = document.getElementById('templateSelectMenu');
 const templateSelectButton = document.getElementById('templateSelectButton');
+const editModal = document.getElementById('editModal');
+const editDelete = document.getElementById('editDelete');
+const editCancel = document.getElementById('editCancel');
 document.addEventListener('DOMContentLoaded', () => {
 	// メニューを開く
 	templateSelectButton.addEventListener('click', () => {
@@ -589,35 +592,41 @@ document.addEventListener('DOMContentLoaded', () => {
 		dateInput.value = dateString;
 		updateFormattedDate(dateString);
 		templateSelectMenu.classList.add('open');
+		updateVisibility();
 	});
 
 	// メニューを閉じる
-	document.getElementById('closetemplateSelectMenu').addEventListener('click', closetemplateSelectMenu);
+	document.getElementById('closetemplateSelectMenu').addEventListener('click', editModalShow);
+	editDelete.addEventListener('click', editModalClose);
+	editDelete.addEventListener('click', closetemplateSelectMenu);
+	editCancel.addEventListener('click', editModalClose);
+	modalOverlay.addEventListener('click', editModalClose);
 });
 
-//document.addEventListener('DOMContentLoaded', () => {
-//	document.querySelectorAll('.text-node').forEach(textarea => {
-//		textarea.addEventListener('input', () => {
-//			textarea.style.height = 'auto'; // 高さをリセット
-//			textarea.style.height = `${textarea.scrollHeight}px`; // 内容に応じて高さを設定
-//		});
-//
-//		textarea.addEventListener('keydown', (event) => {
-//			if (event.key === 'Enter') {
-//				event.preventDefault(); // デフォルトのエンターキー動作を防ぐ
-//				document.activeElement.blur(); // フォーカスを外す
-//			}
-//		});
-//
-//		textarea.dispatchEvent(new Event('input')); // 初期高さを設定
-//	});
-//});
-
-const dateInput = document.getElementById('dateInput');
 function closetemplateSelectMenu() {
 	templateSelectMenu.classList.remove('open');
 }
 
+function editModalShow() {
+	editModal.style.display = 'flex'; // モーダルを表示
+	timer = setTimeout(() => {
+		editModal.classList.add('open');
+	}, 1);
+	modalOverlay.style.display = 'block'; // オーバーレイを表示
+	gsap.to(modalOverlay, { opacity: 1, duration: 0.2 });
+}
+
+function editModalClose() {
+	editModal.classList.remove('open');
+	timer = setTimeout(() => {
+		editModal.style.display = 'none'; // モーダルを表示
+	}, 200);
+	gsap.to(modalOverlay, { opacity: 0, duration: 0.2, onComplete: () => {
+		modalOverlay.style.display = 'none'; // オーバーレイを表示
+	}});
+}
+
+const dateInput = document.getElementById('dateInput');
 // 日付選択イベントのリスナー
 dateInput.addEventListener('change', function() {
 	updateFormattedDate(this.value); // 直接関数を呼び出す
@@ -647,145 +656,136 @@ document.getElementById('formattedDate').addEventListener('click', function() {
 	dateInput.focus(); // フォーカスを当てる
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-	updateVisibility();
+const radioButtons = document.querySelectorAll('input[name="meal"]');
+const colorCircle = document.getElementById('colorCircle');
+const checkbox = document.getElementById('takeoutCheckbox');
 
-	const radioButtons = document.querySelectorAll('input[name="meal"]');
-	radioButtons.forEach(radio => {
-		radio.addEventListener('change', updateVisibility);
+// 初期色設定
+setColor(radioButtons[2].value); // 最初のラジオボタンの値を使う
+
+// ラジオボタンの変更イベント
+radioButtons.forEach(radio => {
+	radio.addEventListener('change', function() {
+		setColor(this.value);
+		updateVisibility();
+		updateRadioBackground();
 	});
+});
 
-	function updateVisibility() {
-		const selectedValue = document.querySelector('input[name="meal"]:checked').value;
-		const conditionalItems = document.querySelectorAll('.conditional-item');
-		const mealItems = document.querySelectorAll('.meal-Item');
+// チェックボックスの変更イベント
+checkbox.addEventListener('change', function() {
+	setColor(radioButtons[0].checked ? radioButtons[0].value : radioButtons[1].checked ? radioButtons[1].value : radioButtons[2].checked ? radioButtons[2].value : radioButtons[3].value);
+	updateRadioBackground();
+});
 
-		if (selectedValue === 'tea-time') {
-			conditionalItems.forEach(item => {
-				item.classList.add('hidden'); // hiddenクラスを追加
-			});
-			mealItems.forEach(item => {
-				item.classList.remove('hidden'); // hiddenクラスを削除
-			});
-		} else {
-			conditionalItems.forEach(item => {
-				item.classList.remove('hidden'); // hiddenクラスを削除
-			});
-			mealItems.forEach(item => {
-				item.classList.add('hidden'); // hiddenクラスを追加
-			});
+// 色を設定する関数
+function setColor(value) {
+	colorCircle.className = 'color-circle'; // クラスをリセット
+	if (checkbox.checked) {
+		colorCircle.classList.add('takeout'); // 一律黄色
+	} else {
+		switch (value) {
+			case 'breakfast':
+				colorCircle.classList.add('breakfast');
+				break;
+			case 'lunch':
+				colorCircle.classList.add('lunch');
+				break;
+			case 'dinner':
+				colorCircle.classList.add('dinner');
+				break;
+			case 'tea-time':
+				colorCircle.classList.add('tea-time');
+				break;
 		}
 	}
-});
+}
 
-
-document.addEventListener('DOMContentLoaded', function() {
-	const checkbox = document.getElementById('takeoutCheckbox');
-	const radioButtons = document.querySelectorAll('input[name="meal"]');
-
-	// チェックボックスの状態が変わったとき
-	checkbox.addEventListener('change', function() {
-		radioButtons.forEach(radio => {
-			const span = radio.nextElementSibling; // ラジオボタンに対応する<span>を取得
-			if (this.checked) {
-				// チェックボックスがオンの場合
-				if (radio.checked) {
-					span.style.backgroundColor = '#f1c40f'; // 背景色を黄色にする
-				} else {
-					span.style.backgroundColor = ''; // 他のラジオボタンは元に戻す
-				}
-			} else {
-				// チェックボックスがオフの場合
-				span.style.backgroundColor = ''; // 背景色を元に戻す
-			}
-		});
+// ラジオボタンでの表示を更新
+function updateVisibility() {
+	const selectedValue = document.querySelector('input[name="meal"]:checked').value;
+	document.querySelectorAll('.conditional-item').forEach(item => {
+		item.classList.toggle('hidden', selectedValue !== 'tea-time');
 	});
+	document.querySelectorAll('.meal-Item').forEach(item => {
+		item.classList.toggle('hidden', selectedValue === 'tea-time');
+	});
+}
 
-	// ラジオボタンの変更イベントを監視
+// ラジオボタンの背景色を更新
+function updateRadioBackground() {
 	radioButtons.forEach(radio => {
-		radio.addEventListener('change', function() {
-			// 全てのラジオボタンの背景色をリセット
-			radioButtons.forEach(btn => {
-				const span = btn.nextElementSibling; // ラジオボタンに対応する<span>を取得
-				span.style.backgroundColor = ''; // すべての<span>を白に戻す
-			});
+		const span = radio.nextElementSibling; // ラジオボタンに対応する<span>
+		span.style.backgroundColor = checkbox.checked && radio.checked ? '#f1c40f' : ''; // チェックされている場合は黄色
+	});
+}
 
-			const span = this.nextElementSibling; // 選択されたラジオボタンの<span>を取得
-			if (checkbox.checked) {
-				span.style.backgroundColor = '#f1c40f'; // チェックボックスがオンの場合
-			}
+// すべてのアイコンを取得
+const icons = document.querySelectorAll('.conditional-item .material-icons');
+
+// プレースホルダーのマッピング
+const placeholders = {
+	'rice_bowl': '主食',
+	'set_meal': '主菜',
+	'kebab_dining': '副菜',
+	'soup_kitchen': '汁物',
+	'icecream': 'おやつ',
+	'local_cafe': '飲み物',
+	'cake': 'デザート',
+};
+
+icons.forEach(icon => {
+	// 各アイコンにクリックイベントリスナーを追加
+	icon.addEventListener('click', function() {
+		const aaaDiv = this.nextElementSibling; // 次の兄弟要素（div.aaa）を取得
+
+		// 仕切りを作成
+		const separator = document.createElement('div');
+		separator.className = 'separator'; // 仕切りのクラスを追加
+
+		// アイテムコンテナを作成
+		const itemContainer = document.createElement('div');
+		itemContainer.className = 'item-container'; // アイテムコンテナのクラスを追加
+
+
+		// 新しいテキストエリアを作成
+		const newTextarea = document.createElement('textarea');
+		newTextarea.className = 'text-node'; // クラスを追加
+		newTextarea.rows = '1'; // 行の数
+
+		// アイコンの名前に基づいてプレースホルダーを設定
+		const iconName = this.textContent.trim(); // アイコンのテキストを取得
+		newTextarea.placeholder = placeholders[iconName] || '追加のテキスト'; // プレースホルダーを設定
+
+		// 削除ボタンを作成
+		const removeButton = document.createElement('span');
+		removeButton.className = 'material-icons remove-button'; // クラスを追加
+		removeButton.textContent = 'remove_circle_outline'; // ボタンテキスト
+
+		// 削除ボタンのクリックイベント
+		removeButton.addEventListener('click', function() {
+			aaaDiv.removeChild(itemContainer); // アイテムコンテナを削除
+			aaaDiv.removeChild(separator); // 仕切りを削除
 		});
+
+		// アイテムコンテナにテキストエリアと削除ボタンを追加
+		itemContainer.appendChild(newTextarea);
+		itemContainer.appendChild(removeButton);
+
+		// 新しいアイテムコンテナと仕切りをaaaのdivに追加
+		aaaDiv.appendChild(separator);
+		aaaDiv.appendChild(itemContainer);
+
+		// 新しいテキストエリアにイベントリスナーを追加
+		addTextareaEventListeners(newTextarea);
 	});
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-	// すべてのアイコンを取得
-	const icons = document.querySelectorAll('.conditional-item .material-icons');
-
-	// プレースホルダーのマッピング
-	const placeholders = {
-		'rice_bowl': '主食',
-		'set_meal': '主菜',
-		'kebab_dining': '副菜',
-		'soup_kitchen': '汁物',
-		'icecream': 'おやつ',
-		'local_cafe': '飲み物',
-		'cake': 'デザート',
-	};
-
-	icons.forEach(icon => {
-		// 各アイコンにクリックイベントリスナーを追加
-		icon.addEventListener('click', function() {
-			const aaaDiv = this.nextElementSibling; // 次の兄弟要素（div.aaa）を取得
-
-			// 仕切りを作成
-			const separator = document.createElement('div');
-			separator.className = 'separator'; // 仕切りのクラスを追加
-
-			// アイテムコンテナを作成
-			const itemContainer = document.createElement('div');
-			itemContainer.className = 'item-container'; // アイテムコンテナのクラスを追加
-
-
-			// 新しいテキストエリアを作成
-			const newTextarea = document.createElement('textarea');
-			newTextarea.className = 'text-node'; // クラスを追加
-			newTextarea.rows = '1'; // 行の数
-
-			// アイコンの名前に基づいてプレースホルダーを設定
-			const iconName = this.textContent.trim(); // アイコンのテキストを取得
-			newTextarea.placeholder = placeholders[iconName] || '追加のテキスト'; // プレースホルダーを設定
-
-			// 削除ボタンを作成
-			const removeButton = document.createElement('span');
-			removeButton.className = 'material-icons remove-button'; // クラスを追加
-			removeButton.textContent = 'remove_circle_outline'; // ボタンテキスト
-
-			// 削除ボタンのクリックイベント
-			removeButton.addEventListener('click', function() {
-				aaaDiv.removeChild(itemContainer); // アイテムコンテナを削除
-				aaaDiv.removeChild(separator); // 仕切りを削除
-			});
-
-			// アイテムコンテナにテキストエリアと削除ボタンを追加
-			itemContainer.appendChild(newTextarea);
-			itemContainer.appendChild(removeButton);
-
-			// 新しいアイテムコンテナと仕切りをaaaのdivに追加
-			aaaDiv.appendChild(separator);
-			aaaDiv.appendChild(itemContainer);
-
-			// 新しいテキストエリアにイベントリスナーを追加
-			addTextareaEventListeners(newTextarea);
-		});
-	});
 
 	// 初期のテキストエリアにもイベントリスナーを追加
 	const initialTextareas = document.querySelectorAll('.text-node');
 	initialTextareas.forEach(textarea => {
 		addTextareaEventListeners(textarea);
 	});
-});
 
 // テキストエリアにイベントリスナーを追加する関数
 function addTextareaEventListeners(textarea) {
@@ -803,57 +803,3 @@ function addTextareaEventListeners(textarea) {
 
 	textarea.dispatchEvent(new Event('input')); // 初期高さを設定
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-	const radioButtons = document.querySelectorAll('input[name="meal"]');
-	const colorCircle = document.getElementById('colorCircle');
-	const takeoutCheckbox = document.getElementById('takeoutCheckbox');
-
-	// 初期色設定
-	const initialColor = radioButtons[2].value; // 初期値（最初のラジオボタン）
-	setColor(initialColor); // 初期色を設定
-
-	// ラジオボタンの変更イベント
-	radioButtons.forEach(radio => {
-		radio.addEventListener('change', function() {
-			if (takeoutCheckbox.checked) {
-				setColor('takeout'); // チェックされている場合は一律黄色
-			} else {
-				setColor(this.value); // 選択された色を設定
-			}
-		});
-	});
-
-	// チェックボックスの変更イベント
-	takeoutCheckbox.addEventListener('change', function() {
-		if (this.checked) {
-			setColor('takeout'); // チェックされている場合は一律黄色
-		} else {
-			const selectedRadio = document.querySelector('input[name="meal"]:checked');
-			setColor(selectedRadio.value); // 選択された色を表示
-		}
-	});
-
-	// 色を設定する関数
-	function setColor(value) {
-		colorCircle.classList.remove('breakfast', 'lunch', 'dinner', 'tea-time', 'takeout'); // 既存の色クラスを削除
-		if (value === 'takeout') {
-			colorCircle.classList.add('takeout'); // 一律黄色
-		} else {
-			switch (value) {
-				case 'breakfast':
-					colorCircle.classList.add('breakfast');
-					break;
-				case 'lunch':
-					colorCircle.classList.add('lunch');
-					break;
-				case 'dinner':
-					colorCircle.classList.add('dinner');
-					break;
-				case 'tea-time':
-					colorCircle.classList.add('tea-time');
-					break;
-			}
-		}
-	}
-});
