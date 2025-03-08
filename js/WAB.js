@@ -705,10 +705,10 @@ function setColor(value) {
 function updateVisibility() {
 	const selectedValue = document.querySelector('input[name="meal"]:checked').value;
 	document.querySelectorAll('.conditional-item').forEach(item => {
-		item.classList.toggle('hidden', selectedValue !== 'tea-time');
+		item.classList.toggle('hidden', selectedValue === 'tea-time');
 	});
 	document.querySelectorAll('.meal-Item').forEach(item => {
-		item.classList.toggle('hidden', selectedValue === 'tea-time');
+		item.classList.toggle('hidden', selectedValue !== 'tea-time');
 	});
 }
 
