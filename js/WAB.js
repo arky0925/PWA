@@ -742,6 +742,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			const separator = document.createElement('div');
 			separator.className = 'separator'; // 仕切りのクラスを追加
 
+			// アイテムコンテナを作成
+			const itemContainer = document.createElement('div');
+			itemContainer.className = 'item-container'; // アイテムコンテナのクラスを追加
+
+
 			// 新しいテキストエリアを作成
 			const newTextarea = document.createElement('textarea');
 			newTextarea.className = 'text-node'; // クラスを追加
@@ -751,9 +756,24 @@ document.addEventListener('DOMContentLoaded', function() {
 			const iconName = this.textContent.trim(); // アイコンのテキストを取得
 			newTextarea.placeholder = placeholders[iconName] || '追加のテキスト'; // プレースホルダーを設定
 
-			// 新しいテキストエリアと仕切りをaaaのdivに追加
+			// 削除ボタンを作成
+			const removeButton = document.createElement('span');
+			removeButton.className = 'material-icons remove-button'; // クラスを追加
+			removeButton.textContent = 'remove_circle_outline'; // ボタンテキスト
+
+			// 削除ボタンのクリックイベント
+			removeButton.addEventListener('click', function() {
+				aaaDiv.removeChild(itemContainer); // アイテムコンテナを削除
+				aaaDiv.removeChild(separator); // 仕切りを削除
+			});
+
+			// アイテムコンテナにテキストエリアと削除ボタンを追加
+			itemContainer.appendChild(newTextarea);
+			itemContainer.appendChild(removeButton);
+
+			// 新しいアイテムコンテナと仕切りをaaaのdivに追加
 			aaaDiv.appendChild(separator);
-			aaaDiv.appendChild(newTextarea);
+			aaaDiv.appendChild(itemContainer);
 
 			// 新しいテキストエリアにイベントリスナーを追加
 			addTextareaEventListeners(newTextarea);
@@ -783,3 +803,57 @@ function addTextareaEventListeners(textarea) {
 
 	textarea.dispatchEvent(new Event('input')); // 初期高さを設定
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+	const radioButtons = document.querySelectorAll('input[name="meal"]');
+	const colorCircle = document.getElementById('colorCircle');
+	const takeoutCheckbox = document.getElementById('takeoutCheckbox');
+
+	// 初期色設定
+	const initialColor = radioButtons[2].value; // 初期値（最初のラジオボタン）
+	setColor(initialColor); // 初期色を設定
+
+	// ラジオボタンの変更イベント
+	radioButtons.forEach(radio => {
+		radio.addEventListener('change', function() {
+			if (takeoutCheckbox.checked) {
+				setColor('takeout'); // チェックされている場合は一律黄色
+			} else {
+				setColor(this.value); // 選択された色を設定
+			}
+		});
+	});
+
+	// チェックボックスの変更イベント
+	takeoutCheckbox.addEventListener('change', function() {
+		if (this.checked) {
+			setColor('takeout'); // チェックされている場合は一律黄色
+		} else {
+			const selectedRadio = document.querySelector('input[name="meal"]:checked');
+			setColor(selectedRadio.value); // 選択された色を表示
+		}
+	});
+
+	// 色を設定する関数
+	function setColor(value) {
+		colorCircle.classList.remove('breakfast', 'lunch', 'dinner', 'tea-time', 'takeout'); // 既存の色クラスを削除
+		if (value === 'takeout') {
+			colorCircle.classList.add('takeout'); // 一律黄色
+		} else {
+			switch (value) {
+				case 'breakfast':
+					colorCircle.classList.add('breakfast');
+					break;
+				case 'lunch':
+					colorCircle.classList.add('lunch');
+					break;
+				case 'dinner':
+					colorCircle.classList.add('dinner');
+					break;
+				case 'tea-time':
+					colorCircle.classList.add('tea-time');
+					break;
+			}
+		}
+	}
+});
