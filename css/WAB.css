@@ -420,7 +420,7 @@ body {
 	font-size: 16px !important;
 }
 
-.conditional-item {
+.add-target {
 	position: relative; /* 親要素を相対位置に設定 */
 }
 
@@ -511,11 +511,6 @@ input[type="radio"] {
 	border: 1px solid #ccc; /* 枠線 */
 	transition: background-color 0.3s; /* 背景色の遷移 */
 	font-size: 14px;
-}
-
-.conditional-item, .sss {
-	opacity: 1; /* 不透明度を設定 */
-	overflow: hidden; /* オーバーフローを隠す */
 }
 
 .hidden {

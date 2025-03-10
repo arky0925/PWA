@@ -548,7 +548,6 @@ function deleteModalClose() {
 }
 
 deleteDo.addEventListener('click',  () => {
-	const action = 'deleteCalendar';
 	const id = deleteButton.getAttribute('data-info');
 	let events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
 
@@ -564,7 +563,7 @@ deleteDo.addEventListener('click',  () => {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		body: new URLSearchParams({
-			action: action, id: id
+			action: 'deleteCalendar', id: id
 		}),
 	})
 	.then(response => {
@@ -581,7 +580,7 @@ deleteDo.addEventListener('click',  () => {
 	});
 });
 
-// テンプレート選択メニュー開閉
+// フォームメニュー開閉
 const formMenu = document.getElementById('formMenu');
 const add = document.getElementById('add');
 const editButton = document.getElementById('editButton');
@@ -591,13 +590,9 @@ const editCancel = document.getElementById('editCancel');
 const addSubmit = document.getElementById('addSubmit');
 const editSubmit = document.getElementById('editSubmit');
 document.addEventListener('DOMContentLoaded', () => {
-	const dateString = dateInput.getAttribute('data-info');
 	const initialTextareas = document.querySelectorAll('.text-node');
 	// メニューを開く
 	add.addEventListener('click', () => {
-		dateInput.value = dateString;
-		updateFormattedDate(dateString);
-
 		// 初期値に戻す
 		const textareas = document.querySelectorAll('.text-node');
 		textareas.forEach(textarea => {
@@ -624,9 +619,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	// メニューを開く
 	editButton.addEventListener('click', () => {
 		const id = editButton.getAttribute('data-info');
-		const events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
+		let events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
+		events = fixDates(events);
 		const eventIndex = events.findIndex(event => event.id === parseInt(id, 10));
 		const display = document.getElementById('display');
+		const date = document.getElementById('dateInput');
 		const staple = document.getElementById('staple');
 		const main = document.getElementById('main');
 		const side = document.getElementById('side');
@@ -634,18 +631,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		const snack = document.getElementById('snack');
 		const drink = document.getElementById('drink');
 		const dessert = document.getElementById('dessert');
-		const other = document.getElementById('other');
+		const otherMeal = document.getElementById('otherMeal');
+		const otherSnack = document.getElementById('otherSnack');
 		const memo = document.getElementById('memo');
 
 		// 既存の値を設定
 		display.value = events[eventIndex].display;
-		dateInput.value = dateString;
-		updateFormattedDate(dateString);
+		
 		radioButtons.forEach(radio => {
 			if (radio.value === events[eventIndex].style) {
 				radio.checked = true;
 			}
 		});
+		date.value = events[eventIndex].date;
 		staple.value = events[eventIndex].staple[0] || '';
 		main.value = events[eventIndex].main[0] || '';
 		side.value = events[eventIndex].side[0] || '';
@@ -653,7 +651,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		snack.value = events[eventIndex].snack[0] || '';
 		drink.value = events[eventIndex].drink[0] || '';
 		dessert.value = events[eventIndex].dessert[0] || '';
-		other.value = events[eventIndex].other[0] || '';
+		if (events[eventIndex].style === 'tea-time') {
+			otherSnack.value = events[eventIndex].other[0] || '';
+		} else {
+			otherMeal.value = events[eventIndex].other[0] || '';
+		}
 		memo.value = events[eventIndex].memo || '';
 		if (events[eventIndex].takeout) {
 			checkbox.checked = true;
@@ -706,6 +708,55 @@ function editModalClose() {
 		modalOverlay.style.display = 'none'; // オーバーレイを表示
 	}});
 }
+
+document.getElementById('addSubmit').addEventListener('click', function() {
+    const display = document.getElementById('display').value;
+    const date = document.getElementById('dateInput').value;
+    const style = document.querySelector('input[name="meal"]:checked').value;
+    const takeout = document.getElementById('takeoutCheckbox').checked;
+    const memo = document.getElementById('memo').value;
+
+    // 各項目に対する追加されたテキストエリアの値を収集
+    const dataTypes = ['staple', 'main', 'side', 'soup', 'snack', 'drink', 'dessert', 'otherMeal', 'otherSnack'];
+    const additionalValues = {};
+
+    dataTypes.forEach(type => {
+        const additionalItems = Array.from(document.querySelectorAll(`.item-container[data-type="${type}"] textarea`))
+            .map(textarea => textarea.value)
+            .filter(value => value);
+        // 基本値と追加値を結合
+        const basicValue = document.getElementById(type).value; // ここで基本値を取得
+        additionalValues[type] = [basicValue, ...additionalItems].filter(Boolean).join(', ');
+    });
+
+    const data = {
+        display,
+        date,
+        style,
+        takeout,
+        ...additionalValues, // 各項目の値を追加
+        memo,
+        action: 'addCalendar',
+    };
+
+    console.log(data)
+
+//    fetch(scriptURL, {
+//        method: 'POST',
+//        headers: {
+//            'Content-Type': 'application/json'
+//        },
+//        body: JSON.stringify(data)
+//    })
+//    .then(response => response.json())
+//    .then(result => {
+//        console.log(result);
+//        // 結果を処理する
+//    })
+//    .catch(error => {
+//        console.error('Error:', error);
+//    });
+});
 
 const dateInput = document.getElementById('dateInput');
 // 日付選択イベントのリスナー
@@ -782,10 +833,10 @@ function setColor(value) {
 // ラジオボタンでの表示を更新
 function updateVisibility() {
 	const selectedValue = document.querySelector('input[name="meal"]:checked').value;
-	document.querySelectorAll('.conditional-item').forEach(item => {
+	document.querySelectorAll('.meal-item').forEach(item => {
 		item.classList.toggle('hidden', selectedValue === 'tea-time');
 	});
-	document.querySelectorAll('.meal-item').forEach(item => {
+	document.querySelectorAll('.snack-item').forEach(item => {
 		item.classList.toggle('hidden', selectedValue !== 'tea-time');
 	});
 }
@@ -799,17 +850,19 @@ function updateRadioBackground() {
 }
 
 // すべてのアイコンを取得
-const icons = document.querySelectorAll('.conditional-item .material-icons');
+const icons = document.querySelectorAll('.add-target .material-icons');
 
 // プレースホルダーのマッピング
 const placeholders = {
-	'rice_bowl': '主食',
-	'set_meal': '主菜',
-	'kebab_dining': '副菜',
-	'soup_kitchen': '汁物',
-	'icecream': 'おやつ',
-	'local_cafe': '飲み物',
-	'cake': 'デザート',
+	'staple': '主食',
+	'main': '主菜',
+	'side': '副菜',
+	'soup': '汁物',
+	'snack': 'おやつ',
+	'drink': '飲み物',
+	'dessert': 'デザート',
+	'otherMeal': 'その他',
+	'otherSnack': 'その他',
 };
 
 icons.forEach(icon => {
@@ -827,12 +880,13 @@ icons.forEach(icon => {
 
 		// 新しいテキストエリアを作成
 		const newTextarea = document.createElement('textarea');
+		const dataType = icon.getAttribute('data-type');
 		newTextarea.className = 'text-node'; // クラスを追加
+		itemContainer.setAttribute('data-type', dataType); // データタイプを設定
 		newTextarea.rows = '1'; // 行の数
 
-		// アイコンの名前に基づいてプレースホルダーを設定
-		const iconName = this.textContent.trim(); // アイコンのテキストを取得
-		newTextarea.placeholder = placeholders[iconName] || '追加のテキスト'; // プレースホルダーを設定
+		// アイコンのデータタイプに基づいてプレースホルダーを設定
+		newTextarea.placeholder = placeholders[dataType] || '追加のテキスト'; // プレースホルダーを設定
 
 		// 削除ボタンを作成
 		const removeButton = document.createElement('span');
