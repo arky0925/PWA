@@ -317,8 +317,8 @@ body {
 	opacity: 0;
 }
 
-/* テンプレート選択メニュー */
-.template-select-menu {
+/* フォームメニュー */
+.form-menu {
 	position: fixed;
 	top: 200%;
 	right: 0; /* 初期状態では画面外 */
@@ -331,11 +331,11 @@ body {
 	overflow-y: auto; /* 縦方向のスクロールを有効に */
 }
 
-.template-select-menu.open {
+.form-menu.open {
 	top: 0;
 }
 
-.template-select-header {
+.form-header {
 	width: 100%;
 	height: 46px;
 	left: 0;
@@ -349,7 +349,7 @@ body {
 	z-index: 1;
 }
 
-.template-select-header span {
+.form-header span {
 	cursor: pointer;
 }
 
@@ -397,13 +397,13 @@ body {
 	margin-right: 20px;
 }
 
-.aaa {
+.item {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
 }
 
-.aaa > :first-child {
+.item > :first-child {
 	margin-top: 4px; /* 最初の要素にマージンを適用 */
 }
 
@@ -424,7 +424,7 @@ body {
 	position: relative; /* 親要素を相対位置に設定 */
 }
 
-.ad {
+.addItem {
 	position: absolute; /* 絶対配置 */
 	top: 5px; /* 上に移動 */
 	left: 40px; /* 左に配置 */

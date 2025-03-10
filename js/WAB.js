@@ -582,8 +582,8 @@ deleteDo.addEventListener('click',  () => {
 });
 
 // テンプレート選択メニュー開閉
-const templateSelectMenu = document.getElementById('templateSelectMenu');
-const templateSelectButton = document.getElementById('templateSelectButton');
+const formMenu = document.getElementById('formMenu');
+const add = document.getElementById('add');
 const editButton = document.getElementById('editButton');
 const editModal = document.getElementById('editModal');
 const editDelete = document.getElementById('editDelete');
@@ -592,11 +592,11 @@ const addSubmit = document.getElementById('addSubmit');
 const editSubmit = document.getElementById('editSubmit');
 document.addEventListener('DOMContentLoaded', () => {
 	const dateString = dateInput.getAttribute('data-info');
+	const initialTextareas = document.querySelectorAll('.text-node');
 	// メニューを開く
-	templateSelectButton.addEventListener('click', () => {
+	add.addEventListener('click', () => {
 		dateInput.value = dateString;
 		updateFormattedDate(dateString);
-		templateSelectMenu.classList.add('open');
 
 		// 初期値に戻す
 		const textareas = document.querySelectorAll('.text-node');
@@ -604,9 +604,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			textarea.value = '';
 		});
 		checkbox.checked = false;
+		radioButtons[2].checked = true; // ラジオボタンの初期値
+
 		updateRadioBackground(); // ラジオボタンの背景色を更新
 		setColor(radioButtons[2].value); // 色丸の初期値
-		radioButtons[2].checked = true; // ラジオボタンの初期値
+
+		// 初期のテキストエリアにもイベントリスナーを追加
+		initialTextareas.forEach(textarea => {
+			addTextareaEventListeners(textarea);
+		});
+
+		formMenu.classList.add('open');
 		updateVisibility(); // 項目の表示切替
 
 		addSubmit.style.display = 'flex';
@@ -657,12 +665,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		setColor(events[eventIndex].style);
 
 		// 初期のテキストエリアにもイベントリスナーを追加
-		const initialTextareas = document.querySelectorAll('.text-node');
 		initialTextareas.forEach(textarea => {
 			addTextareaEventListeners(textarea);
 		});
 
-		templateSelectMenu.classList.add('open');
+		formMenu.classList.add('open');
 		updateVisibility();
 
 		addSubmit.style.display = 'none';
@@ -670,15 +677,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// メニューを閉じる
-	document.getElementById('closetemplateSelectMenu').addEventListener('click', editModalShow);
+	document.getElementById('closeFormMenu').addEventListener('click', editModalShow);
 	editDelete.addEventListener('click', editModalClose);
-	editDelete.addEventListener('click', closetemplateSelectMenu);
+	editDelete.addEventListener('click', closeFormMenu);
 	editCancel.addEventListener('click', editModalClose);
 	modalOverlay.addEventListener('click', editModalClose);
 });
 
-function closetemplateSelectMenu() {
-	templateSelectMenu.classList.remove('open');
+function closeFormMenu() {
+	formMenu.classList.remove('open');
 }
 
 function editModalShow() {
@@ -778,7 +785,7 @@ function updateVisibility() {
 	document.querySelectorAll('.conditional-item').forEach(item => {
 		item.classList.toggle('hidden', selectedValue === 'tea-time');
 	});
-	document.querySelectorAll('.meal-Item').forEach(item => {
+	document.querySelectorAll('.meal-item').forEach(item => {
 		item.classList.toggle('hidden', selectedValue !== 'tea-time');
 	});
 }
@@ -808,7 +815,7 @@ const placeholders = {
 icons.forEach(icon => {
 	// 各アイコンにクリックイベントリスナーを追加
 	icon.addEventListener('click', function() {
-		const aaaDiv = this.nextElementSibling; // 次の兄弟要素（div.aaa）を取得
+		const itemDiv = this.nextElementSibling; // 次の兄弟要素（div.item）を取得
 
 		// 仕切りを作成
 		const separator = document.createElement('div');
@@ -817,7 +824,6 @@ icons.forEach(icon => {
 		// アイテムコンテナを作成
 		const itemContainer = document.createElement('div');
 		itemContainer.className = 'item-container'; // アイテムコンテナのクラスを追加
-
 
 		// 新しいテキストエリアを作成
 		const newTextarea = document.createElement('textarea');
@@ -835,17 +841,17 @@ icons.forEach(icon => {
 
 		// 削除ボタンのクリックイベント
 		removeButton.addEventListener('click', function() {
-			aaaDiv.removeChild(itemContainer); // アイテムコンテナを削除
-			aaaDiv.removeChild(separator); // 仕切りを削除
+			itemDiv.removeChild(itemContainer); // アイテムコンテナを削除
+			itemDiv.removeChild(separator); // 仕切りを削除
 		});
 
 		// アイテムコンテナにテキストエリアと削除ボタンを追加
 		itemContainer.appendChild(newTextarea);
 		itemContainer.appendChild(removeButton);
 
-		// 新しいアイテムコンテナと仕切りをaaaのdivに追加
-		aaaDiv.appendChild(separator);
-		aaaDiv.appendChild(itemContainer);
+		// 新しいアイテムコンテナと仕切りをitemのdivに追加
+		itemDiv.appendChild(separator);
+		itemDiv.appendChild(itemContainer);
 
 		// 新しいテキストエリアにイベントリスナーを追加
 		addTextareaEventListeners(newTextarea);
