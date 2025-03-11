@@ -598,6 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		textareas.forEach(textarea => {
 			textarea.value = '';
 		});
+		clearDynamicElements();
 		checkbox.checked = false;
 		radioButtons[2].checked = true; // ラジオボタンの初期値
 
@@ -622,8 +623,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		let events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
 		events = fixDates(events);
 		const eventIndex = events.findIndex(event => event.id === parseInt(id, 10));
+
 		const display = document.getElementById('display');
 		const date = document.getElementById('dateInput');
+		const radioButtons = document.querySelectorAll('input[name="meal"]');
 		const staple = document.getElementById('staple');
 		const main = document.getElementById('main');
 		const side = document.getElementById('side');
@@ -634,34 +637,97 @@ document.addEventListener('DOMContentLoaded', () => {
 		const otherMeal = document.getElementById('otherMeal');
 		const otherSnack = document.getElementById('otherSnack');
 		const memo = document.getElementById('memo');
+		const checkbox = document.getElementById('takeoutCheckbox');
+
+		const stapleItem = document.getElementById('stapleItem');
+		const mainItem = document.getElementById('mainItem');
+		const sideItem = document.getElementById('sideItem');
+		const soupItem = document.getElementById('soupItem');
+		const snackItem = document.getElementById('snackItem');
+		const drinkItem = document.getElementById('drinkItem');
+		const dessertItem = document.getElementById('dessertItem');
+		const otherMealItem = document.getElementById('otherMealItem');
+		const otherSnackItem = document.getElementById('otherSnackItem');
+
+		// 既存の動的要素をクリア
+		clearDynamicElements();
 
 		// 既存の値を設定
 		display.value = events[eventIndex].display;
-		
+		date.value = events[eventIndex].date;
+
+		// ラジオボタンの設定
 		radioButtons.forEach(radio => {
 			if (radio.value === events[eventIndex].style) {
 				radio.checked = true;
 			}
 		});
-		date.value = events[eventIndex].date;
-		staple.value = events[eventIndex].staple[0] || '';
-		main.value = events[eventIndex].main[0] || '';
-		side.value = events[eventIndex].side[0] || '';
-		soup.value = events[eventIndex].soup[0] || '';
-		snack.value = events[eventIndex].snack[0] || '';
-		drink.value = events[eventIndex].drink[0] || '';
-		dessert.value = events[eventIndex].dessert[0] || '';
-		if (events[eventIndex].style === 'tea-time') {
-			otherSnack.value = events[eventIndex].other[0] || '';
-		} else {
-			otherMeal.value = events[eventIndex].other[0] || '';
+
+		// 配列の要素を取得
+		const stapleArray = events[eventIndex].staple;
+		const mainArray = events[eventIndex].main;
+		const sideArray = events[eventIndex].side;
+		const soupArray = events[eventIndex].soup;
+		const snackArray = events[eventIndex].snack;
+		const drinkArray = events[eventIndex].drink;
+		const dessertArray = events[eventIndex].dessert;
+		const otherArray = events[eventIndex].other;
+
+		// stapleの値を設定
+		if (stapleArray.length > 0) {
+			staple.value = stapleArray[0]; // 最初の要素を設定
+			stapleArray.slice(1).forEach(item => createTextArea(stapleItem, item, 'staple')); // 2つ目以降を追加
 		}
+
+		// mainの値を設定
+		if (mainArray.length > 0) {
+			main.value = mainArray[0];
+			mainArray.slice(1).forEach(item => createTextArea(mainItem, item, 'main'));
+		}
+
+		// sideの値を設定
+		if (sideArray.length > 0) {
+			side.value = sideArray[0];
+			sideArray.slice(1).forEach(item => createTextArea(sideItem, item, 'side'));
+		}
+
+		// soupの値を設定
+		if (soupArray.length > 0) {
+			soup.value = soupArray[0];
+			soupArray.slice(1).forEach(item => createTextArea(soupItem, item, 'soup'));
+		}
+
+		// snackの値を設定
+		if (snackArray.length > 0) {
+			snack.value = snackArray[0];
+			snackArray.slice(1).forEach(item => createTextArea(snackItem, item, 'snack'));
+		}
+
+		// drinkの値を設定
+		if (drinkArray.length > 0) {
+			drink.value = drinkArray[0];
+			drinkArray.slice(1).forEach(item => createTextArea(drinkItem, item, 'drink'));
+		}
+
+		// dessertの値を設定
+		if (dessertArray.length > 0) {
+			dessert.value = dessertArray[0];
+			dessertArray.slice(1).forEach(item => createTextArea(dessertItem, item, 'dessert'));
+		}
+
+		// その他の値を設定
+		if (otherArray.length > 0) {
+			if (events[eventIndex].style === 'tea-time') {
+				otherSnack.value = otherArray[0];
+				otherArray.slice(1).forEach(item => createTextArea(otherSnackItem, item, 'otherSnack'));
+			} else {
+				otherMeal.value = otherArray[0];
+				otherArray.slice(1).forEach(item => createTextArea(otherMealItem, item, 'otherMeal'));
+			}
+		}
+
 		memo.value = events[eventIndex].memo || '';
-		if (events[eventIndex].takeout) {
-			checkbox.checked = true;
-		} else {
-			checkbox.checked = false;
-		}
+		checkbox.checked = events[eventIndex].takeout;
 
 		updateRadioBackground(); // ラジオボタンの背景色を更新
 		setColor(events[eventIndex].style);
@@ -678,6 +744,40 @@ document.addEventListener('DOMContentLoaded', () => {
 		editSubmit.style.display = 'flex';
 	});
 
+	// テキストエリアを作成する関数
+	function createTextArea(container, value, dataType) {
+		const separator = document.createElement('div');
+		separator.className = 'separator'; // 仕切りのクラスを追加
+
+		const itemContainer = document.createElement('div');
+		itemContainer.className = 'item-container'; // アイテムコンテナのクラスを追加
+		itemContainer.setAttribute('data-type', dataType); // データタイプを設定
+
+		const newTextarea = document.createElement('textarea');
+		newTextarea.className = 'text-node'; // クラスを追加
+		newTextarea.rows = '1'; // 行の数
+		newTextarea.value = value; // 初期値を設定
+
+		// プレースホルダーを設定（必要に応じて）
+		newTextarea.placeholder = placeholders[dataType] || '追加のテキスト';
+
+		const removeButton = document.createElement('span');
+		removeButton.className = 'material-icons remove-button'; // クラスを追加
+		removeButton.textContent = 'remove_circle_outline'; // ボタンテキスト
+
+		removeButton.addEventListener('click', function() {
+			container.removeChild(itemContainer); // アイテムコンテナを削除
+			container.removeChild(separator); // 仕切りを削除
+		});
+
+		itemContainer.appendChild(newTextarea);
+		itemContainer.appendChild(removeButton);
+		container.appendChild(separator);
+		container.appendChild(itemContainer);
+
+		addTextareaEventListeners(newTextarea); // 新しいテキストエリアにイベントリスナーを追加
+	}
+
 	// メニューを閉じる
 	document.getElementById('closeFormMenu').addEventListener('click', editModalShow);
 	editDelete.addEventListener('click', editModalClose);
@@ -685,6 +785,21 @@ document.addEventListener('DOMContentLoaded', () => {
 	editCancel.addEventListener('click', editModalClose);
 	modalOverlay.addEventListener('click', editModalClose);
 });
+
+// 動的要素をクリアする関数
+function clearDynamicElements() {
+	// item-container クラスを持つ要素をすべて取得
+	const itemContainers = document.querySelectorAll('.item-container');
+	itemContainers.forEach(itemContainer => {
+		itemContainer.parentNode.removeChild(itemContainer); // 各要素を削除
+	});
+
+	// separator クラスを持つ要素をすべて取得
+	const separators = document.querySelectorAll('.separator');
+	separators.forEach(separator => {
+		separator.parentNode.removeChild(separator); // 各要素を削除
+	});
+}
 
 function closeFormMenu() {
 	formMenu.classList.remove('open');
@@ -710,52 +825,52 @@ function editModalClose() {
 }
 
 document.getElementById('addSubmit').addEventListener('click', function() {
-    const display = document.getElementById('display').value;
-    const date = document.getElementById('dateInput').value;
-    const style = document.querySelector('input[name="meal"]:checked').value;
-    const takeout = document.getElementById('takeoutCheckbox').checked;
-    const memo = document.getElementById('memo').value;
+	const display = document.getElementById('display').value;
+	const date = document.getElementById('dateInput').value;
+	const style = document.querySelector('input[name="meal"]:checked').value;
+	const takeout = document.getElementById('takeoutCheckbox').checked;
+	const memo = document.getElementById('memo').value;
 
-    // 各項目に対する追加されたテキストエリアの値を収集
-    const dataTypes = ['staple', 'main', 'side', 'soup', 'snack', 'drink', 'dessert', 'otherMeal', 'otherSnack'];
-    const additionalValues = {};
+	// 各項目に対する追加されたテキストエリアの値を収集
+	const dataTypes = ['staple', 'main', 'side', 'soup', 'snack', 'drink', 'dessert', 'otherMeal', 'otherSnack'];
+	const additionalValues = {};
 
-    dataTypes.forEach(type => {
-        const additionalItems = Array.from(document.querySelectorAll(`.item-container[data-type="${type}"] textarea`))
-            .map(textarea => textarea.value)
-            .filter(value => value);
-        // 基本値と追加値を結合
-        const basicValue = document.getElementById(type).value; // ここで基本値を取得
-        additionalValues[type] = [basicValue, ...additionalItems].filter(Boolean).join(', ');
-    });
+	dataTypes.forEach(type => {
+		const additionalItems = Array.from(document.querySelectorAll(`.item-container[data-type="${type}"] textarea`))
+			.map(textarea => textarea.value)
+			.filter(value => value);
+		// 基本値と追加値を結合
+		const basicValue = document.getElementById(type).value; // ここで基本値を取得
+		additionalValues[type] = [basicValue, ...additionalItems].filter(Boolean).join(', ');
+	});
 
-    const data = {
-        display,
-        date,
-        style,
-        takeout,
-        ...additionalValues, // 各項目の値を追加
-        memo,
-        action: 'addCalendar',
-    };
+	const data = {
+		display,
+		date,
+		style,
+		takeout,
+		...additionalValues, // 各項目の値を追加
+		memo,
+		action: 'addCalendar',
+	};
 
-    console.log(data)
+	console.log(data)
 
-//    fetch(scriptURL, {
-//        method: 'POST',
-//        headers: {
-//            'Content-Type': 'application/json'
-//        },
-//        body: JSON.stringify(data)
-//    })
-//    .then(response => response.json())
-//    .then(result => {
-//        console.log(result);
-//        // 結果を処理する
-//    })
-//    .catch(error => {
-//        console.error('Error:', error);
-//    });
+//	fetch(scriptURL, {
+//		method: 'POST',
+//		headers: {
+//			'Content-Type': 'application/json'
+//		},
+//		body: JSON.stringify(data)
+//	})
+//	.then(response => response.json())
+//	.then(result => {
+//		console.log(result);
+//		// 結果を処理する
+//	})
+//	.catch(error => {
+//		console.error('Error:', error);
+//	});
 });
 
 const dateInput = document.getElementById('dateInput');
