@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyt-4WP7l8R74ivEP4Y9Z2dR_ZAgys9Hjd6Ct0gfMgMoi8DDJfI3HOcSzgdQNAXB8wp/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyPvLaKlGxI8kph3YLYCav5CqUs-EiGDfkV2p0xCtEiSxzCassfl2ZbLv6rPWLypFA8/exec';
 
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
@@ -824,7 +824,7 @@ function editModalClose() {
 	}});
 }
 
-document.getElementById('addSubmit').addEventListener('click', function() {
+document.getElementById('addSubmit').addEventListener('click', function(event) {
 	const display = document.getElementById('display').value;
 	const date = document.getElementById('dateInput').value;
 	const style = document.querySelector('input[name="meal"]:checked').value;
@@ -844,6 +844,12 @@ document.getElementById('addSubmit').addEventListener('click', function() {
 		additionalValues[type] = [basicValue, ...additionalItems].filter(Boolean).join(', ');
 	});
 
+	if (display.trim() === '') {
+		event.preventDefault(); // フォームの送信を防ぐ
+		alert('メインの項目は必須です。'); // エラーメッセージを表示
+		return; // 処理を終了
+	}
+
 	const data = {
 		display,
 		date,
@@ -851,26 +857,68 @@ document.getElementById('addSubmit').addEventListener('click', function() {
 		takeout,
 		...additionalValues, // 各項目の値を追加
 		memo,
-		action: 'addCalendar',
 	};
 
-	console.log(data)
+	// 既存のデータを取得
+	let calendarData = localStorage.getItem('calendarData');
 
-//	fetch(scriptURL, {
-//		method: 'POST',
-//		headers: {
-//			'Content-Type': 'application/json'
-//		},
-//		body: JSON.stringify(data)
-//	})
-//	.then(response => response.json())
-//	.then(result => {
-//		console.log(result);
-//		// 結果を処理する
-//	})
-//	.catch(error => {
-//		console.error('Error:', error);
-//	});
+	// もしデータが存在しない場合は空の配列を作成
+	if (!calendarData) {
+		calendarData = [];
+	} else {
+		// データがある場合は JSON をパースして配列に変換
+		calendarData = JSON.parse(calendarData);
+	}
+
+	// 新しいデータを追加するためのオブジェクトを作成
+	const newEntry = {
+		id: calendarData.length > 0 ? calendarData[calendarData.length - 1].id + 1 : 1, // 最後のIDに+1
+		date: data.date,
+		style: data.style,
+		display: data.display,
+		staple:  data.staple ? data.staple.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		main: data.main ? data.main.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		side: data.side ? data.side.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		soup: data.soup ? data.soup.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		snack: data.snack ? data.snack.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		drink: data.drink ? data.drink.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		dessert: data.dessert ? data.dessert.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		other: data.style === "tea-time"
+			? (data.otherSnack ? data.otherSnack.split(',').map(item => item.trim()) : []) // tea-time の場合
+			: (data.otherMeal ? data.otherMeal.split(',').map(item => item.trim()) : []), // それ以外の場合
+		memo: data.memo,
+		takeout: data.takeout
+	};
+
+	// 新しいエントリを既存のデータに追加
+	calendarData.push(newEntry);
+
+	// 更新されたデータを localStorage に保存
+	localStorage.setItem('calendarData', JSON.stringify(calendarData));
+
+	console.log(data)
+	console.log(localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [])
+
+	fetch(scriptURL, {
+		method: 'POST',
+		body: new URLSearchParams({
+			action: 'addCalendar',
+			...newEntry // newEntryのプロパティを展開
+		})
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+	return response.json();
+	})
+	.then(data => {
+		console.log(data);
+		// 結果を処理する
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
 });
 
 const dateInput = document.getElementById('dateInput');
