@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyPvLaKlGxI8kph3YLYCav5CqUs-EiGDfkV2p0xCtEiSxzCassfl2ZbLv6rPWLypFA8/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwYNNnTIo05uKaxlXXEWSkDW5cU3VAGZ40DAn0VNLyUJsCO9ESLv96IY_o_j61lqzVv/exec';
 
 const monthYear = document.getElementById('month-year');
 const dateContainer = document.getElementById('date-container');
@@ -824,7 +824,18 @@ function editModalClose() {
 	}});
 }
 
-document.getElementById('addSubmit').addEventListener('click', function(event) {
+document.getElementById('addSubmit').addEventListener('click', function() {
+	formOperation('add');
+	closeFormMenu();
+});
+
+document.getElementById('editSubmit').addEventListener('click', function() {
+	formOperation('edit');
+	closeFormMenu();
+});
+
+function formOperation(option) {
+	const id = editButton.getAttribute('data-info');
 	const display = document.getElementById('display').value;
 	const date = document.getElementById('dateInput').value;
 	const style = document.querySelector('input[name="meal"]:checked').value;
@@ -890,19 +901,26 @@ document.getElementById('addSubmit').addEventListener('click', function(event) {
 		takeout: data.takeout
 	};
 
-	// 新しいエントリを既存のデータに追加
-	calendarData.push(newEntry);
+	let action;
 
-	// 更新されたデータを localStorage に保存
-	localStorage.setItem('calendarData', JSON.stringify(calendarData));
-
-	console.log(data)
-	console.log(localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [])
+	if (option === "add") {
+		action = 'addCalendar';
+		calendarData.push(newEntry); // 新しいエントリを既存のデータに追加
+		localStorage.setItem('calendarData', JSON.stringify(calendarData)); // 更新されたデータを localStorage に保存
+		fetchCalendarData(); // 再描画
+	} else if (option === "edit") {
+		action = 'editCalendar';
+		newEntry.id = parseInt(id, 10);
+		const recordIndex = calendarData.findIndex(index => index.id == newEntry.id); // localStrage内の対象のインデックスを特定
+		calendarData[recordIndex] = newEntry; // 新しいデータでレコードを一括更新
+		localStorage.setItem('calendarData', JSON.stringify(calendarData)); // 更新されたデータを localStorage に保存
+		fetchCalendarData(); // 再描画
+	}
 
 	fetch(scriptURL, {
 		method: 'POST',
 		body: new URLSearchParams({
-			action: 'addCalendar',
+			action: action,
 			...newEntry // newEntryのプロパティを展開
 		})
 	})
@@ -913,13 +931,12 @@ document.getElementById('addSubmit').addEventListener('click', function(event) {
 	return response.json();
 	})
 	.then(data => {
-		console.log(data);
-		// 結果を処理する
+		console.log(data); // 結果を処理する
 	})
 	.catch(error => {
 		console.error('Error:', error);
-	});
-});
+	})
+}
 
 const dateInput = document.getElementById('dateInput');
 // 日付選択イベントのリスナー
