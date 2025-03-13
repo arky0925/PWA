@@ -365,6 +365,12 @@ body {
 	font-weight: 900; /* 太字 */
 }
 
+.disabled {
+	color: #ffffff; /* 非活性表示の色 */
+	pointer-events: none; /* クリックイベントを無効にする */
+	opacity: 0.5; /* 透明度を下げて非活性に見せる */
+}
+
 .meal-form {
 	background-color: #ffffff; /* 背景色 */
 	padding-top: 46px;

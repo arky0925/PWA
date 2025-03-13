@@ -547,7 +547,7 @@ function deleteModalClose() {
 	}});
 }
 
-deleteDo.addEventListener('click',  () => {
+deleteDo.addEventListener('click', () => {
 	const id = deleteButton.getAttribute('data-info');
 	let events = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
 
@@ -587,10 +587,13 @@ const editButton = document.getElementById('editButton');
 const editModal = document.getElementById('editModal');
 const editDelete = document.getElementById('editDelete');
 const editCancel = document.getElementById('editCancel');
+const headerCenter = document.getElementById('headerCenter');
 const addSubmit = document.getElementById('addSubmit');
 const editSubmit = document.getElementById('editSubmit');
 document.addEventListener('DOMContentLoaded', () => {
 	const initialTextareas = document.querySelectorAll('.text-node');
+	const formattedDate = document.getElementById('formattedDate');
+	const date = document.getElementById('dateInput');
 	// メニューを開く
 	add.addEventListener('click', () => {
 		// 初期値に戻す
@@ -598,23 +601,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		textareas.forEach(textarea => {
 			textarea.value = '';
 		});
+		formattedDate.value = updateFormattedDate(dateInput.getAttribute('data-info'));
+		date.value = dateInput.getAttribute('data-info');
 		clearDynamicElements();
 		checkbox.checked = false;
 		radioButtons[2].checked = true; // ラジオボタンの初期値
 
-		updateRadioBackground(); // ラジオボタンの背景色を更新
-		setColor(radioButtons[2].value); // 色丸の初期値
-
-		// 初期のテキストエリアにもイベントリスナーを追加
-		initialTextareas.forEach(textarea => {
-			addTextareaEventListeners(textarea);
-		});
-
-		formMenu.classList.add('open');
-		updateVisibility(); // 項目の表示切替
-
-		addSubmit.style.display = 'flex';
-		editSubmit.style.display = 'none';
+		formStyle("add", null, null);
 	});
 
 	// メニューを開く
@@ -625,7 +618,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		const eventIndex = events.findIndex(event => event.id === parseInt(id, 10));
 
 		const display = document.getElementById('display');
-		const date = document.getElementById('dateInput');
 		const radioButtons = document.querySelectorAll('input[name="meal"]');
 		const staple = document.getElementById('staple');
 		const main = document.getElementById('main');
@@ -638,7 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		const otherSnack = document.getElementById('otherSnack');
 		const memo = document.getElementById('memo');
 		const checkbox = document.getElementById('takeoutCheckbox');
-
 		const stapleItem = document.getElementById('stapleItem');
 		const mainItem = document.getElementById('mainItem');
 		const sideItem = document.getElementById('sideItem');
@@ -654,6 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// 既存の値を設定
 		display.value = events[eventIndex].display;
+		formattedDate.value = updateFormattedDate(events[eventIndex].date);
 		date.value = events[eventIndex].date;
 
 		// ラジオボタンの設定
@@ -729,19 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		memo.value = events[eventIndex].memo || '';
 		checkbox.checked = events[eventIndex].takeout;
 
-		updateRadioBackground(); // ラジオボタンの背景色を更新
-		setColor(events[eventIndex].style);
-
-		// 初期のテキストエリアにもイベントリスナーを追加
-		initialTextareas.forEach(textarea => {
-			addTextareaEventListeners(textarea);
-		});
-
-		formMenu.classList.add('open');
-		updateVisibility();
-
-		addSubmit.style.display = 'none';
-		editSubmit.style.display = 'flex';
+		formStyle("edit", events, eventIndex);
 	});
 
 	// テキストエリアを作成する関数
@@ -778,13 +758,55 @@ document.addEventListener('DOMContentLoaded', () => {
 		addTextareaEventListeners(newTextarea); // 新しいテキストエリアにイベントリスナーを追加
 	}
 
+	function formStyle(option, events, eventIndex) {
+		updateRadioBackground(); // ラジオボタンの背景色を更新
+		isChanged = false;
+		if (option === "add") {
+			setColor(radioButtons[2].value); // 色丸の初期値
+			headerCenter.style.display = 'none';
+			addSubmit.style.display = 'flex'; // 保存ボタンを表示
+			editSubmit.style.display = 'none'; // 完了ボタンを非表示
+		} else if (option === "edit") {
+			setColor(events[eventIndex].style); // 選択されたイベントのスタイルを設定
+			headerCenter.style.display = 'flex';
+			addSubmit.style.display = 'none'; // 保存ボタンを非表示
+			editSubmit.style.display = 'flex'; // 完了ボタンを表示
+		}
+
+		// 初期のテキストエリアにもイベントリスナーを追加
+		initialTextareas.forEach(textarea => {
+			addTextareaEventListeners(textarea);
+		});
+
+		formMenu.classList.add('open'); // フォームメニューを開く
+		updateVisibility(); // 項目の表示切替
+		toggleButtons(); // ボタンの状態を更新
+	}
+
 	// メニューを閉じる
-	document.getElementById('closeFormMenu').addEventListener('click', editModalShow);
+	document.getElementById('closeFormMenu').addEventListener('click', function() {
+		if (isChanged) {
+			console.log("内容が変更されました。");
+			editModalShow();
+		} else {
+			console.log("内容は変更されていません。");
+			closeFormMenu();
+		}
+	});
+
 	editDelete.addEventListener('click', editModalClose);
 	editDelete.addEventListener('click', closeFormMenu);
 	editCancel.addEventListener('click', editModalClose);
 	modalOverlay.addEventListener('click', editModalClose);
 });
+
+// 変更があったかどうかのフラグ
+let isChanged = false;
+
+// 変更があった場合の処理
+function handleChange() {
+	isChanged = true; // 変更があったことをフラグで示す
+}
 
 // 動的要素をクリアする関数
 function clearDynamicElements() {
@@ -824,12 +846,12 @@ function editModalClose() {
 	}});
 }
 
-document.getElementById('addSubmit').addEventListener('click', function() {
+addSubmit.addEventListener('click', function() {
 	formOperation('add');
 	closeFormMenu();
 });
 
-document.getElementById('editSubmit').addEventListener('click', function() {
+editSubmit.addEventListener('click', function() {
 	formOperation('edit');
 	closeFormMenu();
 });
@@ -854,12 +876,6 @@ function formOperation(option) {
 		const basicValue = document.getElementById(type).value; // ここで基本値を取得
 		additionalValues[type] = [basicValue, ...additionalItems].filter(Boolean).join(', ');
 	});
-
-	if (display.trim() === '') {
-		event.preventDefault(); // フォームの送信を防ぐ
-		alert('メインの項目は必須です。'); // エラーメッセージを表示
-		return; // 処理を終了
-	}
 
 	const data = {
 		display,
@@ -887,7 +903,7 @@ function formOperation(option) {
 		date: data.date,
 		style: data.style,
 		display: data.display,
-		staple:  data.staple ? data.staple.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
+		staple: data.staple ? data.staple.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
 		main: data.main ? data.main.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
 		side: data.side ? data.side.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
 		soup: data.soup ? data.soup.split(',').map(item => item.trim()) : [], // 空でない場合のみ分割
@@ -938,10 +954,22 @@ function formOperation(option) {
 	})
 }
 
+function toggleButtons() {
+	const display = document.getElementById("display");
+	if (display.value.trim() === "") {
+		addSubmit.classList.add("disabled");
+		editSubmit.classList.add("disabled");
+	} else {
+		addSubmit.classList.remove("disabled");
+		editSubmit.classList.remove("disabled");
+	}
+}
+
 const dateInput = document.getElementById('dateInput');
 // 日付選択イベントのリスナー
 dateInput.addEventListener('change', function() {
 	updateFormattedDate(this.value); // 直接関数を呼び出す
+	handleChange();
 });
 
 // フォーマットを更新する関数
@@ -978,6 +1006,7 @@ radioButtons.forEach(radio => {
 		setColor(this.value);
 		updateVisibility();
 		updateRadioBackground();
+		handleChange();
 	});
 });
 
@@ -985,6 +1014,7 @@ radioButtons.forEach(radio => {
 checkbox.addEventListener('change', function() {
 	setColor(radioButtons[0].checked ? radioButtons[0].value : radioButtons[1].checked ? radioButtons[1].value : radioButtons[2].checked ? radioButtons[2].value : radioButtons[3].value);
 	updateRadioBackground();
+	handleChange();
 });
 
 // 色を設定する関数
@@ -1102,6 +1132,8 @@ function addTextareaEventListeners(textarea) {
 
 	textarea.addEventListener('input', () => {
 		setTextareaHeight(); // 入力時に高さを調整
+		toggleButtons();
+		handleChange();
 	});
 
 	textarea.addEventListener('keydown', (event) => {
