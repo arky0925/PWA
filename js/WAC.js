@@ -311,7 +311,7 @@ function displayData(data) {
 				localStorage.setItem('spreadsheetData', JSON.stringify(cachedData)); // キャッシュを更新
 
 				search(); // 更新されたデータを表示
-				
+
 				// スプレッドシートへの削除リクエストを送信
 				fetch(scriptURL, {
 					method: 'POST',
@@ -553,7 +553,7 @@ const insertForm = document.forms['insert-form'];
 
 insertForm.addEventListener('submit', function(event) {
 	event.preventDefault(); // デフォルトの送信を防ぐ
-	
+
 	if (!continuityAddFlg) {
 		insertModal.style.display = 'none'; // モーダルを非表示
 		modalOverlay.style.display = 'none'; // オーバーレイを非表示

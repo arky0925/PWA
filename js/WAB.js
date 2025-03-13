@@ -261,7 +261,7 @@ function renderCalendar(events) {
 		const popupContainer = document.getElementById('popup-container');
 		const popupArrow = document.getElementById('popup-arrow');
 		const popupMark = document.getElementById('popup-mark');
-		
+
 		popupContainer.style.display = 'flex'; // プルダウンを表示
 
 		const buttonColor = window.getComputedStyle(event.currentTarget).backgroundColor;
@@ -364,7 +364,7 @@ function renderCalendar(events) {
 	// 初期表示時に現在の日付のイベントを表示
 	const initialDateString = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
 	displayEventsForSelectedDate(initialDateString);
-	
+
 	// 現在の日付に設定
 	dateInput.value = initialDateString; // dateInputに選択した日付を設定
 	updateFormattedDate(initialDateString);
@@ -786,10 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	// メニューを閉じる
 	document.getElementById('closeFormMenu').addEventListener('click', function() {
 		if (isChanged) {
-			console.log("内容が変更されました。");
 			editModalShow();
 		} else {
-			console.log("内容は変更されていません。");
 			closeFormMenu();
 		}
 	});
@@ -976,7 +974,7 @@ dateInput.addEventListener('change', function() {
 function updateFormattedDate(dateValue) {
 	if (dateValue) {
 		const date = new Date(dateValue);
-		
+
 		// フォーマットを作成
 		const year = date.getFullYear();
 		const month = date.getMonth() + 1; // 月は0から始まるため +1
