@@ -87,6 +87,23 @@
 	text-align: left;
 }
 
+.cashe-clear-list {
+	display: flex;
+	flex-direction: column;
+	align-items: normal !important;
+}
+
+.cashe-item {
+	display: flex;
+	align-items: center;
+}
+
+.separator {
+	height: 1px; /* 仕切りの高さ */
+	background-color: #ccc; /* 仕切りの色 */
+	margin: 10px 0; /* 上下のマージン */
+}
+
 /* テーマ設定 */
 .choices {
 	display: flex;

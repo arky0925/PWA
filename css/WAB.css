@@ -282,7 +282,7 @@ body {
 	bottom: 0;
 }
 
-.delete-check:nth-child(1) {
+.delete-modal .delete-check:nth-of-type(1) {
 	background-color: #ff4d4d; /* 背景の色 */
 	color: #ffffff; /* テキストの色 */
 	font-weight: 700; /* 文字の太さ */
@@ -293,7 +293,7 @@ body {
 	cursor: pointer; /* カーソルをポインターに */
 }
 
-.delete-check:nth-child(2) {
+.delete-modal .delete-check:nth-of-type(2) {
 	background-color: #ffffff; /* 背景の色 */
 	color: #333333; /* テキストの色 */
 	font-weight: 700; /* 文字の太さ */
@@ -302,6 +302,12 @@ body {
 	padding: 10px; /* 上下と左右のパディング */
 	font-size: 14px; /* フォントサイズ */
 	cursor: pointer; /* カーソルをポインターに */
+}
+
+.text-center {
+	text-align: center;
+	font-size: 14px;
+	color: #696969;
 }
 
 /* オーバーレイのスタイル */
@@ -343,7 +349,7 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px 20px;
-	position: absolute;
+	position: fixed; /* ヘッダーを固定 */
 	color: #ffffff;
 	background-color: var(--header-color);
 	z-index: 1;

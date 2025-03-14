@@ -235,7 +235,7 @@ span.delete-icon, .update-icon, button {
 .search-none-screen {
 	text-align: center;
 	width: 400px;
-	position: absolute;
+	position: fixed;
 	top: 180px;
 	left: 50%; /* 横の中央 */
 	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
@@ -728,7 +728,7 @@ textarea:focus {
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px 20px;
-	position: absolute;
+	position: fixed; /* ヘッダーを固定 */
 	color: #ffffff;
 	background-color: var(--header-color);
 	z-index: 1;

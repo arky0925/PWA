@@ -343,9 +343,15 @@ document.addEventListener('DOMContentLoaded', () => {
 //	});
 //}
 
-document.getElementById('chacheClear').addEventListener('click', () => {
-	localStorage.removeItem('spreadsheetData');
-	localStorage.removeItem('templateData');
-	localStorage.removeItem('calendarData');
+document.getElementById('cacheClear').addEventListener('click', () => {
+	if (document.getElementById('clearSpreadsheet').checked) {
+		localStorage.removeItem('spreadsheetData');
+	}
+	if (document.getElementById('clearTemplate').checked) {
+		localStorage.removeItem('templateData');
+	}
+	if (document.getElementById('clearCalendar').checked) {
+		localStorage.removeItem('calendarData');
+	}
 	window.location.href = 'WAE.html';
 });

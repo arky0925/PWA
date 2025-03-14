@@ -850,7 +850,9 @@ addSubmit.addEventListener('click', function() {
 });
 
 editSubmit.addEventListener('click', function() {
-	formOperation('edit');
+	if (isChanged) {
+		formOperation('edit');
+	}
 	closeFormMenu();
 });
 

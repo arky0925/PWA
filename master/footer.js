@@ -37,7 +37,7 @@ class MyFooter extends HTMLElement {
 										</li>
 										<li>
 											<button id="couponButton" class="round-button material-icons" style="--round-button-active-color: #2962ff" data-translate-value="1" data-color="blue">
-												payment
+												calendar_month
 											</button>
 										</li>
 										<li>

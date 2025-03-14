@@ -12,8 +12,8 @@ window.onload = function() {
 	console.log(localStorage);
 };
 
-const chacheClearIcon = document.getElementById('chacheClearIcon');
-chacheClearIcon.addEventListener('click', () => {
+const cacheClearIcon = document.getElementById('cacheClearIcon');
+cacheClearIcon.addEventListener('click', () => {
 	localStorage.removeItem('spreadsheetData');
 	localStorage.removeItem('templateData');
 	fetchData();
@@ -117,14 +117,14 @@ function fetchData() {
 }
 
 let currentData = []; // 現在表示されているデータを保持する
-let chacheDate = []; // キャッシュデータを保持する
+let cacheDate = []; // キャッシュデータを保持する
 let filteredRows = []; // 絞り込み結果の行番号を格納
 let handOver;
 
 // データをリストに表示する関数
 function displayData(data) {
 	currentData = data; // 現在表示されているデータを更新
-	chacheDate = JSON.parse(localStorage.getItem('spreadsheetData')); // chacheDateにキャッシュを格納
+	cacheDate = JSON.parse(localStorage.getItem('spreadsheetData')); // cacheDateにキャッシュを格納
 	const display = document.getElementById('dataDisplay');
 	display.innerHTML = ''; // 既存の内容をクリア
 
@@ -146,18 +146,18 @@ function displayData(data) {
 		const updateTimeValue = rowData[5]; // 6列目の値
 
 		// キャッシュ内での行番号を検索
-		const chacheRowIndex = chacheDate.findIndex(chacheRow => {
+		const cacheRowIndex = cacheDate.findIndex(cacheRow => {
 		// 比較するプロパティを指定
-			return chacheRow[0] === checkboxValue && // 1列目で比較
-				   chacheRow[1] === cookValue && // 2列目で比較
-				   chacheRow[2] === memoValue && // 3列目で比較
-				   chacheRow[3] === bookmarkValue && // 4列目で比較
-				   chacheRow[4] === insertTimeValue && // 5列目で比較
-				   chacheRow[5] === updateTimeValue; // 6列目で比較
+			return cacheRow[0] === checkboxValue && // 1列目で比較
+				   cacheRow[1] === cookValue && // 2列目で比較
+				   cacheRow[2] === memoValue && // 3列目で比較
+				   cacheRow[3] === bookmarkValue && // 4列目で比較
+				   cacheRow[4] === insertTimeValue && // 5列目で比較
+				   cacheRow[5] === updateTimeValue; // 6列目で比較
 		});
 
 		// スプレッドシート上の行番号
-		const sheetRowIndex = chacheRowIndex + 2; // chacheRowIndexに+2する
+		const sheetRowIndex = cacheRowIndex + 2; // cacheRowIndexに+2する
 
 		// チェックボックスを作成
 		const checkbox = document.createElement('input'); // チェックボックスを作成
@@ -764,11 +764,11 @@ function deleteModeChange() {
 	deleteIcon(deleteMode); // ゴミ箱アイコンの表示を切り替え
 	selectedCount(deleteMode); // ヘッダーの削除レコード数の表示を切り替え
 
-	// addIcon,circleCloseIcon,outer,chacheClearIconの表示を切り替える
+	// addIcon,circleCloseIcon,outer,cacheClearIconの表示を切り替える
 	addIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	circleCloseIcon.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
 	outer.style.display = deleteMode ? 'none' : 'flex'; // 削除モード時は非表示、そうでない場合は表示
-	chacheClearIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
+	cacheClearIcon.style.display = deleteMode ? 'none' : 'inline'; // 削除モード時は非表示、そうでない場合は表示
 	// NavigationButtonsの表示を切り替える
 	document.getElementById('navigationButtons').style.display = deleteMode ? 'none' : 'flow-root'; // 削除モードがTRUEの場合、非表示にする
 	document.getElementById('deleteNavigationButtons').style.display = deleteMode ? 'flow-root' : 'none'; // 削除モードがTRUEの場合、非表示にする
@@ -1149,12 +1149,12 @@ document.getElementById('helpIcon').addEventListener('click', () => {
 });
 
 function fetchtemplateData() {
-	const chacheTemplateData = localStorage.getItem('templateData');
+	const cacheTemplateData = localStorage.getItem('templateData');
 	const action = 'templateGet';
 
-	if (chacheTemplateData) {
+	if (cacheTemplateData) {
 		// キャッシュが存在する場合はそれを使用
-		templateData(JSON.parse(chacheTemplateData)); // データを表示
+		templateData(JSON.parse(cacheTemplateData)); // データを表示
 	} else {
 		// キャッシュがない場合はスプレッドシートからデータを取得
 		fetch(`${scriptURL}?action=${action}`)
