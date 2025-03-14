@@ -203,6 +203,13 @@ body {
 	flex-direction: column;
 	gap: 10px;
 	padding-left: 10px;
+	width:calc(100% - 18px);
+}
+
+.event-name {
+	overflow-wrap: break-word; /* 単語の途切れを許可 */
+	word-wrap: break-word; /* 古いブラウザのサポート */
+	hyphens: auto; /* ハイフネーションを自動にする */
 }
 
 .popup-icon {
@@ -526,8 +533,7 @@ input[type="radio"] {
 }
 
 .hidden {
-	max-height: 0; /* 高さを0に */
-	opacity: 0; /* 不透明度を0に */
+	display: none !important;
 	padding: 0 !important; /* パディングを0に */
 	pointer-events: none; /* クリックイベントを無効に */
 }
