@@ -148,6 +148,10 @@ body {
 .event-main {
 	padding: 0 5px;
 	border-radius: 4px;
+	width: 100%;
+	overflow: hidden; /* オーバーフローを隠す */
+	white-space: nowrap; /* テキストを折り返さない */
+	text-overflow: ellipsis; /* 途切れた部分を「...」で表示 */
 }
 
 .breakfast {
@@ -331,7 +335,7 @@ body {
 }
 
 /* フォームメニュー */
-.form-menu {
+.sub-screen-menu {
 	position: fixed;
 	top: 200%;
 	right: 0; /* 初期状態では画面外 */
@@ -344,11 +348,11 @@ body {
 	overflow-y: auto; /* 縦方向のスクロールを有効に */
 }
 
-.form-menu.open {
+.sub-screen-menu.open {
 	top: 0;
 }
 
-.form-header {
+.sub-screen-header {
 	width: 100%;
 	height: 46px;
 	left: 0;
@@ -362,7 +366,7 @@ body {
 	z-index: 1;
 }
 
-.form-header span {
+.sub-screen-header span {
 	cursor: pointer;
 }
 
@@ -370,7 +374,6 @@ body {
 	position: absolute; /* 中央揃えのため絶対配置 */
 	left: 50%; /* 左から50% */
 	transform: translateX(-50%); /* 自身の幅の半分だけ戻す */
-	text-align: center; /* 中央揃え */
 	font-weight: 900; /* 太字 */
 }
 
@@ -536,4 +539,37 @@ input[type="radio"] {
 	display: none !important;
 	padding: 0 !important; /* パディングを0に */
 	pointer-events: none; /* クリックイベントを無効に */
+}
+
+.search-header {
+	width: 100%;
+	height: 46px;
+	left: 0;
+	top: -46px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	position: fixed; /* ヘッダーを固定 */
+	color: #ffffff;
+	background-color: var(--header-color);
+	z-index: 350;
+	transition: top 0.3s ease-in-out;
+}
+
+.search-header.open {
+	top: 0;
+}
+
+.search-box {
+	width: 50%;
+	padding: 3px; /* 内側の余白を指定 */
+	border: 1px solid #ccc; /* ボーダーを指定 */
+	border-radius: 5px; /* 角を丸くする */
+	box-sizing: border-box; /* パディングとボーダーを含めた幅の計算 */
+}
+
+.search-box:focus {
+	border-color: #007BFF; /* フォーカス時のボーダー色 */
+	outline: none; /* デフォルトのアウトラインを消す */
 }

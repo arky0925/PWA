@@ -887,15 +887,7 @@ function formOperation(option) {
 	};
 
 	// 既存のデータを取得
-	let calendarData = localStorage.getItem('calendarData');
-
-	// もしデータが存在しない場合は空の配列を作成
-	if (!calendarData) {
-		calendarData = [];
-	} else {
-		// データがある場合は JSON をパースして配列に変換
-		calendarData = JSON.parse(calendarData);
-	}
+	let calendarData = localStorage.getItem('calendarData') ? JSON.parse(localStorage.getItem('calendarData')) : [];
 
 	// 新しいデータを追加するためのオブジェクトを作成
 	const newEntry = {
@@ -1145,4 +1137,33 @@ function addTextareaEventListeners(textarea) {
 
 	// 初期高さを設定
 	setTextareaHeight(); // 初期値がある場合にも高さを調整
+}
+
+// 検索メニュー開閉
+
+const search = document.getElementById('search');
+const searcHeader = document.getElementById('searcHeader');
+const searchInput = document.getElementById('searchInput');
+document.addEventListener('DOMContentLoaded', () => {
+	// メニューを開く
+	search.addEventListener('click', () => {
+		searcHeader.classList.add('open'); // フォームメニューを開く
+		searchInput.focus();
+		modalOverlay.style.display = 'block'; // オーバーレイを表示
+		gsap.to(modalOverlay, { opacity: 1, duration: 0.2 });
+	});
+
+	// メニューを開く
+	document.getElementById('closeSearchMenu').addEventListener('click', searchClose);
+	modalOverlay.addEventListener('click', searchClose);
+});
+
+function searchClose() {
+	searcHeader.classList.remove('open');
+	timer = setTimeout(() => {
+		editModal.style.display = 'none'; // モーダルを表示
+	}, 200);
+	gsap.to(modalOverlay, { opacity: 0, duration: 0.2, onComplete: () => {
+		modalOverlay.style.display = 'none'; // オーバーレイを表示
+	}});
 }

@@ -21,6 +21,10 @@
 		<h2 id="month-year"></h2>
 		<span id="next" class="material-icons">keyboard_double_arrow_right</span>
 	</header>
+	<div id="searcHeader" class="search-header">
+		<span id="closeSearchMenu" class="material-icons">search_off</span>
+		<input type="search" id="searchInput" class="center search-box">
+	</div>
 	<div class="calendar">
 		<div class="days">
 			<div class="day sunday">日</div>
@@ -41,7 +45,7 @@
 			<div class="tools">
 				<span id="today" class="material-icons">today</span>
 				<span id="add" class="material-icons">add</span>
-				<span id="" class="material-icons">search</span>
+				<span id="search" class="material-icons">search</span>
 				<span id="" class="material-icons">settings</span>
 			</div>
 		</div>
@@ -76,8 +80,8 @@
 		</button >
 	</div>
 	<!-- フォームメニュー -->
-	<div id="formMenu" class="form-menu">
-		<div class="form-header">
+	<div id="formMenu" class="sub-screen-menu">
+		<div class="sub-screen-header">
 			<span id="closeFormMenu">キャンセル</span>
 			<div id="headerCenter" class="center">編集</div>
 			<div>
@@ -205,5 +209,6 @@
 			編集に戻る
 		</button >
 	</div>
+	<!-- 検索メニュー -->
 	<my-footer></my-footer> <!-- カスタム要素としてフッターを挿入 -->
 </html>
